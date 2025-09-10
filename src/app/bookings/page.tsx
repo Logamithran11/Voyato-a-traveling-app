@@ -46,6 +46,26 @@ const bookings = [
     image: hotelImages[2],
     rating: 4,
   },
+  {
+    id: 4,
+    type: 'Hotel',
+    name: 'Parisian Charm Hotel',
+    location: 'Paris, France',
+    date: 'Dec 10, 2024 - Dec 15, 2024',
+    status: 'Confirmed',
+    image: hotelImages[3],
+    rating: 5,
+  },
+  {
+    id: 5,
+    type: 'Activity',
+    name: 'Ancient Rome Walking Tour',
+    location: 'Rome, Italy',
+    date: 'Dec 18, 2024',
+    status: 'Cancelled',
+    image: { imageUrl: 'https://picsum.photos/seed/rome/600/400', imageHint: 'ancient ruins' },
+    rating: 3,
+  }
 ];
 
 export default function BookingsPage() {
@@ -78,7 +98,7 @@ export default function BookingsPage() {
               <div className="flex-grow">
                 <div className="flex items-center justify-between">
                   <Badge variant={booking.type === 'Hotel' ? 'default' : 'secondary'}>{booking.type}</Badge>
-                  <Badge variant={booking.status === 'Confirmed' ? 'secondary' : 'destructive'} className="bg-green-700 text-white">{booking.status}</Badge>
+                  <Badge variant={booking.status === 'Confirmed' ? 'secondary' : (booking.status === 'Pending' ? 'destructive' : 'outline')} className={`${booking.status === 'Confirmed' ? 'bg-green-700 text-white' : ''} ${booking.status === 'Cancelled' ? 'bg-red-700 text-white' : ''}`}>{booking.status}</Badge>
                 </div>
                 <h3 className="font-headline text-2xl mt-2">{booking.name}</h3>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
