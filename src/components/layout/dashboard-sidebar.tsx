@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   Home,
   Map,
@@ -35,6 +36,11 @@ const menuItems = [
 
 export function DashboardSidebar() {
   const pathname = usePathname();
+  const [isSheetOpen, setSheetOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    setSheetOpen(false);
+  };
 
   const navContent = (
     <>
@@ -56,6 +62,22 @@ export function DashboardSidebar() {
           <TooltipContent side="right">{item.label}</TooltipContent>
         </Tooltip>
       ))}
+    </>
+  );
+  
+  const mobileNavContent = (
+    <>
+        {menuItems.map(item=>(
+            <Link
+            key={item.label}
+            href={item.href}
+            onClick={handleLinkClick}
+            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+          >
+            <item.icon className="h-5 w-5" />
+            {item.label}
+          </Link>
+        ))}
     </>
   );
 
@@ -90,7 +112,7 @@ export function DashboardSidebar() {
         </TooltipProvider>
       </aside>
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
                 <PanelLeft className="h-5 w-5" />
@@ -101,21 +123,13 @@ export function DashboardSidebar() {
               <nav className="grid gap-6 text-lg font-medium">
                 <Link
                   href="/dashboard"
+                  onClick={handleLinkClick}
                   className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                 >
                   <Logo />
                   <span className="sr-only">Voyato</span>
                 </Link>
-                {menuItems.map(item=>(
-                    <Link
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  >
-                    <item.icon className="h-5 w-5" />
-                    {item.label}
-                  </Link>
-                ))}
+                {mobileNavContent}
               </nav>
             </SheetContent>
           </Sheet>
