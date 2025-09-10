@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ticket, BookOpen, ShieldCheck, FileText } from "lucide-react";
+import { Ticket, BookOpen, FileText } from "lucide-react";
 
 const quickAccessItems = [
-    { label: "Tickets", icon: Ticket, href: "#" },
-    { label: "Bookings", icon: BookOpen, href: "#" },
-    { label: "Documents", icon: ShieldCheck, href: "/documents" },
-    { label: "Travel Guides", icon: FileText, href: "#" }
+    { label: "Tickets", icon: Ticket, href: "/tickets" },
+    { label: "Bookings", icon: BookOpen, href: "/bookings" },
+    { label: "Documents", icon: FileText, href: "/documents" },
+    { label: "Travel Guides", icon: FileText, href: "/travel-guides" }
 ];
 
 export function QuickAccess() {

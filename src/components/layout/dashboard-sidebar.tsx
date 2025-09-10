@@ -13,6 +13,8 @@ import {
   Settings,
   PanelLeft,
   Wallet,
+  Ticket,
+  BookOpen,
 } from "lucide-react";
 import {
   Tooltip,
@@ -33,8 +35,11 @@ const menuItems = [
   { href: "/itinerary", label: "Itinerary Planner", icon: Map },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
   { href: "/budget", label: "Budget", icon: Wallet },
+  { href: "/tickets", label: "Tickets", icon: Ticket },
+  { href: "/bookings", label: "Bookings", icon: BookOpen },
   { href: "/documents", label: "Documents", icon: FileText },
   { href: "/camera-spots", label: "Camera Spots", icon: Camera },
+  { href: "/travel-guides", label: "Travel Guides", icon: FileText },
 ];
 
 export function DashboardSidebar() {
