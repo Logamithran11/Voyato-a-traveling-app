@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -28,10 +29,10 @@ import {
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/dashboard", label: "Itinerary Planner", icon: Map },
-  { href: "/dashboard", label: "AI Recommendations", icon: Lightbulb },
-  { href: "/dashboard", label: "Documents", icon: FileText },
-  { href: "/dashboard", label: "Camera Spots", icon: Camera },
+  { href: "/itinerary", label: "Itinerary Planner", icon: Map },
+  { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
+  { href: "/documents", label: "Documents", icon: FileText },
+  { href: "/camera-spots", label: "Camera Spots", icon: Camera },
 ];
 
 export function DashboardSidebar() {
@@ -49,8 +50,9 @@ export function DashboardSidebar() {
           <TooltipTrigger asChild>
             <Link
               href={item.href}
+              onClick={handleLinkClick}
               className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:text-foreground md:h-8 md:w-8 ${
-                pathname === item.href && item.label === "Dashboard"
+                pathname === item.href
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground"
               }`}
@@ -72,7 +74,11 @@ export function DashboardSidebar() {
             key={item.label}
             href={item.href}
             onClick={handleLinkClick}
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            className={`flex items-center gap-4 px-2.5 hover:text-foreground ${
+                pathname === item.href
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
           >
             <item.icon className="h-5 w-5" />
             {item.label}
