@@ -12,7 +12,7 @@ export function WeatherWidget() {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">
+        <CardTitle className="font-headline text-xl md:text-2xl">
             Real-time Weather
         </CardTitle>
         <CardDescription>

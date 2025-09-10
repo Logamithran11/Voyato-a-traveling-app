@@ -31,7 +31,7 @@ export function ItineraryPlanner() {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2 text-2xl">
+        <CardTitle className="font-headline flex items-center gap-2 text-xl md:text-2xl">
             <Map className="text-primary"/>
             Itinerary Planner
         </CardTitle>

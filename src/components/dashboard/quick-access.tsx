@@ -13,7 +13,7 @@ export function QuickAccess() {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">
+        <CardTitle className="font-headline text-xl md:text-2xl">
             Quick Access
         </CardTitle>
         <CardDescription>
@@ -22,9 +22,9 @@ export function QuickAccess() {
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-4">
         {quickAccessItems.map(item => (
-            <Button key={item.label} variant="outline" className="flex flex-col h-24 gap-2">
+            <Button key={item.label} variant="outline" className="flex flex-col h-20 md:h-24 gap-2">
                 <item.icon className="h-6 w-6 text-primary"/>
-                <span>{item.label}</span>
+                <span className="text-xs md:text-sm">{item.label}</span>
             </Button>
         ))}
       </CardContent>

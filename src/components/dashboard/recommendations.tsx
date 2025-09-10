@@ -53,7 +53,7 @@ export function Recommendations() {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2 text-2xl">
+        <CardTitle className="font-headline flex items-center gap-2 text-xl md:text-2xl">
             <Wand2 className="text-primary"/>
             AI Destination Recommendations
         </CardTitle>
@@ -91,7 +91,7 @@ export function Recommendations() {
 
         {recommendations && (
           <div className="mt-8 space-y-6">
-            <h3 className="font-headline text-xl">Your Personalized Suggestions:</h3>
+            <h3 className="font-headline text-lg md:text-xl">Your Personalized Suggestions:</h3>
             <div className="grid gap-6 md:grid-cols-2">
               {recommendations.destinations.map((dest, index) => (
                 <Card key={dest.name} className="flex flex-col overflow-hidden">
