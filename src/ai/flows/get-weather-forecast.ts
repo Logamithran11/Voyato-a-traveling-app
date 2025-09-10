@@ -13,6 +13,7 @@ import { z } from 'genkit';
 
 const GetWeatherForecastInputSchema = z.object({
   city: z.string().describe('The city for which to get the weather forecast.'),
+  currentTime: z.string().describe('The current time in HH:MM format.'),
 });
 export type GetWeatherForecastInput = z.infer<typeof GetWeatherForecastInputSchema>;
 
@@ -29,20 +30,22 @@ const WeatherForecastSchema = z.object({
 export type WeatherForecast = z.infer<typeof WeatherForecastSchema>;
 
 export async function getWeatherForecast(
-  input: GetWeatherForecastInput
+  input: Omit<GetWeatherForecastInput, 'currentTime'>
 ): Promise<WeatherForecast> {
-  return getWeatherForecastFlow(input);
+  const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  return getWeatherForecastFlow({...input, currentTime });
 }
 
 const prompt = ai.definePrompt({
   name: 'getWeatherForecastPrompt',
   input: { schema: GetWeatherForecastInputSchema },
   output: { schema: WeatherForecastSchema },
-  prompt: `You are a weather forecasting AI. Given a city name, provide a plausible weather forecast for the next 12 hours. 
+  prompt: `You are a weather forecasting AI. Given a city name and the current time, provide a plausible weather forecast for the next 12 hours. 
   
   City: {{city}}
+  Current Time: {{currentTime}}
   
-  Generate 4-6 forecast entries, starting from "Now". 
+  Generate 4-6 forecast entries, starting from "Now" and then using relative times like "in 2 hours" or specific times like "3PM".
   The weather conditions should be one of: "Sunny", "Clear", "Partly Cloudy", "Cloudy", "Rain", "Showers", "Snow".
   Temperatures should be in Celsius.
   `,
