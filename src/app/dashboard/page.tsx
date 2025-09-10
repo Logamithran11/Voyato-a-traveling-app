@@ -3,6 +3,7 @@ import { Recommendations } from "@/components/dashboard/recommendations";
 import { ItineraryPlanner } from "@/components/dashboard/itinerary-planner";
 import { WeatherWidget } from "@/components/dashboard/weather-widget";
 import { QuickAccess } from "@/components/dashboard/quick-access";
+import { BudgetOverview } from "@/components/dashboard/budget-overview";
 
 export default function DashboardPage() {
   return (
@@ -13,6 +14,7 @@ export default function DashboardPage() {
           <Recommendations />
         </div>
         <div className="space-y-8">
+          <BudgetOverview />
           <ItineraryPlanner />
           <WeatherWidget />
           <QuickAccess />
