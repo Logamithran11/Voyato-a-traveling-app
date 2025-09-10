@@ -155,6 +155,7 @@ export default function BudgetPage() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-8">
                 <div className="md:col-span-2 h-64">
+                {budgetPlan.budgetBreakdown && budgetPlan.budgetBreakdown.length > 0 && (
                     <ResponsiveContainer width="100%" height="100%">
                         <RechartsPieChart>
                         <Pie
@@ -184,6 +185,7 @@ export default function BudgetPage() {
                         <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
                         </RechartsPieChart>
                     </ResponsiveContainer>
+                )}
                 </div>
                 <div className="md:col-span-3 space-y-4">
                     <h3 className="font-semibold flex items-center gap-2"><Tag className="text-primary"/>Budget Breakdown</h3>
