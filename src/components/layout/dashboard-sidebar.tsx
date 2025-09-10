@@ -12,6 +12,7 @@ import {
   Camera,
   Settings,
   PanelLeft,
+  Wallet,
 } from "lucide-react";
 import {
   Tooltip,
@@ -31,6 +32,7 @@ const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/itinerary", label: "Itinerary Planner", icon: Map },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
+  { href: "/budget", label: "Budget", icon: Wallet },
   { href: "/documents", label: "Documents", icon: FileText },
   { href: "/camera-spots", label: "Camera Spots", icon: Camera },
 ];
