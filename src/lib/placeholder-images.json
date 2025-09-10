@@ -1,3 +1,34 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "login-bg",
+      "description": "Scenic travel background for login page",
+      "imageUrl": "https://picsum.photos/seed/voyage/1920/1080",
+      "imageHint": "travel landscape"
+    },
+    {
+      "id": "dest-1",
+      "description": "Recommended destination 1",
+      "imageUrl": "https://picsum.photos/seed/dest1/600/400",
+      "imageHint": "city night"
+    },
+    {
+      "id": "dest-2",
+      "description": "Recommended destination 2",
+      "imageUrl": "https://picsum.photos/seed/dest2/600/400",
+      "imageHint": "mountain landscape"
+    },
+    {
+      "id": "dest-3",
+      "description": "Recommended destination 3",
+      "imageUrl": "https://picsum.photos/seed/dest3/600/400",
+      "imageHint": "tropical beach"
+    },
+    {
+      "id": "dest-4",
+      "description": "Recommended destination 4",
+      "imageUrl": "https://picsum.photos/seed/dest4/600/400",
+      "imageHint": "ancient ruins"
+    }
+  ]
 }
