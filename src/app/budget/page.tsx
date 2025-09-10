@@ -37,10 +37,19 @@ import { Separator } from "@/components/ui/separator";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088fe", "#00c49f"];
 
+const CURRENCY_SYMBOLS: { [key: string]: string } = {
+    "USD": "$",
+    "EUR": "€",
+    "JPY": "¥",
+    "GBP": "£",
+    "INR": "₹",
+};
+
 export default function BudgetPage() {
-  const [destination, setDestination] = useState("Tokyo, Japan");
+  const [destination, setDestination] = useState("Goa, India");
   const [duration, setDuration] = useState(7);
   const [travelStyle, setTravelStyle] = useState("mid-range");
+  const [currency, setCurrency] = useState("INR");
 
   const [budgetPlan, setBudgetPlan] = useState<GenerateBudgetPlanOutput | null>(
     null
@@ -62,6 +71,7 @@ export default function BudgetPage() {
         destination,
         duration,
         travelStyle,
+        currency,
       });
       setBudgetPlan(result);
     } catch (err) {
@@ -71,6 +81,8 @@ export default function BudgetPage() {
       setLoading(false);
     }
   };
+  
+  const currencySymbol = CURRENCY_SYMBOLS[currency] || currency;
 
   return (
     <div className="space-y-8">
@@ -85,7 +97,7 @@ export default function BudgetPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="destination">Destination</Label>
               <Input
@@ -121,6 +133,24 @@ export default function BudgetPage() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="currency">Currency</Label>
+              <Select
+                value={currency}
+                onValueChange={setCurrency}
+              >
+                <SelectTrigger id="currency">
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="INR">INR (₹)</SelectItem>
+                  <SelectItem value="USD">USD ($)</SelectItem>
+                  <SelectItem value="EUR">EUR (€)</SelectItem>
+                  <SelectItem value="JPY">JPY (¥)</SelectItem>
+                  <SelectItem value="GBP">GBP (£)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
         <CardFooter>
@@ -150,7 +180,7 @@ export default function BudgetPage() {
                 <CardTitle className="font-headline text-xl md:text-2xl">Your Budget Plan</CardTitle>
                 <CardDescription>
                     Estimated total for a {duration}-day trip to {destination} ({travelStyle}):
-                    <span className="font-bold text-primary text-lg"> ${budgetPlan.totalBudget.toLocaleString()}</span>
+                    <span className="font-bold text-primary text-lg"> {currencySymbol}{budgetPlan.totalBudget.toLocaleString()}</span>
                 </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-8">
@@ -182,7 +212,7 @@ export default function BudgetPage() {
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>
-                        <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
+                        <Tooltip formatter={(value: number) => `${currencySymbol}${value.toLocaleString()}`} />
                         </RechartsPieChart>
                     </ResponsiveContainer>
                 )}
@@ -196,14 +226,14 @@ export default function BudgetPage() {
                                     <div className="h-2 w-2 rounded-full" style={{backgroundColor: COLORS[index % COLORS.length]}}/>
                                     <span>{item.category}</span>
                                 </div>
-                                <span className="font-medium">${item.amount.toLocaleString()}</span>
+                                <span className="font-medium">{currencySymbol}{item.amount.toLocaleString()}</span>
                             </div>
                         ))}
                     </div>
                      <Separator />
                      <div className="flex justify-between items-center font-bold">
                         <span>Total</span>
-                        <span>${budgetPlan.totalBudget.toLocaleString()}</span>
+                        <span>{currencySymbol}{budgetPlan.totalBudget.toLocaleString()}</span>
                      </div>
                 </div>
             </CardContent>

@@ -15,6 +15,7 @@ const GenerateBudgetPlanInputSchema = z.object({
   destination: z.string().describe('The travel destination.'),
   duration: z.number().describe('The duration of the trip in days.'),
   travelStyle: z.string().describe('The user\'s travel style (e.g., budget, mid-range, luxury).'),
+  currency: z.string().describe('The currency for the budget (e.g., USD, EUR, INR).'),
 });
 export type GenerateBudgetPlanInput = z.infer<typeof GenerateBudgetPlanInputSchema>;
 
@@ -47,9 +48,10 @@ const prompt = ai.definePrompt({
   - Destination: {{destination}}
   - Duration: {{duration}} days
   - Travel Style: {{travelStyle}}
+  - Currency: {{currency}}
 
   Generate a detailed budget plan. The plan should include:
-  1. An estimated total budget in USD.
+  1. An estimated total budget in the specified currency ({{currency}}).
   2. A breakdown of the budget into major categories (e.g., Accommodation, Food, Activities, Transport, Shopping, Miscellaneous). For each category, provide the estimated amount and its percentage of the total budget.
   3. A list of actionable budget-saving tips relevant to the destination and travel style.
 
