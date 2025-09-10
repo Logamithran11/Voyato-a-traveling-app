@@ -102,7 +102,7 @@ export default function BudgetPage() {
                 type="number"
                 placeholder="e.g., 7"
                 value={duration}
-                onChange={(e) => setDuration(parseInt(e.target.value))}
+                onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
               />
             </div>
             <div className="grid gap-2">
@@ -149,7 +149,7 @@ export default function BudgetPage() {
             <CardHeader>
                 <CardTitle className="font-headline text-xl md:text-2xl">Your Budget Plan</CardTitle>
                 <CardDescription>
-                    Estimated total for a {duration}-day trip to {destination} ({travelStyle}): 
+                    Estimated total for a {duration}-day trip to {destination} ({travelStyle}):
                     <span className="font-bold text-primary text-lg"> ${budgetPlan.totalBudget.toLocaleString()}</span>
                 </CardDescription>
             </CardHeader>
