@@ -5,19 +5,27 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Sun, Cloud, CloudRain, CloudSnow, Loader2, Search } from "lucide-react";
+import { Sun, Cloud, CloudRain, CloudSnow, Loader2, Search, Moon } from "lucide-react";
 import { getWeatherForecast, WeatherForecast } from "@/ai/flows/get-weather-forecast";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 const weatherIcons: { [key: string]: React.ReactNode } = {
   "Sunny": <Sun className="h-6 w-6 text-yellow-400" />,
   "Clear": <Sun className="h-6 w-6 text-yellow-400" />,
+  "ClearNight": <Moon className="h-6 w-6 text-slate-400" />,
   "Partly Cloudy": <Cloud className="h-6 w-6 text-gray-400" />,
   "Cloudy": <Cloud className="h-6 w-6 text-gray-400" />,
   "Rain": <CloudRain className="h-6 w-6 text-blue-400" />,
   "Snow": <CloudSnow className="h-6 w-6 text-sky-300" />,
   "Showers": <CloudRain className="h-6 w-6 text-blue-400" />,
 };
+
+const getWeatherIcon = (condition: string, isDay: boolean) => {
+    if (condition === "Clear" && !isDay) {
+        return weatherIcons["ClearNight"];
+    }
+    return weatherIcons[condition] || <Cloud className="h-6 w-6 text-gray-400" />;
+}
 
 
 export function WeatherWidget() {
@@ -82,7 +90,7 @@ export function WeatherWidget() {
                     {weatherData.forecast.slice(0, 4).map(weather => (
                         <div key={weather.time} className="flex flex-col items-center gap-2 text-center">
                             <span className="text-sm text-muted-foreground">{weather.time}</span>
-                            {weatherIcons[weather.condition] || <Cloud className="h-6 w-6 text-gray-400" />}
+                            {getWeatherIcon(weather.condition, weather.isDay)}
                             <span className="font-semibold">{weather.temp}</span>
                         </div>
                     ))}
