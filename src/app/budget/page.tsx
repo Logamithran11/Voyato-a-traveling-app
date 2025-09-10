@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Wallet, Wand2, Loader2, Lightbulb, PieChart, Tag, PlusCircle } from "lucide-react";
+import { Wallet, Wand2, Loader2, Lightbulb, PieChart, Tag } from "lucide-react";
 import {
   generateBudgetPlan,
   GenerateBudgetPlanOutput,
@@ -171,7 +171,7 @@ export default function BudgetPage() {
                                 const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
                                 const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
                                 return (
-                                  <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                                  <text x={x} y={y} fill="currentColor" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
                                     {`${(percent * 100).toFixed(0)}%`}
                                   </text>
                                 );
@@ -217,14 +217,14 @@ export default function BudgetPage() {
       )}
 
       {!budgetPlan && !loading && (
-        <Card>
+        <Card className="flex flex-col items-center justify-center text-center p-8 shadow-lg">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2"><PlusCircle /> Manual Entry</CardTitle>
-                <CardDescription>Or, you can add your own budget items.</CardDescription>
+                <Wallet className="h-16 w-16 mx-auto text-muted-foreground" />
+                <CardTitle className="font-headline text-xl md:text-2xl mt-4">Generate Your Travel Budget</CardTitle>
+                <CardDescription>
+                    Fill out the form above to get a personalized budget plan for your trip.
+                </CardDescription>
             </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">This section is a work in progress for manually tracking expenses.</p>
-            </CardContent>
         </Card>
       )}
     </div>
