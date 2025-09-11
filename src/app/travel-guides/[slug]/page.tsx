@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, Share2, Wand2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { customizeTravelGuide } from '@/ai/flows/customize-travel-guide';
@@ -38,7 +38,7 @@ const guideData = {
 
 export default function GuidePage({ params }: { params: { slug: string } }) {
   // Decode the slug and replace hyphens with spaces for the title
-  const title = decodeURIComponent(params.slug).replace(/-/g, ' ');
+  const title = useMemo(() => decodeURIComponent(params.slug).replace(/-/g, ' '), [params.slug]);
 
   const [isCustomizeDialogOpen, setCustomizeDialogOpen] = useState(false);
   const [customizationRequest, setCustomizationRequest] = useState("");
