@@ -402,7 +402,7 @@ export default function DocumentsPage() {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed/v1/view?key=&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=satellite`}>
+                            src={`https://www.google.com/maps/embed/v1/view?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=satellite`}>
                         </iframe>
                     </div>
                 </div>
