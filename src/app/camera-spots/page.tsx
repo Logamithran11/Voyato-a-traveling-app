@@ -34,8 +34,7 @@ export default function CameraSpotsPage() {
   const { addFile } = useDocuments();
 
   useEffect(() => {
-    const requestPermissions = async () => {
-      // Camera permissions
+    const getCameraPermission = async () => {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -60,9 +59,10 @@ export default function CameraSpotsPage() {
           description: 'Your browser does not support camera access.',
         });
       }
-
-      // Location permissions
-      if ("geolocation" in navigator) {
+    };
+    
+    const getLocationPermission = () => {
+        if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
               (position) => {
                   setHasLocationPermission(true);
@@ -84,9 +84,10 @@ export default function CameraSpotsPage() {
       } else {
            setHasLocationPermission(false);
       }
-    };
+    }
 
-    requestPermissions();
+    getCameraPermission();
+    getLocationPermission();
 
     return () => {
         if (videoRef.current && videoRef.current.srcObject) {
@@ -129,9 +130,10 @@ export default function CameraSpotsPage() {
     const location = currentLocation ?? undefined;
     
     if (capturedImage) {
-        const file = await (await fetch(capturedImage)).blob();
+        const response = await fetch(capturedImage);
+        const blob = await response.blob();
         await addFile(
-            file,
+            blob,
             'photos',
             `Photo-${new Date().toISOString()}.jpg`,
             { location }

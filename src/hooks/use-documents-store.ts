@@ -118,16 +118,8 @@ export function useDocuments() {
         }
     };
     
-    // Kept for compatibility with Camera page, but now uploads to firebase.
-    const addPhoto = async (photo: { dataUrl: string, name: string, location?: {latitude: number, longitude: number}}) => {
-        const response = await fetch(photo.dataUrl);
-        const blob = await response.blob();
-        await addFile(blob, 'photos', photo.name, { location: photo.location });
-    }
-    
-    // Compatibility, now uses fullPath
     const deletePhoto = (fullPath: string) => deleteFile(fullPath, true);
     const deleteDocument = (fullPath: string) => deleteFile(fullPath, false);
     
-    return { documents, photos, loading, addFile, deleteDocument, addPhoto, deletePhoto };
+    return { documents, photos, loading, addFile, deleteDocument, deletePhoto };
 }
