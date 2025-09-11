@@ -15,6 +15,7 @@ import {
   Wallet,
   Ticket,
   BookOpen,
+  LogOut,
 } from "lucide-react";
 import {
   Tooltip,
@@ -121,6 +122,18 @@ export function DashboardSidebar() {
               </TooltipTrigger>
               <TooltipContent side="right">Settings</TooltipContent>
             </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span className="sr-only">Logout</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Logout</TooltipContent>
+            </Tooltip>
           </nav>
         </TooltipProvider>
       </aside>
@@ -143,6 +156,14 @@ export function DashboardSidebar() {
                   <span className="sr-only">Voyato</span>
                 </Link>
                 {mobileNavContent}
+                 <Link
+                    href="/"
+                    onClick={handleLinkClick}
+                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                >
+                    <LogOut className="h-5 w-5" />
+                    Logout
+                </Link>
               </nav>
             </SheetContent>
           </Sheet>
