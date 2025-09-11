@@ -9,7 +9,7 @@ const quickAccessItems = [
     { label: "Bookings", icon: BookOpen, href: "/bookings" },
     { label: "Documents", icon: FileText, href: "/documents" },
     { label: "Travel Guides", icon: FileText, href: "/travel-guides" },
-    { label: "Saved Images", icon: Image, href: "/documents" }
+    { label: "Saved Media", icon: Image, href: "/documents" }
 ];
 
 export function QuickAccess() {

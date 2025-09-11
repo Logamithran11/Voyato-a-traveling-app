@@ -16,8 +16,9 @@ import {
   Download,
   Trash2,
   Share2,
-  Image as ImageIcon,
+  ImageIcon,
   Camera,
+  Video,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -38,7 +39,7 @@ export default function DocumentsPage() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isClient, setIsClient] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<{url: string, isVideo?: boolean} | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -112,17 +113,19 @@ export default function DocumentsPage() {
     const file = event.target.files?.[0];
     if (file) {
       const isImage = file.type.startsWith('image/');
+      const isVideo = file.type.startsWith('video/');
+      
       const newDocument = {
         name: file.name,
-        size: `${(file.size / 1024).toFixed(1)} KB`,
+        size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
         date: new Date().toISOString().split('T')[0],
         isImage: isImage,
+        isVideo: isVideo,
       };
 
-      if (isImage) {
+      if (isImage || isVideo) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            // When uploading an image, add it to photos, not documents
             addPhoto({
                 ...newDocument,
                 dataUrl: e.target?.result as string,
@@ -140,18 +143,22 @@ export default function DocumentsPage() {
     }
   };
 
-  const renderDocumentCard = (doc: any, isPhoto: boolean) => (
+  const renderDocumentCard = (doc: any, isMedia: boolean) => (
     <Card key={doc.name} className="shadow-lg group">
-       {doc.isImage && doc.dataUrl ? (
-         <CardContent className="p-0" onClick={() => setSelectedImage(doc.dataUrl)}>
-            <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg">
-              <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+       {(doc.isImage || doc.isVideo) && doc.dataUrl ? (
+         <CardContent className="p-0" onClick={() => setSelectedMedia({url: doc.dataUrl, isVideo: doc.isVideo})}>
+            <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
+              {doc.isImage ? (
+                <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+              ) : (
+                <Video className="h-16 w-16 text-muted-foreground" />
+              )}
             </div>
          </CardContent>
        ) : null}
       <CardContent className="p-4 flex items-center gap-4">
         <div className="bg-primary/10 text-primary p-3 rounded-md">
-          {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
+          {doc.isImage ? <ImageIcon className="h-6 w-6" /> : (doc.isVideo ? <Video className="h-6 w-6"/> : <FileText className="h-6 w-6" />)}
         </div>
         <div className="flex-grow">
           <p className="font-semibold truncate">{doc.name}</p>
@@ -172,7 +179,7 @@ export default function DocumentsPage() {
             <DropdownMenuItem onClick={() => handleShare(doc.name)}>
               <Share2 className="mr-2 h-4 w-4" /> Share
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name, isPhoto)}>
+            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name, isMedia)}>
               <Trash2 className="mr-2 h-4 w-4" /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -188,7 +195,7 @@ export default function DocumentsPage() {
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
-        accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+        accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx"
       />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -197,7 +204,7 @@ export default function DocumentsPage() {
               <FileText /> My Files
             </CardTitle>
             <CardDescription>
-              Keep your important files and photos secure and accessible.
+              Keep your important files, photos, and videos secure and accessible.
             </CardDescription>
           </div>
           <Button onClick={handleUploadClick}>
@@ -208,7 +215,7 @@ export default function DocumentsPage() {
 
       <div className="space-y-8">
         <div>
-            <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><Camera /> Saved Photos</h2>
+            <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><Camera /> Saved Photos & Videos</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {!isClient ? (
                     Array.from({ length: 3 }).map((_, index) => (
@@ -228,7 +235,7 @@ export default function DocumentsPage() {
                 ) : (
                 <Card className="md:col-span-2 lg:col-span-3">
                     <CardContent className="p-8 text-center text-muted-foreground">
-                    <p>You have no saved photos. Capture some from the Camera Spots page!</p>
+                    <p>You have no saved photos or videos. Capture some from the Camera Spots page!</p>
                     </CardContent>
                 </Card>
                 )}
@@ -267,21 +274,23 @@ export default function DocumentsPage() {
 
       </div>
 
-      <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
+      <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
         <DialogContent className="max-w-3xl p-0">
            <DialogHeader className="sr-only">
-            <DialogTitle>Enlarged Image</DialogTitle>
-            <DialogDescription>A larger view of the selected photo.</DialogDescription>
+            <DialogTitle>Enlarged Media</DialogTitle>
+            <DialogDescription>A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
-          {selectedImage && (
+          {selectedMedia?.isVideo ? (
+             <video src={selectedMedia.url} controls autoPlay className="w-full rounded-lg" />
+          ) : selectedMedia?.url ? (
             <Image 
-                src={selectedImage} 
+                src={selectedMedia.url} 
                 alt="Enlarged view" 
                 width={1920} 
                 height={1080} 
                 className="rounded-lg object-contain"
             />
-          )}
+          ) : null}
         </DialogContent>
       </Dialog>
     </div>

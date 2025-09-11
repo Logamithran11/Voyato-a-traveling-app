@@ -8,6 +8,7 @@ export type Document = {
     size: string;
     date: string;
     isImage?: boolean;
+    isVideo?: boolean;
     dataUrl?: string;
 };
 
@@ -26,7 +27,7 @@ export function useDocuments() {
     const [photos, setPhotos] = useLocalStorage<Document[]>("photos", initialPhotos);
 
     const addDocument = (doc: Document) => {
-        if(doc.isImage) {
+        if(doc.isImage || doc.isVideo) {
             addPhoto(doc);
         } else {
             setDocuments(prevDocs => [doc, ...prevDocs]);
