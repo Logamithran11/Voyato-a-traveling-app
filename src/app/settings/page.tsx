@@ -15,10 +15,27 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { User, Palette, Bell } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from 'react';
 
 export default function SettingsPage() {
 
     const { toast } = useToast();
+    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+        const savedTheme = localStorage.getItem('theme');
+        const darkMode = savedTheme ? savedTheme === 'dark' : true;
+        setIsDarkMode(darkMode);
+        document.documentElement.classList.toggle('dark', darkMode);
+    }, []);
+
+    const handleThemeChange = (checked: boolean) => {
+        setIsDarkMode(checked);
+        localStorage.setItem('theme', checked ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', checked);
+    };
 
     const handleSaveChanges = () => {
         toast({
@@ -74,10 +91,10 @@ export default function SettingsPage() {
             <div>
               <p className="font-medium">Dark Mode</p>
               <p className="text-sm text-muted-foreground">
-                Currently enabled.
+                {isDarkMode ? "Enabled" : "Disabled"}.
               </p>
             </div>
-            <Switch checked={true} aria-label="Toggle dark mode" disabled />
+            {isClient && <Switch checked={isDarkMode} onCheckedChange={handleThemeChange} aria-label="Toggle dark mode" />}
           </div>
         </CardContent>
       </Card>
@@ -119,4 +136,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
