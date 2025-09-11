@@ -13,6 +13,16 @@ import { cn } from '@/lib/utils';
 
 const MAX_RECORDING_SECONDS = 15;
 
+// Helper function to convert Blob to Base64
+const blobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+};
+
 export default function CameraSpotsPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -93,9 +103,12 @@ export default function CameraSpotsPage() {
 
   const handleClearCapture = () => {
     setCapturedImage(null);
-    setRecordedVideoUrl(null);
-    if(recordedVideoUrl) {
-      URL.revokeObjectURL(recordedVideoUrl);
+    if (recordedVideoUrl) {
+      // Revoke object URL if it exists to prevent memory leaks
+      if (recordedVideoUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(recordedVideoUrl);
+      }
+      setRecordedVideoUrl(null);
     }
   };
   
@@ -142,11 +155,20 @@ export default function CameraSpotsPage() {
         }
       };
 
-      mediaRecorderRef.current.onstop = () => {
+      mediaRecorderRef.current.onstop = async () => {
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
-        const url = URL.createObjectURL(blob);
-        setRecordedVideoUrl(url);
-        setCapturedImage(null);
+        try {
+            const dataUrl = await blobToBase64(blob);
+            setRecordedVideoUrl(dataUrl);
+            setCapturedImage(null);
+        } catch (error) {
+            console.error("Failed to convert blob to base64:", error);
+            toast({
+                variant: "destructive",
+                title: "Error processing video",
+                description: "Could not process the recorded video. Please try again.",
+            });
+        }
       };
 
       mediaRecorderRef.current.start();
