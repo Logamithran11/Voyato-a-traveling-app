@@ -24,15 +24,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useDocuments } from '@/hooks/use-documents-store';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument } = useDocuments();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   const handleDelete = (docName: string) => {
     deleteDocument(docName);
@@ -97,12 +104,28 @@ export default function DocumentsPage() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      const isImage = file.type.startsWith('image/');
       const newDocument = {
         name: file.name,
         size: `${(file.size / 1024).toFixed(1)} KB`,
         date: new Date().toISOString().split('T')[0],
+        isImage: isImage,
+        dataUrl: isImage ? URL.createObjectURL(file) : undefined,
       };
-      addDocument(newDocument);
+
+      if (isImage) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            addDocument({
+                ...newDocument,
+                dataUrl: e.target?.result as string,
+            });
+        };
+        reader.readAsDataURL(file);
+      } else {
+         addDocument(newDocument);
+      }
+
       toast({
         title: "Upload Successful",
         description: `${file.name} has been uploaded.`,
@@ -135,47 +158,61 @@ export default function DocumentsPage() {
         </CardHeader>
       </Card>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {documents.map(doc => (
-          <Card key={doc.name} className="shadow-lg">
-             {doc.isImage && doc.dataUrl ? (
-               <CardContent className="p-0">
-                  <div className="relative aspect-video">
-                    <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
-                  </div>
-               </CardContent>
-             ) : null}
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="bg-primary/10 text-primary p-3 rounded-md">
-                {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
-              </div>
-              <div className="flex-grow">
-                <p className="font-semibold truncate">{doc.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {doc.size} - {doc.date}
-                </p>
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleDownload(doc.name)}>
-                    <Download className="mr-2 h-4 w-4" /> Download
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleShare(doc.name)}>
-                    <Share2 className="mr-2 h-4 w-4" /> Share
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name)}>
-                    <Trash2 className="mr-2 h-4 w-4" /> Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </CardContent>
-          </Card>
-        ))}
-         {documents.length === 0 && (
+        {!isClient ? (
+            Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="shadow-lg">
+                    <CardContent className="p-4 flex items-center gap-4">
+                        <Skeleton className="h-12 w-12 rounded-md" />
+                        <div className="flex-grow space-y-2">
+                            <Skeleton className="h-4 w-4/5" />
+                            <Skeleton className="h-4 w-2/5" />
+                        </div>
+                        <Skeleton className="h-8 w-8" />
+                    </CardContent>
+                </Card>
+            ))
+        ) : documents.length > 0 ? (
+          documents.map(doc => (
+            <Card key={doc.name} className="shadow-lg">
+               {doc.isImage && doc.dataUrl ? (
+                 <CardContent className="p-0">
+                    <div className="relative aspect-video">
+                      <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
+                    </div>
+                 </CardContent>
+               ) : null}
+              <CardContent className="p-4 flex items-center gap-4">
+                <div className="bg-primary/10 text-primary p-3 rounded-md">
+                  {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
+                </div>
+                <div className="flex-grow">
+                  <p className="font-semibold truncate">{doc.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {doc.size} - {doc.date}
+                  </p>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleDownload(doc.name)}>
+                      <Download className="mr-2 h-4 w-4" /> Download
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleShare(doc.name)}>
+                      <Share2 className="mr-2 h-4 w-4" /> Share
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name)}>
+                      <Trash2 className="mr-2 h-4 w-4" /> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
           <Card className="md:col-span-2 lg:col-span-3">
             <CardContent className="p-8 text-center text-muted-foreground">
               <p>You have no documents uploaded.</p>
