@@ -31,7 +31,7 @@ export default function CameraSpotsPage() {
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { toast } = useToast();
-  const { addPhoto } = useDocuments();
+  const { addFile, addPhoto } = useDocuments();
 
   useEffect(() => {
     const requestPermissions = async () => {
@@ -134,10 +134,7 @@ export default function CameraSpotsPage() {
             dataUrl: capturedImage,
             location: location,
         });
-        toast({
-            title: "Uploading Photo...",
-            description: `Your photo is being saved to the cloud.`,
-        });
+        // The toast is handled within addFile/addPhoto now
         handleClearCapture();
 
     } else if (recordedVideoUrl) {
@@ -145,18 +142,9 @@ export default function CameraSpotsPage() {
        const blob = await response.blob();
        const file = new File([blob], `Video-${new Date().toISOString()}.webm`, { type: 'video/webm' });
 
-       // The useDocuments hook's addPhoto can now handle files
-       const tempPhoto = {
-           name: file.name,
-           dataUrl: URL.createObjectURL(file), // create a URL for the new file object
-           location: location,
-       };
-       await addPhoto(tempPhoto);
+       await addFile(file, 'photos', { location });
 
-        toast({
-            title: "Uploading Video...",
-            description: "Your video is being saved to the cloud.",
-        });
+       // Toast is handled inside addFile
         handleClearCapture();
     }
   };
@@ -312,3 +300,4 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
+
