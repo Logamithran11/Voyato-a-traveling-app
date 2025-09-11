@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Map, Trash2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ScrollArea } from "../ui/scroll-area";
+import { Skeleton } from "../ui/skeleton";
 
 type ItineraryItem = {
   id: number;
@@ -16,6 +17,11 @@ type ItineraryItem = {
 export function ItineraryPlanner() {
   const [items, setItems] = useLocalStorage<ItineraryItem[]>("itinerary", []);
   const [newItem, setNewItem] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleAddItem = () => {
     if (newItem.trim()) {
@@ -51,7 +57,13 @@ export function ItineraryPlanner() {
         </div>
         <ScrollArea className="h-48">
             <div className="space-y-2">
-            {items.length > 0 ? items.map(item => (
+            {!isClient ? (
+              <div className="space-y-2">
+                <Skeleton className="h-9 w-full" />
+                <Skeleton className="h-9 w-full" />
+                <Skeleton className="h-9 w-full" />
+              </div>
+            ) : items.length > 0 ? items.map(item => (
                 <div key={item.id} className="flex items-center justify-between bg-muted/50 p-2 rounded-md">
                     <span className="text-sm">{item.text}</span>
                     <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleRemoveItem(item.id)}>
