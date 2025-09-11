@@ -165,19 +165,11 @@ export default function DocumentsPage() {
                 toast({ title: "Upload Successful", description: `${file.name} has been uploaded.` });
             } catch (error) {
                 console.error("Error setting localStorage:", error);
-                if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-                    toast({
-                        variant: "destructive",
-                        title: "Storage Limit Exceeded",
-                        description: "Could not save the file. Your browser's local storage is full.",
-                    });
-                } else {
-                    toast({
-                         variant: "destructive",
-                        title: "Storage Error",
-                        description: "Could not save the file.",
-                    });
-                }
+                toast({
+                    variant: "destructive",
+                    title: "Storage Limit Exceeded",
+                    description: "Could not save the file. Your browser's local storage is full.",
+                });
             }
         }
       };
@@ -188,22 +180,13 @@ export default function DocumentsPage() {
       }
 
       if (isVideo) {
-        // For videos, create a temporary URL for playback but don't store it permanently.
         const tempUrl = URL.createObjectURL(file);
         addPhoto({ ...newDocument, dataUrl: tempUrl, isVideo: true });
         toast({
           title: "Video Added Temporarily",
           description: "Video is available for this session but won't be saved permanently.",
         });
-      } else if (file.size > 5 * 1024 * 1024) { // Check for other large files
-        reader.readAsDataURL(file);
-        toast({
-          title: "File Too Large",
-          description: "This file is over 5MB and may not save permanently if storage is full.",
-          variant: "default",
-        });
-      }
-      else if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
+      } else if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
         reader.readAsDataURL(file);
       } else {
         addDocument(newDocument as Document);
@@ -413,7 +396,7 @@ export default function DocumentsPage() {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed/v1/view?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=satellite`}>
+                            src={`https://www.google.com/maps/embed/v1/view?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=roadmap`}>
                         </iframe>
                     </div>
                 </div>
