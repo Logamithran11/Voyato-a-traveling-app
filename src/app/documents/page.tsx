@@ -181,7 +181,7 @@ export default function DocumentsPage() {
 
       if (isVideo) {
         const tempUrl = URL.createObjectURL(file);
-        addPhoto({ ...newDocument, dataUrl: tempUrl, isVideo: true });
+        addPhoto({ ...newDocument, dataUrl: tempUrl, isVideo: true, location: newDocument.location });
         toast({
           title: "Video Added Temporarily",
           description: "Video is available for this session but won't be saved permanently.",
@@ -380,7 +380,7 @@ export default function DocumentsPage() {
                     <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
                         <div className="flex items-center gap-2"><MapPin/> Location</div>
                          <Button variant="outline" size="sm" asChild>
-                            <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&z=15&t=k`} target="_blank" rel="noopener noreferrer">
+                            <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`} target="_blank" rel="noopener noreferrer">
                                 View on Google Maps
                                 <ExternalLink className="ml-2 h-4 w-4" />
                             </Link>
@@ -390,13 +390,13 @@ export default function DocumentsPage() {
                         Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
                     </p>
                     <div className='aspect-video w-full rounded-md overflow-hidden bg-muted'>
-                        <iframe
+                       <iframe
                             width="100%"
                             height="100%"
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed/v1/view?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=roadmap`}>
+                            src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
                         </iframe>
                     </div>
                 </div>
