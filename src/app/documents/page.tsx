@@ -152,27 +152,34 @@ export default function DocumentsPage() {
       
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const dataUrl = e.target?.result as string;
-        if (isImage) { // Only store dataUrl for images permanently
-          addPhoto({ ...newDocument, dataUrl });
-        } else if (isVideo) {
-          // For videos, don't save the large dataUrl.
-          // The video will be playable right after capture, but not after refresh.
-          addPhoto({ ...newDocument, dataUrl: undefined });
-          toast({
-            title: "Video is temporary",
-            description: "Video has been added but will not be saved permanently due to its size.",
-            variant: "default",
-          });
+
+        if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
+           try {
+                if (isImage) {
+                    addPhoto({ ...newDocument, dataUrl });
+                } else {
+                    addDocument({ ...newDocument, dataUrl });
+                }
+                toast({ title: "Upload Successful", description: `${file.name} has been uploaded.` });
+            } catch (error) {
+                console.error("Error setting localStorage:", error);
+                if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+                    toast({
+                        variant: "destructive",
+                        title: "Storage Limit Exceeded",
+                        description: "Could not save the file. Your browser's local storage is full.",
+                    });
+                } else {
+                    toast({
+                         variant: "destructive",
+                        title: "Storage Error",
+                        description: "Could not save the file.",
+                    });
+                }
+            }
         }
-        else {
-          addDocument({ ...newDocument, dataUrl });
-        }
-        toast({
-          title: "Upload Successful",
-          description: `${file.name} has been uploaded.`,
-        });
       };
       
       reader.onerror = (error) => {
@@ -180,20 +187,24 @@ export default function DocumentsPage() {
          toast({ variant: "destructive", title: "File Read Error", description: "Could not read the selected file."});
       }
 
-      if (file.size > 5 * 1024 * 1024 && !isVideo) {
+      if (isVideo) {
+        // For videos, create a temporary URL for playback but don't store it permanently.
+        const tempUrl = URL.createObjectURL(file);
+        addPhoto({ ...newDocument, dataUrl: tempUrl, isVideo: true });
         toast({
-          title: "File Too Large for Permanent Storage",
-          description: "This file is over 5MB and will not be saved permanently. It will be gone after you refresh the page.",
-          variant: "destructive",
+          title: "Video Added Temporarily",
+          description: "Video is available for this session but won't be saved permanently.",
+        });
+      } else if (file.size > 5 * 1024 * 1024) { // Check for other large files
+        reader.readAsDataURL(file);
+        toast({
+          title: "File Too Large",
+          description: "This file is over 5MB and may not save permanently if storage is full.",
+          variant: "default",
         });
       }
-      
-      if(isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
+      else if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
         reader.readAsDataURL(file);
-      } else if (isVideo) {
-        // We read it to create an object URL for immediate playback, but don't store the dataUrl
-        const tempUrl = URL.createObjectURL(file);
-        addPhoto({ ...newDocument, dataUrl: tempUrl });
       } else {
         addDocument(newDocument as Document);
         toast({
@@ -343,7 +354,7 @@ export default function DocumentsPage() {
                                 <Skeleton className="h-12 w-12 rounded-md" />
                                 <div className="flex-grow space-y-2">
                                     <Skeleton className="h-4 w-4/5" />
-                                    <Skeleton className="h-4 w-2/5" />
+                                    <Skeleton className="h-4 w-2/fiv" />
                                 </div>
                                 <Skeleton className="h-8 w-8" />
                             </CardContent>
