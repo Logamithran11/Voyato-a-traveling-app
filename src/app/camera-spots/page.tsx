@@ -4,13 +4,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Camera, VideoOff, X, Save } from "lucide-react";
+import { Camera, VideoOff, X } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useDocuments } from '@/hooks/use-documents-store';
-import { useRouter } from 'next/navigation';
-
 
 export default function CameraSpotsPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
@@ -18,9 +15,6 @@ export default function CameraSpotsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
-  const { addDocument } = useDocuments();
-  const router = useRouter();
-
 
   useEffect(() => {
     const getCameraPermission = async () => {
@@ -87,26 +81,6 @@ export default function CameraSpotsPage() {
     setCapturedImage(null);
   };
   
-  const handleSavePhoto = () => {
-    if (!capturedImage) return;
-
-    const date = new Date();
-    const newDocument = {
-        name: `Capture-${date.toISOString()}.jpg`,
-        size: `${(capturedImage.length / 1024).toFixed(1)} KB`,
-        date: date.toISOString().split('T')[0],
-        isImage: true,
-        dataUrl: capturedImage
-    };
-    addDocument(newDocument);
-    toast({
-        title: "Photo Saved!",
-        description: "Your captured photo has been saved to your documents."
-    });
-    setCapturedImage(null);
-    router.push('/documents');
-  }
-
   return (
     <div className="space-y-8">
         <canvas ref={canvasRef} className="hidden"></canvas>
@@ -160,10 +134,6 @@ export default function CameraSpotsPage() {
                         <Button onClick={handleClearPhoto} variant="outline">
                             <X className="mr-2 h-4 w-4" />
                             Clear Photo
-                        </Button>
-                        <Button onClick={handleSavePhoto}>
-                            <Save className="mr-2 h-4 w-4" />
-                            Save to Documents
                         </Button>
                     </>
                 ) : (
