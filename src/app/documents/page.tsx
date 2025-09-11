@@ -17,6 +17,7 @@ import {
   Trash2,
   Share2,
   Image as ImageIcon,
+  Camera,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -29,9 +30,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useDocuments } from '@/hooks/use-documents-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
 export default function DocumentsPage() {
-  const { documents, addDocument, deleteDocument } = useDocuments();
+  const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isClient, setIsClient] = useState(false);
@@ -40,11 +42,14 @@ export default function DocumentsPage() {
     setIsClient(true);
   }, []);
 
-
-  const handleDelete = (docName: string) => {
-    deleteDocument(docName);
+  const handleDelete = (docName: string, isPhoto: boolean) => {
+    if (isPhoto) {
+        deletePhoto(docName);
+    } else {
+        deleteDocument(docName);
+    }
     toast({
-      title: "Document Deleted",
+      title: "Item Deleted",
       description: `${docName} has been removed.`,
     });
   };
@@ -67,7 +72,7 @@ export default function DocumentsPage() {
       try {
         await navigator.share(shareData);
         toast({
-            title: "Document shared successfully!",
+            title: "Item shared successfully!",
         });
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
@@ -75,7 +80,7 @@ export default function DocumentsPage() {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: "Could not share the document.",
+                description: "Could not share the item.",
             });
         }
       }
@@ -110,7 +115,6 @@ export default function DocumentsPage() {
         size: `${(file.size / 1024).toFixed(1)} KB`,
         date: new Date().toISOString().split('T')[0],
         isImage: isImage,
-        dataUrl: isImage ? URL.createObjectURL(file) : undefined,
       };
 
       if (isImage) {
@@ -133,6 +137,46 @@ export default function DocumentsPage() {
     }
   };
 
+  const renderDocumentCard = (doc: any, isPhoto: boolean) => (
+    <Card key={doc.name} className="shadow-lg">
+       {doc.isImage && doc.dataUrl ? (
+         <CardContent className="p-0">
+            <div className="relative aspect-video">
+              <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
+            </div>
+         </CardContent>
+       ) : null}
+      <CardContent className="p-4 flex items-center gap-4">
+        <div className="bg-primary/10 text-primary p-3 rounded-md">
+          {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
+        </div>
+        <div className="flex-grow">
+          <p className="font-semibold truncate">{doc.name}</p>
+          <p className="text-sm text-muted-foreground">
+            {doc.size} - {doc.date}
+          </p>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => handleDownload(doc.name)}>
+              <Download className="mr-2 h-4 w-4" /> Download
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleShare(doc.name)}>
+              <Share2 className="mr-2 h-4 w-4" /> Share
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name, isPhoto)}>
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="space-y-8">
@@ -146,79 +190,77 @@ export default function DocumentsPage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <FileText /> Travel Documents
+              <FileText /> My Files
             </CardTitle>
             <CardDescription>
-              Keep your important documents secure and accessible.
+              Keep your important files and photos secure and accessible.
             </CardDescription>
           </div>
           <Button onClick={handleUploadClick}>
-            <FileUp className="mr-2 h-4 w-4" /> Upload Document
+            <FileUp className="mr-2 h-4 w-4" /> Upload File
           </Button>
         </CardHeader>
       </Card>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {!isClient ? (
-            Array.from({ length: 3 }).map((_, index) => (
-                <Card key={index} className="shadow-lg">
-                    <CardContent className="p-4 flex items-center gap-4">
-                        <Skeleton className="h-12 w-12 rounded-md" />
-                        <div className="flex-grow space-y-2">
-                            <Skeleton className="h-4 w-4/5" />
-                            <Skeleton className="h-4 w-2/5" />
-                        </div>
-                        <Skeleton className="h-8 w-8" />
+
+      <div className="space-y-8">
+        <div>
+            <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><Camera /> Saved Photos</h2>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {!isClient ? (
+                    Array.from({ length: 3 }).map((_, index) => (
+                        <Card key={index} className="shadow-lg">
+                            <CardContent className="p-4 flex items-center gap-4">
+                                <Skeleton className="h-12 w-12 rounded-md" />
+                                <div className="flex-grow space-y-2">
+                                    <Skeleton className="h-4 w-4/5" />
+                                    <Skeleton className="h-4 w-2/5" />
+                                </div>
+                                <Skeleton className="h-8 w-8" />
+                            </CardContent>
+                        </Card>
+                    ))
+                ) : photos.length > 0 ? (
+                photos.map(photo => renderDocumentCard(photo, true))
+                ) : (
+                <Card className="md:col-span-2 lg:col-span-3">
+                    <CardContent className="p-8 text-center text-muted-foreground">
+                    <p>You have no saved photos. Capture some from the Camera Spots page!</p>
                     </CardContent>
                 </Card>
-            ))
-        ) : documents.length > 0 ? (
-          documents.map(doc => (
-            <Card key={doc.name} className="shadow-lg">
-               {doc.isImage && doc.dataUrl ? (
-                 <CardContent className="p-0">
-                    <div className="relative aspect-video">
-                      <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
-                    </div>
-                 </CardContent>
-               ) : null}
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="bg-primary/10 text-primary p-3 rounded-md">
-                  {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
-                </div>
-                <div className="flex-grow">
-                  <p className="font-semibold truncate">{doc.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {doc.size} - {doc.date}
-                  </p>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleDownload(doc.name)}>
-                      <Download className="mr-2 h-4 w-4" /> Download
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleShare(doc.name)}>
-                      <Share2 className="mr-2 h-4 w-4" /> Share
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name)}>
-                      <Trash2 className="mr-2 h-4 w-4" /> Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <Card className="md:col-span-2 lg:col-span-3">
-            <CardContent className="p-8 text-center text-muted-foreground">
-              <p>You have no documents uploaded.</p>
-            </CardContent>
-          </Card>
-        )}
+                )}
+            </div>
+        </div>
+
+        <Separator />
+
+        <div>
+            <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><FileText /> Uploaded Documents</h2>
+             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {!isClient ? (
+                    Array.from({ length: 3 }).map((_, index) => (
+                        <Card key={index} className="shadow-lg">
+                            <CardContent className="p-4 flex items-center gap-4">
+                                <Skeleton className="h-12 w-12 rounded-md" />
+                                <div className="flex-grow space-y-2">
+                                    <Skeleton className="h-4 w-4/5" />
+                                    <Skeleton className="h-4 w-2/5" />
+                                </div>
+                                <Skeleton className="h-8 w-8" />
+                            </CardContent>
+                        </Card>
+                    ))
+                ) : documents.length > 0 ? (
+                documents.map(doc => renderDocumentCard(doc, false))
+                ) : (
+                <Card className="md:col-span-2 lg:col-span-3">
+                    <CardContent className="p-8 text-center text-muted-foreground">
+                    <p>You have no documents uploaded.</p>
+                    </CardContent>
+                </Card>
+                )}
+            </div>
+        </div>
+
       </div>
     </div>
   );

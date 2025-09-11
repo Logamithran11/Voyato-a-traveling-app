@@ -16,7 +16,7 @@ export default function CameraSpotsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
-  const { addDocument } = useDocuments();
+  const { addPhoto } = useDocuments();
 
   useEffect(() => {
     const getCameraPermission = async () => {
@@ -85,17 +85,17 @@ export default function CameraSpotsPage() {
   
   const handleSavePhoto = () => {
     if (capturedImage) {
-        const newDocument = {
+        const newPhoto = {
             name: `Capture-${new Date().toISOString()}.jpg`,
             size: "N/A", // size is not easily available from dataUrl
             date: new Date().toISOString().split('T')[0],
             isImage: true,
             dataUrl: capturedImage,
         };
-        addDocument(newDocument);
+        addPhoto(newPhoto);
         toast({
             title: "Photo Saved!",
-            description: "Your captured photo has been saved to your documents.",
+            description: "Your captured photo has been saved.",
         });
         setCapturedImage(null); // Clear after saving
     }

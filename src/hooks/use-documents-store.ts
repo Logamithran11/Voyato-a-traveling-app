@@ -18,8 +18,12 @@ const initialDocuments: Document[] = [
   {name: 'Hotel_Booking.eml', size: '50 KB', date: '2023-09-21'},
 ];
 
+const initialPhotos: Document[] = [];
+
+
 export function useDocuments() {
     const [documents, setDocuments] = useLocalStorage<Document[]>("documents", initialDocuments);
+    const [photos, setPhotos] = useLocalStorage<Document[]>("photos", initialPhotos);
 
     const addDocument = (doc: Document) => {
         setDocuments(prevDocs => [doc, ...prevDocs]);
@@ -29,5 +33,14 @@ export function useDocuments() {
         setDocuments(prevDocs => prevDocs.filter(doc => doc.name !== docName));
     };
 
-    return { documents, setDocuments, addDocument, deleteDocument };
+    const addPhoto = (photo: Document) => {
+        setPhotos(prevPhotos => [photo, ...prevPhotos]);
+    }
+
+    const deletePhoto = (photoName: string) => {
+        setPhotos(prevPhotos => prevPhotos.filter(photo => photo.name !== photoName));
+    }
+
+
+    return { documents, addDocument, deleteDocument, photos, addPhoto, deletePhoto };
 }
