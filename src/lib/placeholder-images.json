@@ -29,6 +29,12 @@
       "description": "Recommended destination 4",
       "imageUrl": "https://picsum.photos/seed/dest4/600/400",
       "imageHint": "ancient ruins"
+    },
+    {
+      "id": "dest-5",
+      "description": "Recommended destination 5",
+      "imageUrl": "https://picsum.photos/seed/dest5/600/400",
+      "imageHint": "cityscape sunset"
     }
   ]
 }

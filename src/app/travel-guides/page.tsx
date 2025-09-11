@@ -32,17 +32,17 @@ const guides = [
     title: 'The Ultimate Guide to Paris',
     description:
       'Experience the city of love with our comprehensive guide to its art, food, and culture.',
-    image: guideImages[2],
+    image: guideImages[3],
   },
   {
     title: 'Exploring the Amalfi Coast',
     description: 'A breathtaking journey through Italy\'s most stunning coastline.',
-    image: guideImages[3],
+    image: guideImages[4],
   },
   {
     title: 'New York City on a Budget',
     description: 'How to enjoy the Big Apple without breaking the bank.',
-    image: guideImages[4]
+    image: guideImages[2]
   },
   {
     title: 'Adventure in the Swiss Alps',
