@@ -70,8 +70,8 @@ export function useDocuments() {
     }, [fetchFiles]);
 
 
-    const addFile = async (file: File, path: 'documents' | 'photos', metadata?: { location?: { latitude: number, longitude: number }}) => {
-        const storageRef = ref(storage, `${path}/${file.name}`);
+    const addFile = async (file: File | Blob, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
+        const storageRef = ref(storage, `${path}/${filename}`);
         
         try {
             const snapshot = await uploadBytes(storageRef, file, {
@@ -80,7 +80,7 @@ export function useDocuments() {
             console.log('Uploaded a blob or file!', snapshot);
             toast({
                 title: "Upload Successful",
-                description: `${file.name} has been uploaded to the cloud.`,
+                description: `${filename} has been uploaded to the cloud.`,
             });
             // Refresh the list
             await fetchFiles(path);
@@ -122,8 +122,7 @@ export function useDocuments() {
     const addPhoto = async (photo: { dataUrl: string, name: string, location?: {latitude: number, longitude: number}}) => {
         const response = await fetch(photo.dataUrl);
         const blob = await response.blob();
-        const file = new File([blob], photo.name, { type: blob.type });
-        await addFile(file, 'photos', { location: photo.location });
+        await addFile(blob, 'photos', photo.name, { location: photo.location });
     }
     
     // Compatibility, now uses fullPath

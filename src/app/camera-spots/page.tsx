@@ -31,7 +31,7 @@ export default function CameraSpotsPage() {
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { toast } = useToast();
-  const { addFile, addPhoto } = useDocuments();
+  const { addFile } = useDocuments();
 
   useEffect(() => {
     const requestPermissions = async () => {
@@ -129,22 +129,23 @@ export default function CameraSpotsPage() {
     const location = currentLocation ?? undefined;
     
     if (capturedImage) {
-        await addPhoto({
-            name: `Photo-${new Date().toISOString()}.jpg`,
-            dataUrl: capturedImage,
-            location: location,
-        });
-        // The toast is handled within addFile/addPhoto now
+        const file = await (await fetch(capturedImage)).blob();
+        await addFile(
+            file,
+            'photos',
+            `Photo-${new Date().toISOString()}.jpg`,
+            { location }
+        );
         handleClearCapture();
-
     } else if (recordedVideoUrl) {
        const response = await fetch(recordedVideoUrl);
-       const blob = await response.blob();
-       const file = new File([blob], `Video-${new Date().toISOString()}.webm`, { type: 'video/webm' });
-
-       await addFile(file, 'photos', { location });
-
-       // Toast is handled inside addFile
+       const file = await response.blob();
+       await addFile(
+            file,
+            'photos',
+            `Video-${new Date().toISOString()}.webm`,
+            { location }
+        );
         handleClearCapture();
     }
   };
