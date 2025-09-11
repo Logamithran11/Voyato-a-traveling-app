@@ -265,7 +265,7 @@ export default function CameraSpotsPage() {
                       </div>
                     )}
                     {capturedImage && (
-                        <Image src={capturedImage} alt="Captured photo" layout="fill" className="object-contain rounded-md" />
+                        <Image src={capturedImage} alt="Captured photo" width={1920} height={1080} className="w-full h-full object-contain rounded-md" />
                     )}
                     {recordedVideoUrl && (
                         <video src={recordedVideoUrl} controls autoPlay className="w-full h-full rounded-md" />
