@@ -54,6 +54,21 @@ const allGuides = [
     title: 'Adventure in the Swiss Alps',
     description: 'Hiking, skiing, and breathtaking views await in Switzerland.',
     image: { imageUrl: 'https://picsum.photos/seed/alps/600/400', imageHint: 'mountain snow' },
+  },
+  {
+    title: 'A Culinary Tour of Rome',
+    description: 'From pasta to gelato, taste the authentic flavors of the Eternal City.',
+    image: { imageUrl: 'https://picsum.photos/seed/rome-food/600/400', imageHint: 'italian pasta' },
+  },
+  {
+    title: 'The Jungles of Costa Rica',
+    description: 'Discover the rich biodiversity, from toucans to monkeys, in this tropical paradise.',
+    image: { imageUrl: 'https://picsum.photos/seed/costa-rica/600/400', imageHint: 'jungle toucan' },
+  },
+  {
+    title: 'Historic Wonders of Egypt',
+    description: 'Journey down the Nile and uncover the secrets of the pharaohs.',
+    image: { imageUrl: 'https://picsum.photos/seed/egypt/600/400', imageHint: 'pyramids desert' },
   }
 ];
 
