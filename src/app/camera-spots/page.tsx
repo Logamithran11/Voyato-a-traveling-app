@@ -125,31 +125,39 @@ export default function CameraSpotsPage() {
     }
   };
   
-  const handleSaveCapture = () => {
-    let newMedia;
+  const handleSaveCapture = async () => {
+    const location = currentLocation ?? undefined;
+    
     if (capturedImage) {
-        newMedia = {
+        await addPhoto({
             name: `Photo-${new Date().toISOString()}.jpg`,
-            size: "N/A", // size is not easily available from dataUrl
-            date: new Date().toISOString().split('T')[0],
-            isImage: true,
             dataUrl: capturedImage,
-            location: currentLocation ?? undefined,
-        };
-        addPhoto(newMedia);
+            location: location,
+        });
         toast({
-            title: "Photo Saved!",
-            description: `Your photo has been saved.`,
+            title: "Uploading Photo...",
+            description: `Your photo is being saved to the cloud.`,
         });
         handleClearCapture();
+
     } else if (recordedVideoUrl) {
-        // We can't save the video to localStorage due to size limits.
-        // In a real app, you would upload this to a server.
+       const response = await fetch(recordedVideoUrl);
+       const blob = await response.blob();
+       const file = new File([blob], `Video-${new Date().toISOString()}.webm`, { type: 'video/webm' });
+
+       // The useDocuments hook's addPhoto can now handle files
+       const tempPhoto = {
+           name: file.name,
+           dataUrl: URL.createObjectURL(file), // create a URL for the new file object
+           location: location,
+       };
+       await addPhoto(tempPhoto);
+
         toast({
-            title: "Video cannot be saved",
-            description: "Videos cannot be saved permanently in this demo due to storage limitations.",
-            variant: "destructive"
+            title: "Uploading Video...",
+            description: "Your video is being saved to the cloud.",
         });
+        handleClearCapture();
     }
   };
 
@@ -304,5 +312,3 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
-
-    

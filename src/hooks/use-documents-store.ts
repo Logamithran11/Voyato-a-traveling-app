@@ -1,7 +1,10 @@
 
 "use client";
 
-import { useLocalStorage } from "./use-local-storage";
+import { useState, useEffect, useCallback } from "react";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL, listAll, deleteObject, getMetadata } from "firebase/storage";
+import { useToast } from "./use-toast";
 
 export type Document = {
     name: string;
@@ -9,43 +12,123 @@ export type Document = {
     date: string;
     isImage?: boolean;
     isVideo?: boolean;
-    dataUrl?: string;
+    dataUrl?: string; // This will now be the Firebase download URL
     location?: {
         latitude: number;
         longitude: number;
     };
+    fullPath: string;
 };
 
-const initialDocuments: Document[] = [
-  {name: 'Passport_Scan.pdf', size: '1.2 MB', date: '2023-08-15'},
-  {name: 'Visa_Confirmation.pdf', size: '850 KB', date: '2023-09-01'},
-  {name: 'Flight_Itinerary.pdf', size: '2.5 MB', date: '2023-09-20'},
-  {name: 'Hotel_Booking.eml', size: '50 KB', date: '2023-09-21'},
-];
-
-const initialPhotos: Document[] = [];
-
-
 export function useDocuments() {
-    const [documents, setDocuments] = useLocalStorage<Document[]>("documents", initialDocuments);
-    const [photos, setPhotos] = useLocalStorage<Document[]>("photos", initialPhotos);
+    const [documents, setDocuments] = useState<Document[]>([]);
+    const [photos, setPhotos] = useState<Document[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { toast } = useToast();
 
-    const addDocument = (doc: Document) => {
-        setDocuments(prevDocs => [doc, ...prevDocs]);
+    const fetchFiles = useCallback(async (path: 'documents' | 'photos') => {
+        const listRef = ref(storage, path);
+        try {
+            const res = await listAll(listRef);
+            const files = await Promise.all(
+                res.items.map(async (itemRef) => {
+                    const downloadURL = await getDownloadURL(itemRef);
+                    const metadata = await getMetadata(itemRef);
+                    return {
+                        name: itemRef.name,
+                        size: `${(metadata.size / 1024 / 1024).toFixed(2)} MB`,
+                        date: new Date(metadata.timeCreated).toISOString().split('T')[0],
+                        dataUrl: downloadURL,
+                        fullPath: itemRef.fullPath,
+                        isImage: metadata.contentType?.startsWith("image/"),
+                        isVideo: metadata.contentType?.startsWith("video/"),
+                        location: metadata.customMetadata?.location ? JSON.parse(metadata.customMetadata.location) : undefined,
+                    };
+                })
+            );
+            files.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            
+            if (path === 'documents') {
+                setDocuments(files);
+            } else {
+                setPhotos(files);
+            }
+        } catch (error) {
+            console.error(`Error fetching ${path}:`, error);
+            toast({
+                variant: "destructive",
+                title: `Error fetching ${path}`,
+                description: "Could not load your files from the cloud. Please check your connection and Firebase setup.",
+            });
+        }
+    }, [toast]);
+
+    useEffect(() => {
+        setLoading(true);
+        Promise.all([fetchFiles('documents'), fetchFiles('photos')])
+            .finally(() => setLoading(false));
+    }, [fetchFiles]);
+
+
+    const addFile = async (file: File, path: 'documents' | 'photos', metadata?: { location?: { latitude: number, longitude: number }}) => {
+        const storageRef = ref(storage, `${path}/${file.name}`);
+        
+        try {
+            const snapshot = await uploadBytes(storageRef, file, {
+                customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
+            });
+            console.log('Uploaded a blob or file!', snapshot);
+            toast({
+                title: "Upload Successful",
+                description: `${file.name} has been uploaded to the cloud.`,
+            });
+            // Refresh the list
+            await fetchFiles(path);
+
+        } catch (error) {
+            console.error("Upload error:", error);
+            toast({
+                variant: "destructive",
+                title: "Upload Failed",
+                description: "Could not upload your file. Please try again.",
+            });
+        }
     };
 
-    const deleteDocument = (docName: string) => {
-        setDocuments(prevDocs => prevDocs.filter(doc => doc.name !== docName));
+    const deleteFile = async (fullPath: string, isPhoto: boolean) => {
+        const fileRef = ref(storage, fullPath);
+        try {
+            await deleteObject(fileRef);
+            toast({
+                title: "File Deleted",
+                description: "The file has been permanently removed from the cloud.",
+            });
+             if (isPhoto) {
+                setPhotos(prev => prev.filter(p => p.fullPath !== fullPath));
+            } else {
+                setDocuments(prev => prev.filter(d => d.fullPath !== fullPath));
+            }
+        } catch (error) {
+            console.error("Delete error:", error);
+            toast({
+                variant: "destructive",
+                title: "Delete Failed",
+                description: "Could not delete the file. Please try again.",
+            });
+        }
     };
-
-    const addPhoto = (photo: Document) => {
-        setPhotos(prevPhotos => [photo, ...prevPhotos]);
+    
+    // Kept for compatibility with Camera page, but now uploads to firebase.
+    const addPhoto = async (photo: { dataUrl: string, name: string, location?: {latitude: number, longitude: number}}) => {
+        const response = await fetch(photo.dataUrl);
+        const blob = await response.blob();
+        const file = new File([blob], photo.name, { type: blob.type });
+        await addFile(file, 'photos', { location: photo.location });
     }
-
-    const deletePhoto = (photoName: string) => {
-        setPhotos(prevPhotos => prevPhotos.filter(photo => photo.name !== photoName));
-    }
-
-
-    return { documents, addDocument, deleteDocument, photos, addPhoto, deletePhoto };
+    
+    // Compatibility, now uses fullPath
+    const deletePhoto = (fullPath: string) => deleteFile(fullPath, true);
+    const deleteDocument = (fullPath: string) => deleteFile(fullPath, false);
+    
+    return { documents, photos, loading, addFile, deleteDocument, addPhoto, deletePhoto };
 }

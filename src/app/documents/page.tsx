@@ -42,60 +42,58 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 
 export default function DocumentsPage() {
-  const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
+  const { documents, photos, loading, addFile, deleteDocument, deletePhoto } = useDocuments();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isClient, setIsClient] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<Document | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
   
   const filteredPhotos = photos.filter(photo => 
     photo.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+   const filteredDocuments = documents.filter(doc => 
+    doc.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const handleDelete = (docName: string, isPhoto: boolean) => {
+  const handleDelete = (doc: Document, isPhoto: boolean) => {
     if (isPhoto) {
-        deletePhoto(docName);
+        deletePhoto(doc.fullPath);
     } else {
-        deleteDocument(docName);
+        deleteDocument(doc.fullPath);
     }
-    toast({
-      title: "Item Deleted",
-      description: `${docName} has been removed.`,
-    });
   };
 
-  const handleDownload = (docName: string) => {
-    const doc = [...photos, ...documents].find(d => d.name === docName);
-    if (doc?.dataUrl) {
+  const handleDownload = (doc: Document) => {
+    if (doc.dataUrl) {
+        // Since these are Firebase storage URLs, we can directly link to them
+        // To force download, we can fetch and create a blob URL or use an anchor with download attribute
         const a = document.createElement('a');
         a.href = doc.dataUrl;
-        a.download = doc.name;
+        a.target = "_blank"; // Let browser handle PDF/Image view or download
+        a.download = doc.name; // Suggest a filename
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         toast({
-          title: "Download Started",
-          description: `Your download for ${docName} has started.`,
+          title: "Opening File...",
+          description: `${doc.name} will open in a new tab.`,
         });
     } else {
        toast({
           title: "Download failed",
-          description: `Could not find data for ${docName}.`,
+          description: `Could not find data for ${doc.name}.`,
           variant: "destructive"
         });
     }
   };
 
-  const handleShare = async (docName: string) => {
+  const handleShare = async (doc: Document) => {
+    if (!doc.dataUrl) return;
+
     const shareData = {
       title: 'Travel Document',
-      text: `Here is my document: ${docName}`,
-      url: window.location.href, // In a real app, this would be a direct link to the file
+      text: `Here is my document: ${doc.name}`,
+      url: doc.dataUrl,
     };
 
     if (navigator.share) {
@@ -136,77 +134,27 @@ export default function DocumentsPage() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const isImage = file.type.startsWith('image/');
       const isVideo = file.type.startsWith('video/');
-      
-      const newDocument: Omit<Document, 'dataUrl'> & { dataUrl?: string } = {
-        name: file.name,
-        size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
-        date: new Date().toISOString().split('T')[0],
-        isImage: isImage,
-        isVideo: isVideo,
-      };
-      
-      const reader = new FileReader();
-
-      reader.onload = async (e) => {
-        const dataUrl = e.target?.result as string;
-
-        if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
-           try {
-                if (isImage) {
-                    addPhoto({ ...newDocument, dataUrl });
-                } else {
-                    addDocument({ ...newDocument, dataUrl });
-                }
-                toast({ title: "Upload Successful", description: `${file.name} has been uploaded.` });
-            } catch (error) {
-                console.error("Error setting localStorage:", error);
-                toast({
-                    variant: "destructive",
-                    title: "Storage Limit Exceeded",
-                    description: "Could not save the file. Your browser's local storage is full.",
-                });
-            }
-        }
-      };
-      
-      reader.onerror = (error) => {
-         console.error("FileReader error:", error);
-         toast({ variant: "destructive", title: "File Read Error", description: "Could not read the selected file."});
-      }
-
-      if (isVideo) {
-        const tempUrl = URL.createObjectURL(file);
-        addPhoto({ ...newDocument, dataUrl: tempUrl, isVideo: true, location: newDocument.location });
-        toast({
-          title: "Video Added Temporarily",
-          description: "Video is available for this session but won't be saved permanently.",
-        });
-      } else if (isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
-        reader.readAsDataURL(file);
-      } else {
-        addDocument(newDocument as Document);
-        toast({
-          title: "Upload Successful",
-          description: `${file.name} has been uploaded. A preview may not be available.`,
-        });
-      }
+      const path = (isImage || isVideo) ? 'photos' : 'documents';
+      await addFile(file, path);
     }
+    // Reset file input
+    if(fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const renderDocumentCard = (doc: Document, isMedia: boolean) => (
-    <Card key={doc.name} className="shadow-lg group">
+    <Card key={doc.fullPath} className="shadow-lg group">
        {(doc.isImage || doc.isVideo) && doc.dataUrl ? (
          <CardContent className="p-0" onClick={() => setSelectedMedia(doc)}>
             <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
               {doc.isImage && doc.dataUrl ? (
                 <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
               ) : doc.isVideo && doc.dataUrl ? (
-                 <video src={doc.dataUrl} className="w-full h-full object-cover" />
+                 <video src={doc.dataUrl} className="w-full h-full object-cover" muted loop playsInline />
               ) : doc.isVideo ? (
                 <Video className="h-16 w-16 text-muted-foreground" />
               ) : null }
@@ -217,7 +165,7 @@ export default function DocumentsPage() {
         <div className="bg-primary/10 text-primary p-3 rounded-md mt-1">
           {doc.isImage ? <ImageIcon className="h-6 w-6" /> : (doc.isVideo ? <Video className="h-6 w-6"/> : <FileText className="h-6 w-6" />)}
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow overflow-hidden">
           <p className="font-semibold truncate">{doc.name}</p>
           <p className="text-sm text-muted-foreground">
             {doc.size} - {doc.date}
@@ -236,13 +184,13 @@ export default function DocumentsPage() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleDownload(doc.name)} disabled={!doc.dataUrl}>
+            <DropdownMenuItem onClick={() => handleDownload(doc)} disabled={!doc.dataUrl}>
               <Download className="mr-2 h-4 w-4" /> Download
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleShare(doc.name)}>
+            <DropdownMenuItem onClick={() => handleShare(doc)}>
               <Share2 className="mr-2 h-4 w-4" /> Share
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc.name, isMedia)}>
+            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc, isMedia)}>
               <Trash2 className="mr-2 h-4 w-4" /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -258,17 +206,17 @@ export default function DocumentsPage() {
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
-        accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx"
+        accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx,.eml"
       />
       <Card>
         <CardHeader>
           <div className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <FileText /> My Files
+                <FileText /> My Cloud Files
               </CardTitle>
               <CardDescription>
-                Keep your important files, photos, and videos secure and accessible.
+                Keep your important files, photos, and videos secure and accessible from anywhere.
               </CardDescription>
             </div>
             <Button onClick={handleUploadClick}>
@@ -282,7 +230,7 @@ export default function DocumentsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search photos by filename..."
+                placeholder="Search files by filename..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -296,9 +244,12 @@ export default function DocumentsPage() {
         <div>
             <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><Camera /> Saved Photos & Videos</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {!isClient ? (
+                {loading ? (
                     Array.from({ length: 3 }).map((_, index) => (
                         <Card key={index} className="shadow-lg">
+                             <CardContent className="p-0">
+                                <Skeleton className="w-full aspect-video rounded-t-lg" />
+                             </CardContent>
                             <CardContent className="p-4 flex items-center gap-4">
                                 <Skeleton className="h-12 w-12 rounded-md" />
                                 <div className="flex-grow space-y-2">
@@ -317,7 +268,7 @@ export default function DocumentsPage() {
                       {photos.length > 0 && searchTerm ? (
                           <p>No results found for &quot;{searchTerm}&quot;.</p>
                       ) : (
-                          <p>You have no saved photos or videos. Capture some from the Camera Spots page!</p>
+                          <p>You have no saved photos or videos. Upload some or use the Camera Spots page!</p>
                       )}
                     </CardContent>
                 </Card>
@@ -330,25 +281,29 @@ export default function DocumentsPage() {
         <div>
             <h2 className="text-2xl font-headline flex items-center gap-2 mb-4"><FileText /> Uploaded Documents</h2>
              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {!isClient ? (
+                {loading ? (
                     Array.from({ length: 3 }).map((_, index) => (
                         <Card key={index} className="shadow-lg">
                             <CardContent className="p-4 flex items-center gap-4">
                                 <Skeleton className="h-12 w-12 rounded-md" />
                                 <div className="flex-grow space-y-2">
                                     <Skeleton className="h-4 w-4/5" />
-                                    <Skeleton className="h-4 w-2/fiv" />
+                                    <Skeleton className="h-4 w-2/5" />
                                 </div>
                                 <Skeleton className="h-8 w-8" />
                             </CardContent>
                         </Card>
                     ))
-                ) : documents.length > 0 ? (
-                documents.map(doc => renderDocumentCard(doc, false))
+                ) : filteredDocuments.length > 0 ? (
+                filteredDocuments.map(doc => renderDocumentCard(doc, false))
                 ) : (
                 <Card className="md:col-span-2 lg:col-span-3">
                     <CardContent className="p-8 text-center text-muted-foreground">
-                    <p>You have no documents uploaded.</p>
+                      {documents.length > 0 && searchTerm ? (
+                          <p>No results found for &quot;{searchTerm}&quot;.</p>
+                      ) : (
+                         <p>You have no documents uploaded. Click 'Upload File' to get started.</p>
+                      )}
                     </CardContent>
                 </Card>
                 )}
