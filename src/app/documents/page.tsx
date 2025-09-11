@@ -23,7 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const initialDocuments = [
@@ -36,6 +36,7 @@ const initialDocuments = [
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState(initialDocuments);
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDelete = (docName: string) => {
     setDocuments(documents.filter(doc => doc.name !== docName));
@@ -93,9 +94,35 @@ export default function DocumentsPage() {
     }
   };
 
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const newDocument = {
+        name: file.name,
+        size: `${(file.size / 1024).toFixed(1)} KB`,
+        date: new Date().toISOString().split('T')[0],
+      };
+      setDocuments([newDocument, ...documents]);
+      toast({
+        title: "Upload Successful",
+        description: `${file.name} has been uploaded.`,
+      });
+    }
+  };
+
 
   return (
     <div className="space-y-8">
+      <input 
+        type="file" 
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
@@ -106,7 +133,7 @@ export default function DocumentsPage() {
               Keep your important documents secure and accessible.
             </CardDescription>
           </div>
-          <Button>
+          <Button onClick={handleUploadClick}>
             <FileUp className="mr-2 h-4 w-4" /> Upload Document
           </Button>
         </CardHeader>
