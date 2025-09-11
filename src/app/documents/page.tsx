@@ -16,6 +16,7 @@ import {
   Download,
   Trash2,
   Share2,
+  Image as ImageIcon,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -23,23 +24,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
-
-const initialDocuments = [
-  {name: 'Passport_Scan.pdf', size: '1.2 MB', date: '2023-08-15'},
-  {name: 'Visa_Confirmation.pdf', size: '850 KB', date: '2023-09-01'},
-  {name: 'Flight_Itinerary.pdf', size: '2.5 MB', date: '2023-09-20'},
-  {name: 'Hotel_Booking.eml', size: '50 KB', date: '2023-09-21'},
-];
+import { useDocuments } from '@/hooks/use-documents-store';
+import Image from 'next/image';
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState(initialDocuments);
+  const { documents, addDocument, deleteDocument } = useDocuments();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDelete = (docName: string) => {
-    setDocuments(documents.filter(doc => doc.name !== docName));
+    deleteDocument(docName);
     toast({
       title: "Document Deleted",
       description: `${docName} has been removed.`,
@@ -106,7 +102,7 @@ export default function DocumentsPage() {
         size: `${(file.size / 1024).toFixed(1)} KB`,
         date: new Date().toISOString().split('T')[0],
       };
-      setDocuments([newDocument, ...documents]);
+      addDocument(newDocument);
       toast({
         title: "Upload Successful",
         description: `${file.name} has been uploaded.`,
@@ -141,9 +137,16 @@ export default function DocumentsPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {documents.map(doc => (
           <Card key={doc.name} className="shadow-lg">
+             {doc.isImage && doc.dataUrl ? (
+               <CardContent className="p-0">
+                  <div className="relative aspect-video">
+                    <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
+                  </div>
+               </CardContent>
+             ) : null}
             <CardContent className="p-4 flex items-center gap-4">
               <div className="bg-primary/10 text-primary p-3 rounded-md">
-                <FileText className="h-6 w-6" />
+                {doc.isImage ? <ImageIcon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
               </div>
               <div className="flex-grow">
                 <p className="font-semibold truncate">{doc.name}</p>
