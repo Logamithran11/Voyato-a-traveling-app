@@ -345,37 +345,42 @@ export default function DocumentsPage() {
       </div>
 
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
-        <DialogContent className="max-w-3xl p-0 md:max-h-[90vh] overflow-y-auto">
-           <DialogHeader className="p-4">
+        <DialogContent className="max-w-3xl p-0">
+          <DialogHeader className="p-4 border-b">
             <DialogTitle>{selectedMedia?.name}</DialogTitle>
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
-          {selectedMedia?.isVideo && selectedMedia.dataUrl ? (
-             <video src={selectedMedia.dataUrl} controls autoPlay className="w-full rounded-t-lg" />
-          ) : selectedMedia?.dataUrl ? (
-            <Image 
-                src={selectedMedia.dataUrl} 
-                alt={selectedMedia.name}
-                width={1920}
-                height={1080}
-                className="w-full h-auto object-contain rounded-t-lg"
-            />
-          ) : null}
-          {selectedMedia?.location && (
-            <div className='p-4 border-t'>
-                <h3 className="font-semibold flex items-center gap-2 mb-2"><MapPin/> Location</h3>
-                <div className='aspect-video w-full rounded-md overflow-hidden bg-muted'>
-                     <iframe
-                        width="100%"
-                        height="100%"
-                        loading="lazy"
-                        allowFullScreen
-                        referrerPolicy="no-referrer-when-downgrade"
-                        src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
-                    </iframe>
+          <div className="max-h-[calc(90vh-150px)] overflow-y-auto">
+              {selectedMedia?.isVideo && selectedMedia.dataUrl ? (
+                <video src={selectedMedia.dataUrl} controls autoPlay className="w-full rounded-t-lg" />
+              ) : selectedMedia?.dataUrl ? (
+                <Image 
+                    src={selectedMedia.dataUrl} 
+                    alt={selectedMedia.name}
+                    width={1920}
+                    height={1080}
+                    className="w-full h-auto object-contain rounded-t-lg"
+                />
+              ) : null}
+              {selectedMedia?.location && (
+                <div className='p-4 border-t'>
+                    <h3 className="font-semibold flex items-center gap-2 mb-2"><MapPin/> Location</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                        Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
+                    </p>
+                    <div className='aspect-video w-full rounded-md overflow-hidden bg-muted'>
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
+                        </iframe>
+                    </div>
                 </div>
-            </div>
-          )}
+              )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
