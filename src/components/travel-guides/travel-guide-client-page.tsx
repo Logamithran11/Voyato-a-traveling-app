@@ -63,6 +63,49 @@ export function TravelGuideClientPage({ guideData }: TravelGuideClientPageProps)
     }
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: guideData.title,
+      text: `Check out this amazing travel guide for ${guideData.title}!`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast({
+            title: "Guide shared successfully!",
+        });
+      } catch (err) {
+        // Silently fail if user cancels the share dialog
+        if ((err as Error).name !== 'AbortError') {
+            console.error("Failed to share:", err);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not share the guide.",
+            });
+        }
+      }
+    } else {
+      // Fallback for browsers that do not support the Web Share API
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        toast({
+          title: "Link Copied!",
+          description: "The guide URL has been copied to your clipboard.",
+        });
+      } catch (err) {
+        console.error("Failed to copy link:", err);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not copy the link to the clipboard.",
+        });
+      }
+    }
+  };
+
 
   return (
     <div className="space-y-8">
@@ -74,7 +117,7 @@ export function TravelGuideClientPage({ guideData }: TravelGuideClientPageProps)
           </Link>
         </Button>
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={handleShare}>
                 <Share2 className="h-4 w-4" />
             </Button>
              <Button onClick={() => setCustomizeDialogOpen(true)}>
