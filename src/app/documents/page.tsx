@@ -154,9 +154,19 @@ export default function DocumentsPage() {
 
       reader.onload = (e) => {
         const dataUrl = e.target?.result as string;
-        if (isImage || isVideo) {
+        if (isImage) { // Only store dataUrl for images permanently
           addPhoto({ ...newDocument, dataUrl });
-        } else {
+        } else if (isVideo) {
+          // For videos, don't save the large dataUrl.
+          // The video will be playable right after capture, but not after refresh.
+          addPhoto({ ...newDocument, dataUrl: undefined });
+          toast({
+            title: "Video is temporary",
+            description: "Video has been added but will not be saved permanently due to its size.",
+            variant: "default",
+          });
+        }
+        else {
           addDocument({ ...newDocument, dataUrl });
         }
         toast({
@@ -170,7 +180,7 @@ export default function DocumentsPage() {
          toast({ variant: "destructive", title: "File Read Error", description: "Could not read the selected file."});
       }
 
-      if (file.size > 5 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024 && !isVideo) {
         toast({
           title: "File Too Large for Permanent Storage",
           description: "This file is over 5MB and will not be saved permanently. It will be gone after you refresh the page.",
@@ -178,8 +188,12 @@ export default function DocumentsPage() {
         });
       }
       
-      if(isImage || isVideo || file.type === "application/pdf" || file.name.endsWith('.eml')) {
+      if(isImage || file.type === "application/pdf" || file.name.endsWith('.eml')) {
         reader.readAsDataURL(file);
+      } else if (isVideo) {
+        // We read it to create an object URL for immediate playback, but don't store the dataUrl
+        const tempUrl = URL.createObjectURL(file);
+        addPhoto({ ...newDocument, dataUrl: tempUrl });
       } else {
         addDocument(newDocument as Document);
         toast({
@@ -197,6 +211,8 @@ export default function DocumentsPage() {
             <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
               {doc.isImage && doc.dataUrl ? (
                 <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+              ) : doc.isVideo && doc.dataUrl ? (
+                 <video src={doc.dataUrl} className="w-full h-full object-cover" />
               ) : doc.isVideo ? (
                 <Video className="h-16 w-16 text-muted-foreground" />
               ) : null }
@@ -359,7 +375,7 @@ export default function DocumentsPage() {
               ) : selectedMedia?.dataUrl ? (
                 <Image 
                     src={selectedMedia.dataUrl} 
-                    alt={selectedMedia.name}
+                    alt={selectedMedia.name || "Selected media"}
                     width={1920}
                     height={1080}
                     className="w-full h-auto object-contain rounded-t-lg"
@@ -386,7 +402,7 @@ export default function DocumentsPage() {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
+                            src={`https://www.google.com/maps/embed/v1/view?key=&center=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&zoom=15&maptype=satellite`}>
                         </iframe>
                     </div>
                 </div>
