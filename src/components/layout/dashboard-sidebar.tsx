@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -113,8 +114,12 @@ export function DashboardSidebar() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="#"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                  href="/settings"
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:text-foreground md:h-8 md:w-8 ${
+                    pathname === "/settings"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
+                  }`}
                 >
                   <Settings className="h-5 w-5" />
                   <span className="sr-only">Settings</span>
@@ -156,6 +161,18 @@ export function DashboardSidebar() {
                   <span className="sr-only">Voyato</span>
                 </Link>
                 {mobileNavContent}
+                <Link
+                    href="/settings"
+                    onClick={handleLinkClick}
+                    className={`flex items-center gap-4 px-2.5 hover:text-foreground ${
+                        pathname === "/settings"
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }`}
+                >
+                    <Settings className="h-5 w-5" />
+                    Settings
+                </Link>
                  <Link
                     href="/"
                     onClick={handleLinkClick}
