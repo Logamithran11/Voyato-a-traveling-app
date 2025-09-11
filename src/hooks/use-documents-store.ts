@@ -10,6 +10,10 @@ export type Document = {
     isImage?: boolean;
     isVideo?: boolean;
     dataUrl?: string;
+    location?: {
+        latitude: number;
+        longitude: number;
+    };
 };
 
 const initialDocuments: Document[] = [

@@ -19,6 +19,7 @@ import {
   ImageIcon,
   Camera,
   Video,
+  Locate,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -33,6 +34,7 @@ import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
@@ -156,8 +158,8 @@ export default function DocumentsPage() {
             </div>
          </CardContent>
        ) : null}
-      <CardContent className="p-4 flex items-center gap-4">
-        <div className="bg-primary/10 text-primary p-3 rounded-md">
+      <CardContent className="p-4 flex items-start gap-4">
+        <div className="bg-primary/10 text-primary p-3 rounded-md mt-1">
           {doc.isImage ? <ImageIcon className="h-6 w-6" /> : (doc.isVideo ? <Video className="h-6 w-6"/> : <FileText className="h-6 w-6" />)}
         </div>
         <div className="flex-grow">
@@ -165,10 +167,16 @@ export default function DocumentsPage() {
           <p className="text-sm text-muted-foreground">
             {doc.size} - {doc.date}
           </p>
+           {doc.location && (
+              <Badge variant="outline" className="mt-2">
+                <Locate className="mr-1.5 h-3 w-3"/>
+                {doc.location.latitude.toFixed(4)}, {doc.location.longitude.toFixed(4)}
+              </Badge>
+           )}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -296,5 +304,3 @@ export default function DocumentsPage() {
     </div>
   );
 }
-
-    
