@@ -22,7 +22,7 @@ const WeatherForecastSchema = z.object({
   forecast: z.array(
     z.object({
       time: z.string().describe("The time for the forecast entry (e.g., 'Now', '3PM', '6PM')."),
-      temp: z.string().describe("The temperature in Celsius (e.g., '25°C')."),
+      temp: z.string().describe("The temperature in Celsius, including the symbol (e.g., '25°C')."),
       condition: z.string().describe("The weather condition (e.g., 'Sunny', 'Clear', 'Partly Cloudy', 'Cloudy', 'Rain', 'Showers', 'Snow')."),
       isDay: z.boolean().describe("Whether it is daytime for this forecast entry. This should be false for night hours (e.g. after 7 PM and before 6 AM)."),
     })
@@ -49,7 +49,7 @@ const prompt = ai.definePrompt({
   Generate 4-6 forecast entries, starting from "Now" and then using relative times like "in 2 hours" or specific times like "3PM".
   The weather conditions should be one of: "Sunny", "Clear", "Partly Cloudy", "Cloudy", "Rain", "Showers", "Snow".
   For each entry, you must set the 'isDay' boolean field. It should be false for typical night hours (e.g., after 7 PM and before 6 AM) and true otherwise.
-  Temperatures should be in Celsius.
+  Temperatures must be in Celsius and the response string must include the degree symbol and 'C' (e.g., "25°C").
   `,
 });
 
