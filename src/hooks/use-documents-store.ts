@@ -26,7 +26,11 @@ export function useDocuments() {
     const [photos, setPhotos] = useLocalStorage<Document[]>("photos", initialPhotos);
 
     const addDocument = (doc: Document) => {
-        setDocuments(prevDocs => [doc, ...prevDocs]);
+        if(doc.isImage) {
+            addPhoto(doc);
+        } else {
+            setDocuments(prevDocs => [doc, ...prevDocs]);
+        }
     };
 
     const deleteDocument = (docName: string) => {

@@ -31,12 +31,14 @@ import { useDocuments } from '@/hooks/use-documents-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isClient, setIsClient] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -120,7 +122,8 @@ export default function DocumentsPage() {
       if (isImage) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            addDocument({
+            // When uploading an image, add it to photos, not documents
+            addPhoto({
                 ...newDocument,
                 dataUrl: e.target?.result as string,
             });
@@ -138,11 +141,11 @@ export default function DocumentsPage() {
   };
 
   const renderDocumentCard = (doc: any, isPhoto: boolean) => (
-    <Card key={doc.name} className="shadow-lg">
+    <Card key={doc.name} className="shadow-lg group">
        {doc.isImage && doc.dataUrl ? (
-         <CardContent className="p-0">
-            <div className="relative aspect-video">
-              <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover rounded-t-lg" />
+         <CardContent className="p-0" onClick={() => setSelectedImage(doc.dataUrl)}>
+            <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg">
+              <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
          </CardContent>
        ) : null}
@@ -185,6 +188,7 @@ export default function DocumentsPage() {
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
+        accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
       />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -262,6 +266,20 @@ export default function DocumentsPage() {
         </div>
 
       </div>
+
+      <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
+        <DialogContent className="max-w-3xl p-0">
+          {selectedImage && (
+            <Image 
+                src={selectedImage} 
+                alt="Enlarged view" 
+                width={1920} 
+                height={1080} 
+                className="rounded-lg object-contain"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
