@@ -20,6 +20,7 @@ import {
   Camera,
   Video,
   Locate,
+  MapPin,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -29,7 +30,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useRef, useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useDocuments } from '@/hooks/use-documents-store';
+import { useDocuments, type Document } from '@/hooks/use-documents-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
@@ -41,7 +42,7 @@ export default function DocumentsPage() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isClient, setIsClient] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<{url: string, isVideo?: boolean} | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<Document | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -145,10 +146,10 @@ export default function DocumentsPage() {
     }
   };
 
-  const renderDocumentCard = (doc: any, isMedia: boolean) => (
+  const renderDocumentCard = (doc: Document, isMedia: boolean) => (
     <Card key={doc.name} className="shadow-lg group">
        {(doc.isImage || doc.isVideo) && doc.dataUrl ? (
-         <CardContent className="p-0" onClick={() => setSelectedMedia({url: doc.dataUrl, isVideo: doc.isVideo})}>
+         <CardContent className="p-0" onClick={() => setSelectedMedia(doc)}>
             <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
               {doc.isImage ? (
                 <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -284,21 +285,36 @@ export default function DocumentsPage() {
 
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
         <DialogContent className="max-w-3xl p-0">
-           <DialogHeader className="sr-only">
-            <DialogTitle>Enlarged Media</DialogTitle>
-            <DialogDescription>A larger view of the selected photo or video.</DialogDescription>
+           <DialogHeader className="p-4">
+            <DialogTitle className="sr-only">Enlarged Media</DialogTitle>
+            <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
-          {selectedMedia?.isVideo ? (
-             <video src={selectedMedia.url} controls autoPlay className="w-full rounded-lg" />
-          ) : selectedMedia?.url ? (
+          {selectedMedia?.isVideo && selectedMedia.dataUrl ? (
+             <video src={selectedMedia.dataUrl} controls autoPlay className="w-full rounded-t-lg" />
+          ) : selectedMedia?.dataUrl ? (
             <Image 
-                src={selectedMedia.url} 
+                src={selectedMedia.dataUrl} 
                 alt="Enlarged view" 
                 width={1920} 
                 height={1080} 
-                className="rounded-lg object-contain"
+                className="rounded-t-lg object-contain"
             />
           ) : null}
+          {selectedMedia?.location && (
+            <div className='p-4 border-t'>
+                <h3 className="font-semibold flex items-center gap-2 mb-2"><MapPin/> Location</h3>
+                <div className='aspect-video w-full rounded-md overflow-hidden bg-muted'>
+                     <iframe
+                        width="100%"
+                        height="100%"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
+                    </iframe>
+                </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
