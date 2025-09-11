@@ -61,10 +61,25 @@ export default function DocumentsPage() {
   };
 
   const handleDownload = (docName: string) => {
-    toast({
-      title: "Download Started",
-      description: `Your download for ${docName} has started.`,
-    });
+    const doc = [...photos, ...documents].find(d => d.name === docName);
+    if (doc?.dataUrl) {
+        const a = document.createElement('a');
+        a.href = doc.dataUrl;
+        a.download = doc.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        toast({
+          title: "Download Started",
+          description: `Your download for ${docName} has started.`,
+        });
+    } else {
+       toast({
+          title: "Download failed",
+          description: `Could not find data for ${docName}.`,
+          variant: "destructive"
+        });
+    }
   };
 
   const handleShare = async (docName: string) => {
@@ -118,13 +133,22 @@ export default function DocumentsPage() {
       const isImage = file.type.startsWith('image/');
       const isVideo = file.type.startsWith('video/');
       
-      const newDocument = {
+      const newDocument: Omit<Document, 'dataUrl'> & { dataUrl?: string } = {
         name: file.name,
         size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
         date: new Date().toISOString().split('T')[0],
         isImage: isImage,
         isVideo: isVideo,
       };
+
+      if ((isImage || isVideo) && file.size > 5 * 1024 * 1024) {
+           toast({
+            title: "File Too Large",
+            description: "Images and videos larger than 5MB cannot be saved in the browser.",
+            variant: "destructive",
+          });
+          return;
+      }
 
       if (isImage || isVideo) {
         const reader = new FileReader();
@@ -136,7 +160,7 @@ export default function DocumentsPage() {
         };
         reader.readAsDataURL(file);
       } else {
-         addDocument(newDocument);
+         addDocument(newDocument as Document);
       }
 
       toast({
@@ -151,11 +175,11 @@ export default function DocumentsPage() {
        {(doc.isImage || doc.isVideo) && doc.dataUrl ? (
          <CardContent className="p-0" onClick={() => setSelectedMedia(doc)}>
             <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
-              {doc.isImage ? (
+              {doc.isImage && doc.dataUrl ? (
                 <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
-              ) : (
+              ) : doc.isVideo ? (
                 <Video className="h-16 w-16 text-muted-foreground" />
-              )}
+              ) : null }
             </div>
          </CardContent>
        ) : null}
@@ -182,7 +206,7 @@ export default function DocumentsPage() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleDownload(doc.name)}>
+            <DropdownMenuItem onClick={() => handleDownload(doc.name)} disabled={!doc.dataUrl}>
               <Download className="mr-2 h-4 w-4" /> Download
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleShare(doc.name)}>
@@ -284,7 +308,7 @@ export default function DocumentsPage() {
       </div>
 
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
-        <DialogContent className="max-w-3xl p-0">
+        <DialogContent className="max-w-3xl p-0 md:max-h-[90vh] overflow-y-auto">
            <DialogHeader className="p-4">
             <DialogTitle className="sr-only">Enlarged Media</DialogTitle>
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
@@ -294,10 +318,10 @@ export default function DocumentsPage() {
           ) : selectedMedia?.dataUrl ? (
             <Image 
                 src={selectedMedia.dataUrl} 
-                alt="Enlarged view" 
-                width={1920} 
-                height={1080} 
-                className="rounded-t-lg object-contain"
+                alt={selectedMedia.name}
+                width={1920}
+                height={1080}
+                className="w-full h-auto object-contain rounded-t-lg"
             />
           ) : null}
           {selectedMedia?.location && (
@@ -320,3 +344,5 @@ export default function DocumentsPage() {
     </div>
   );
 }
+
+    

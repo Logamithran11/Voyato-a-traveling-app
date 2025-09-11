@@ -14,16 +14,6 @@ import { Badge } from '@/components/ui/badge';
 
 const MAX_RECORDING_SECONDS = 15;
 
-// Helper function to convert Blob to Base64
-const blobToBase64 = (blob: Blob): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-};
-
 export default function CameraSpotsPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -130,9 +120,7 @@ export default function CameraSpotsPage() {
   const handleClearCapture = () => {
     setCapturedImage(null);
     if (recordedVideoUrl) {
-      if (recordedVideoUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(recordedVideoUrl);
-      }
+      URL.revokeObjectURL(recordedVideoUrl);
       setRecordedVideoUrl(null);
     }
   };
@@ -148,25 +136,20 @@ export default function CameraSpotsPage() {
             dataUrl: capturedImage,
             location: currentLocation ?? undefined,
         };
-    } else if (recordedVideoUrl) {
-        newMedia = {
-            name: `Video-${new Date().toISOString()}.webm`,
-            size: "N/A",
-            date: new Date().toISOString().split('T')[0],
-            isImage: false,
-            isVideo: true,
-            dataUrl: recordedVideoUrl,
-            location: currentLocation ?? undefined,
-        };
-    }
-
-    if(newMedia) {
         addPhoto(newMedia);
         toast({
-            title: "Media Saved!",
-            description: `Your ${capturedImage ? 'photo' : 'video'} has been saved.`,
+            title: "Photo Saved!",
+            description: `Your photo has been saved.`,
         });
         handleClearCapture();
+    } else if (recordedVideoUrl) {
+        // We can't save the video to localStorage due to size limits.
+        // In a real app, you would upload this to a server.
+        toast({
+            title: "Video cannot be saved",
+            description: "Videos cannot be saved permanently in this demo due to storage limitations.",
+            variant: "destructive"
+        });
     }
   };
 
@@ -182,20 +165,11 @@ export default function CameraSpotsPage() {
         }
       };
 
-      mediaRecorderRef.current.onstop = async () => {
+      mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
-        try {
-            const dataUrl = await blobToBase64(blob);
-            setRecordedVideoUrl(dataUrl);
-            setCapturedImage(null);
-        } catch (error) {
-            console.error("Failed to convert blob to base64:", error);
-            toast({
-                variant: "destructive",
-                title: "Error processing video",
-                description: "Could not process the recorded video. Please try again.",
-            });
-        }
+        const url = URL.createObjectURL(blob);
+        setRecordedVideoUrl(url);
+        setCapturedImage(null);
       };
 
       mediaRecorderRef.current.start();
@@ -330,3 +304,5 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
+
+    
