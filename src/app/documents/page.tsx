@@ -22,6 +22,7 @@ import {
   Locate,
   MapPin,
   Search,
+  ExternalLink,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -38,6 +39,7 @@ import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
@@ -148,42 +150,43 @@ export default function DocumentsPage() {
         isVideo: isVideo,
       };
       
-      const saveFile = (dataUrl?: string) => {
-          if (isImage || isVideo) {
-              addPhoto({
-                  ...newDocument,
-                  dataUrl: dataUrl,
-              });
-          } else {
-              addDocument(newDocument as Document);
-          }
-      };
+      const reader = new FileReader();
 
-      if ((isImage || isVideo)) {
-         if (file.size > 5 * 1024 * 1024) { // 5MB limit
-            toast({
-                title: "File Too Large",
-                description: "Images and videos larger than 5MB cannot be permanently saved in this demo.",
-                variant: "destructive",
-            });
-            const tempUrl = URL.createObjectURL(file);
-             saveFile(tempUrl);
-             setTimeout(() => URL.revokeObjectURL(tempUrl), 60 * 1000); // Revoke after 1 minute
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        if (isImage || isVideo) {
+          addPhoto({ ...newDocument, dataUrl });
         } else {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                saveFile(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
+          addDocument({ ...newDocument, dataUrl });
         }
-      } else {
-         saveFile();
+        toast({
+          title: "Upload Successful",
+          description: `${file.name} has been uploaded.`,
+        });
+      };
+      
+      reader.onerror = (error) => {
+         console.error("FileReader error:", error);
+         toast({ variant: "destructive", title: "File Read Error", description: "Could not read the selected file."});
       }
 
-      toast({
-        title: "Upload Successful",
-        description: `${file.name} has been uploaded.`,
-      });
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File Too Large for Permanent Storage",
+          description: "This file is over 5MB and will not be saved permanently. It will be gone after you refresh the page.",
+          variant: "destructive",
+        });
+      }
+      
+      if(isImage || isVideo || file.type === "application/pdf" || file.name.endsWith('.eml')) {
+        reader.readAsDataURL(file);
+      } else {
+        addDocument(newDocument as Document);
+        toast({
+          title: "Upload Successful",
+          description: `${file.name} has been uploaded. A preview may not be available.`,
+        });
+      }
     }
   };
 
@@ -364,7 +367,15 @@ export default function DocumentsPage() {
               ) : null}
               {selectedMedia?.location && (
                 <div className='p-4 border-t'>
-                    <h3 className="font-semibold flex items-center gap-2 mb-2"><MapPin/> Location</h3>
+                    <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-2"><MapPin/> Location</div>
+                         <Button variant="outline" size="sm" asChild>
+                            <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}&z=15&t=k`} target="_blank" rel="noopener noreferrer">
+                                View on Google Maps
+                                <ExternalLink className="ml-2 h-4 w-4" />
+                            </Link>
+                        </Button>
+                    </h3>
                     <p className="text-sm text-muted-foreground mb-2">
                         Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
                     </p>
