@@ -21,6 +21,7 @@ import {
   Video,
   Locate,
   MapPin,
+  Search,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -36,6 +37,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
@@ -43,10 +45,15 @@ export default function DocumentsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isClient, setIsClient] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<Document | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
+  const filteredPhotos = photos.filter(photo => 
+    photo.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleDelete = (docName: string, isPhoto: boolean) => {
     if (isPhoto) {
@@ -140,27 +147,37 @@ export default function DocumentsPage() {
         isImage: isImage,
         isVideo: isVideo,
       };
+      
+      const saveFile = (dataUrl?: string) => {
+          if (isImage || isVideo) {
+              addPhoto({
+                  ...newDocument,
+                  dataUrl: dataUrl,
+              });
+          } else {
+              addDocument(newDocument as Document);
+          }
+      };
 
-      if ((isImage || isVideo) && file.size > 5 * 1024 * 1024) {
-           toast({
-            title: "File Too Large",
-            description: "Images and videos larger than 5MB cannot be saved in the browser.",
-            variant: "destructive",
-          });
-          return;
-      }
-
-      if (isImage || isVideo) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            addPhoto({
-                ...newDocument,
-                dataUrl: e.target?.result as string,
+      if ((isImage || isVideo)) {
+         if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            toast({
+                title: "File Too Large",
+                description: "Images and videos larger than 5MB cannot be permanently saved in this demo.",
+                variant: "destructive",
             });
-        };
-        reader.readAsDataURL(file);
+            const tempUrl = URL.createObjectURL(file);
+             saveFile(tempUrl);
+             setTimeout(() => URL.revokeObjectURL(tempUrl), 60 * 1000); // Revoke after 1 minute
+        } else {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                saveFile(e.target?.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
       } else {
-         addDocument(newDocument as Document);
+         saveFile();
       }
 
       toast({
@@ -231,19 +248,35 @@ export default function DocumentsPage() {
         accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx"
       />
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <FileText /> My Files
-            </CardTitle>
-            <CardDescription>
-              Keep your important files, photos, and videos secure and accessible.
-            </CardDescription>
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <FileText /> My Files
+              </CardTitle>
+              <CardDescription>
+                Keep your important files, photos, and videos secure and accessible.
+              </CardDescription>
+            </div>
+            <Button onClick={handleUploadClick}>
+              <FileUp className="mr-2 h-4 w-4" /> Upload File
+            </Button>
           </div>
-          <Button onClick={handleUploadClick}>
-            <FileUp className="mr-2 h-4 w-4" /> Upload File
-          </Button>
         </CardHeader>
+        <CardContent>
+          <div className="flex w-full max-w-lg items-center space-x-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search photos by filename..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+        </CardContent>
       </Card>
 
       <div className="space-y-8">
@@ -263,12 +296,16 @@ export default function DocumentsPage() {
                             </CardContent>
                         </Card>
                     ))
-                ) : photos.length > 0 ? (
-                photos.map(photo => renderDocumentCard(photo, true))
+                ) : filteredPhotos.length > 0 ? (
+                filteredPhotos.map(photo => renderDocumentCard(photo, true))
                 ) : (
                 <Card className="md:col-span-2 lg:col-span-3">
                     <CardContent className="p-8 text-center text-muted-foreground">
-                    <p>You have no saved photos or videos. Capture some from the Camera Spots page!</p>
+                      {photos.length > 0 && searchTerm ? (
+                          <p>No results found for &quot;{searchTerm}&quot;.</p>
+                      ) : (
+                          <p>You have no saved photos or videos. Capture some from the Camera Spots page!</p>
+                      )}
                     </CardContent>
                 </Card>
                 )}
@@ -310,7 +347,7 @@ export default function DocumentsPage() {
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
         <DialogContent className="max-w-3xl p-0 md:max-h-[90vh] overflow-y-auto">
            <DialogHeader className="p-4">
-            <DialogTitle className="sr-only">Enlarged Media</DialogTitle>
+            <DialogTitle>{selectedMedia?.name}</DialogTitle>
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
           {selectedMedia?.isVideo && selectedMedia.dataUrl ? (
@@ -344,5 +381,3 @@ export default function DocumentsPage() {
     </div>
   );
 }
-
-    
