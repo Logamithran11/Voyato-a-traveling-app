@@ -121,7 +121,7 @@ export default function CameraSpotsPage() {
         <Card>
             <CardContent className="p-4">
                 <div className="relative aspect-video bg-muted rounded-md flex items-center justify-center">
-                    <video ref={videoRef} className={`w-full h-full object-cover rounded-md ${capturedImage ? 'hidden' : 'block'}`} autoPlay muted playsInline />
+                    <video ref={videoRef} className={`w-full h-full object-cover rounded-md ${capturedImage ? 'hidden' : ''}`} autoPlay muted playsInline />
                     {capturedImage && (
                         <Image src={capturedImage} alt="Captured photo" layout="fill" className="object-contain rounded-md" />
                     )}
