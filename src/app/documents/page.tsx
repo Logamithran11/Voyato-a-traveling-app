@@ -31,7 +31,7 @@ import { useDocuments } from '@/hooks/use-documents-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 export default function DocumentsPage() {
   const { documents, addDocument, deleteDocument, photos, deletePhoto } = useDocuments();
@@ -269,6 +269,10 @@ export default function DocumentsPage() {
 
       <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
         <DialogContent className="max-w-3xl p-0">
+           <DialogHeader className="sr-only">
+            <DialogTitle>Enlarged Image</DialogTitle>
+            <DialogDescription>A larger view of the selected photo.</DialogDescription>
+          </DialogHeader>
           {selectedImage && (
             <Image 
                 src={selectedImage} 
@@ -283,3 +287,5 @@ export default function DocumentsPage() {
     </div>
   );
 }
+
+    
