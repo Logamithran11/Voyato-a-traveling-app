@@ -11,11 +11,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, Share2, Wand2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { customizeTravelGuide } from '@/ai/flows/customize-travel-guide';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 
 // This is a placeholder. In a real app, you would fetch this data based on the slug.
@@ -39,7 +38,7 @@ const guideData = {
 
 export default function GuidePage({ params }: { params: { slug: string } }) {
   // Decode the slug and replace hyphens with spaces for the title
-  const title = decodeURIComponent(params.slug).replace(/-/g, ' ');
+  const title = useMemo(() => decodeURIComponent(params.slug).replace(/-/g, ' '), [params.slug]);
 
   const [isCustomizeDialogOpen, setCustomizeDialogOpen] = useState(false);
   const [customizationRequest, setCustomizationRequest] = useState("");
@@ -91,7 +90,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                 <Share2 className="h-4 w-4" />
             </Button>
              <Button onClick={() => setCustomizeDialogOpen(true)}>
-                <Edit className="mr-2 h-4 w-4" />
+                <Wand2 className="mr-2 h-4 w-4" />
                 Customize with AI
             </Button>
         </div>
