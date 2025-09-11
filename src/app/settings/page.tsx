@@ -16,12 +16,15 @@ import { Switch } from '@/components/ui/switch';
 import { User, Palette, Bell } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 export default function SettingsPage() {
 
     const { toast } = useToast();
     const [isDarkMode, setIsDarkMode] = useState(true);
     const [isClient, setIsClient] = useState(false);
+    const [userName, setUserName] = useLocalStorage('userName', 'Alex Doe');
+    const [currentName, setCurrentName] = useState(userName);
 
     useEffect(() => {
         setIsClient(true);
@@ -29,7 +32,8 @@ export default function SettingsPage() {
         const darkMode = savedTheme ? savedTheme === 'dark' : true;
         setIsDarkMode(darkMode);
         document.documentElement.classList.toggle('dark', darkMode);
-    }, []);
+        setCurrentName(userName);
+    }, [userName]);
 
     const handleThemeChange = (checked: boolean) => {
         setIsDarkMode(checked);
@@ -38,6 +42,7 @@ export default function SettingsPage() {
     };
 
     const handleSaveChanges = () => {
+        setUserName(currentName);
         toast({
             title: "Settings Saved",
             description: "Your changes have been saved successfully.",
@@ -59,7 +64,7 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label htmlFor="fullName">Full Name</Label>
-                        <Input id="fullName" defaultValue="Alex Doe" />
+                        <Input id="fullName" value={currentName} onChange={(e) => setCurrentName(e.target.value)} />
                     </div>
                      <div className="space-y-2">
                         <Label htmlFor="email">Email Address</Label>

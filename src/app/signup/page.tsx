@@ -1,3 +1,6 @@
+
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -13,10 +16,22 @@ import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "@/components/icons";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 const bgImage = PlaceHolderImages.find((img) => img.id === "login-bg");
 
 export default function SignupPage() {
+  const [fullName, setFullName] = useState("");
+  const [, setUserName] = useLocalStorage("userName", "");
+  const router = useRouter();
+
+  const handleCreateAccount = () => {
+    setUserName(fullName);
+    router.push("/dashboard");
+  };
+
   return (
     <div className="w-full min-h-screen lg:grid lg:grid-cols-2">
       <div className="flex items-center justify-center py-12 px-4">
@@ -31,7 +46,13 @@ export default function SignupPage() {
           <div className="grid gap-4">
              <div className="grid gap-2">
                 <Label htmlFor="full-name">Full name</Label>
-                <Input id="full-name" placeholder="John Doe" required />
+                <Input
+                  id="full-name"
+                  placeholder="John Doe"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -46,8 +67,8 @@ export default function SignupPage() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full" asChild>
-              <Link href="/dashboard">Create account</Link>
+            <Button type="submit" className="w-full" onClick={handleCreateAccount}>
+              Create account
             </Button>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
