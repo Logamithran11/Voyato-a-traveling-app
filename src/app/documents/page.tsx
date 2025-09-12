@@ -23,6 +23,7 @@ import {
   MapPin,
   Search,
   ExternalLink,
+  X,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -30,13 +31,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useMediaStore, type StoredMedia } from '@/hooks/use-media-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
@@ -47,6 +47,19 @@ export default function DocumentsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedMedia, setSelectedMedia] = useState<StoredMedia | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedMedia(null);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
   
   const filteredPhotos = photos.filter(photo => 
     photo.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -299,57 +312,53 @@ export default function DocumentsPage() {
 
       </div>
 
-      <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
-        <DialogContent className="max-w-6xl w-full p-0">
-          <DialogHeader className="p-4 border-b">
-            <DialogTitle>{selectedMedia?.name}</DialogTitle>
-            <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col">
-            <div className="relative w-full h-auto max-h-[calc(90vh-150px)] flex items-center justify-center bg-black/50">
-              {selectedMedia?.type === 'video' && selectedMedia.dataUrl ? (
-                <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-[80vh] rounded-lg" />
-              ) : selectedMedia?.dataUrl ? (
-                <Image 
-                    src={selectedMedia.dataUrl} 
-                    alt={selectedMedia.name || "Selected media"}
-                    width={1920}
-                    height={1080}
-                    className="max-w-full max-h-[80vh] h-auto w-auto object-contain"
-                />
-              ) : null}
-              </div>
-              {selectedMedia?.location && (
-                <div className='p-4 border-t'>
-                    <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2"><MapPin/> Location</div>
-                         <Button variant="outline" size="sm" asChild>
-                            <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`} target="_blank" rel="noopener noreferrer">
-                                View on Google Maps
-                                <ExternalLink className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                        Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
-                    </p>
-                    <div className='aspect-video w-full rounded-md overflow-hidden bg-muted'>
-                       <iframe
-                            width="100%"
-                            height="100%"
-                            loading="lazy"
-                            allowFullScreen
-                            referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedMedia.location.longitude-0.01},${selectedMedia.location.latitude-0.01},${selectedMedia.location.longitude+0.01},${selectedMedia.location.latitude+0.01}&layer=mapnik&marker=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`}>
-                        </iframe>
+      {selectedMedia && (
+        <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedMedia(null)}
+        >
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute top-4 right-4 text-white h-10 w-10"
+            onClick={() => setSelectedMedia(null)}
+          >
+            <X className="h-8 w-8" />
+          </Button>
+          <div className="relative w-full h-full p-8" onClick={(e) => e.stopPropagation()}>
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+                {selectedMedia.type === 'video' ? (
+                  <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-full rounded-lg" />
+                ) : (
+                  <Image 
+                      src={selectedMedia.dataUrl} 
+                      alt={selectedMedia.name || "Selected media"}
+                      width={1920}
+                      height={1080}
+                      className="max-w-full max-h-full h-auto w-auto object-contain"
+                  />
+                )}
+                {selectedMedia.location && (
+                    <div className='mt-4 p-4 rounded-lg bg-background/80 max-w-md w-full'>
+                        <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
+                            <div className="flex items-center gap-2"><MapPin/> Location</div>
+                             <Button variant="outline" size="sm" asChild>
+                                <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`} target="_blank" rel="noopener noreferrer">
+                                    View on Google Maps
+                                    <ExternalLink className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                            Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
+                        </p>
                     </div>
-                </div>
-              )}
+                )}
+            </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </div>
   );
-}
 
     
