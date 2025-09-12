@@ -14,14 +14,21 @@ import { Badge } from '@/components/ui/badge';
 
 const MAX_RECORDING_SECONDS = 15;
 
+type CapturedMedia = {
+  blob: Blob;
+  type: 'photo' | 'video';
+  url: string;
+};
+
+
 export default function CameraSpotsPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{latitude: number, longitude: number} | null>(null);
 
-  const [capturedImageBlob, setCapturedImageBlob] = useState<Blob | null>(null);
+  const [capturedMedia, setCapturedMedia] = useState<CapturedMedia | null>(null);
+
   const [isRecording, setIsRecording] = useState(false);
-  const [recordedVideoBlob, setRecordedVideoBlob] = useState<Blob | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -30,8 +37,8 @@ export default function CameraSpotsPage() {
   const recordedChunksRef = useRef<Blob[]>([]);
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { toast } = useToast();
   const { addFile } = useDocuments();
+  const { toast } = useToast();
 
   useEffect(() => {
     const getCameraPermission = async () => {
@@ -97,6 +104,16 @@ export default function CameraSpotsPage() {
     }
   }, [toast]);
 
+  // Clean up object URLs when component unmounts or media changes
+  useEffect(() => {
+    const mediaUrl = capturedMedia?.url;
+    return () => {
+      if (mediaUrl) {
+        URL.revokeObjectURL(mediaUrl);
+      }
+    };
+  }, [capturedMedia]);
+
   const handleCapturePhoto = () => {
     if (videoRef.current && canvasRef.current) {
         const video = videoRef.current;
@@ -109,8 +126,11 @@ export default function CameraSpotsPage() {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             canvas.toBlob((blob) => {
               if (blob) {
-                setCapturedImageBlob(blob);
-                setRecordedVideoBlob(null);
+                setCapturedMedia({
+                  blob,
+                  type: 'photo',
+                  url: URL.createObjectURL(blob),
+                });
                 toast({
                     title: 'Photo Captured!',
                     description: 'Your image has been captured successfully.',
@@ -122,30 +142,22 @@ export default function CameraSpotsPage() {
   };
 
   const handleClearCapture = () => {
-    setCapturedImageBlob(null);
-    setRecordedVideoBlob(null);
+    setCapturedMedia(null);
   };
   
   const handleSaveCapture = async () => {
+    if (!capturedMedia) return;
+
+    const { blob, type } = capturedMedia;
     const location = currentLocation ?? undefined;
+    const timestamp = new Date().toISOString();
+    const filename = type === 'photo' 
+        ? `Photo-${timestamp}.jpg` 
+        : `Video-${timestamp}.webm`;
     
-    if (capturedImageBlob) {
-        await addFile(
-            capturedImageBlob,
-            'photos',
-            `Photo-${new Date().toISOString()}.jpg`,
-            { location }
-        );
-        handleClearCapture();
-    } else if (recordedVideoBlob) {
-       await addFile(
-            recordedVideoBlob,
-            'photos',
-            `Video-${new Date().toISOString()}.webm`,
-            { location }
-        );
-        handleClearCapture();
-    }
+    await addFile(blob, 'photos', filename, { location });
+    
+    handleClearCapture();
   };
 
   const handleStartRecording = () => {
@@ -162,8 +174,11 @@ export default function CameraSpotsPage() {
 
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
-        setRecordedVideoBlob(blob);
-        setCapturedImageBlob(null);
+        setCapturedMedia({
+          blob,
+          type: 'video',
+          url: URL.createObjectURL(blob),
+        });
       };
 
       mediaRecorderRef.current.start();
@@ -190,21 +205,7 @@ export default function CameraSpotsPage() {
       }
     }
   };
-
-  const isAnythingCaptured = capturedImageBlob || recordedVideoBlob;
-
-  const capturedImageUrl = capturedImageBlob ? URL.createObjectURL(capturedImageBlob) : null;
-  const recordedVideoUrl = recordedVideoBlob ? URL.createObjectURL(recordedVideoBlob) : null;
-
-  // Clean up object URLs when component unmounts or blobs change
-  useEffect(() => {
-    return () => {
-      if (capturedImageUrl) URL.revokeObjectURL(capturedImageUrl);
-      if (recordedVideoUrl) URL.revokeObjectURL(recordedVideoUrl);
-    };
-  }, [capturedImageUrl, recordedVideoUrl]);
-
-
+  
   return (
     <div className="space-y-8">
         <canvas ref={canvasRef} className="hidden"></canvas>
@@ -232,7 +233,7 @@ export default function CameraSpotsPage() {
                 <div className="relative aspect-video bg-muted rounded-md flex items-center justify-center overflow-hidden">
                     <video 
                         ref={videoRef} 
-                        className={cn("w-full h-full object-cover rounded-md", { 'hidden': isAnythingCaptured })} 
+                        className={cn("w-full h-full object-cover rounded-md", { 'hidden': !!capturedMedia })} 
                         autoPlay 
                         muted 
                         playsInline 
@@ -243,19 +244,19 @@ export default function CameraSpotsPage() {
                         <span>{new Date(recordingTime * 1000).toISOString().substr(14, 5)}</span>
                       </div>
                     )}
-                    {capturedImageUrl && (
-                        <Image src={capturedImageUrl} alt="Captured photo" width={1920} height={1080} className="w-full h-full object-contain rounded-md" />
+                    {capturedMedia?.type === 'photo' && (
+                        <Image src={capturedMedia.url} alt="Captured photo" width={1920} height={1080} className="w-full h-full object-contain rounded-md" />
                     )}
-                    {recordedVideoUrl && (
-                        <video src={recordedVideoUrl} controls autoPlay className="w-full h-full rounded-md" />
+                    {capturedMedia?.type === 'video' && (
+                        <video src={capturedMedia.url} controls autoPlay className="w-full h-full rounded-md" />
                     )}
-                    {hasCameraPermission === false && !isAnythingCaptured && (
+                    {hasCameraPermission === false && !capturedMedia && (
                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 rounded-md">
                             <VideoOff className="h-16 w-16 text-muted-foreground" />
                             <p className="mt-4 text-muted-foreground">Camera is off or not available.</p>
                         </div>
                     )}
-                     {hasCameraPermission === null && !isAnythingCaptured && (
+                     {hasCameraPermission === null && !capturedMedia && (
                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 rounded-md">
                             <Camera className="h-16 w-16 text-muted-foreground animate-pulse" />
                             <p className="mt-4 text-muted-foreground">Waiting for camera access...</p>
@@ -276,7 +277,7 @@ export default function CameraSpotsPage() {
                 </CardContent>
             )}
             <CardFooter className="flex justify-center gap-4">
-                {isAnythingCaptured ? (
+                {!!capturedMedia ? (
                     <>
                         <Button onClick={handleClearCapture} variant="outline">
                             <X className="mr-2 h-4 w-4" />
@@ -284,7 +285,7 @@ export default function CameraSpotsPage() {
                         </Button>
                         <Button onClick={handleSaveCapture}>
                             <Save className="mr-2 h-4 w-4" />
-                            Save {capturedImageBlob ? 'Photo' : 'Video'}
+                            Save {capturedMedia.type === 'photo' ? 'Photo' : 'Video'}
                         </Button>
                     </>
                 ) : isRecording ? (
