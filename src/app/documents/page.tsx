@@ -275,7 +275,7 @@ export default function DocumentsPage() {
                                 <Skeleton className="h-12 w-12 rounded-md" />
                                 <div className="flex-grow space-y-2">
                                     <Skeleton className="h-4 w-4/5" />
-                                    <Skeleton className="h-4 w-2/5" />
+                                    <Skeleton className="h-4 w-2/f" />
                                 </div>
                                 <Skeleton className="h-8 w-8" />
                             </CardContent>
@@ -300,23 +300,25 @@ export default function DocumentsPage() {
       </div>
 
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
-        <DialogContent className="max-w-6xl p-0">
+        <DialogContent className="max-w-6xl w-full p-0">
           <DialogHeader className="p-4 border-b">
             <DialogTitle>{selectedMedia?.name}</DialogTitle>
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
-          <div className="max-h-[calc(90vh-150px)] overflow-y-auto">
+          <div className="flex flex-col">
+            <div className="relative w-full h-auto max-h-[calc(90vh-200px)] flex items-center justify-center">
               {selectedMedia?.type === 'video' && selectedMedia.dataUrl ? (
-                <video src={selectedMedia.dataUrl} controls autoPlay className="w-full rounded-t-lg" />
+                <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-full rounded-t-lg" />
               ) : selectedMedia?.dataUrl ? (
                 <Image 
                     src={selectedMedia.dataUrl} 
                     alt={selectedMedia.name || "Selected media"}
                     width={1920}
                     height={1080}
-                    className="w-full h-auto object-contain rounded-t-lg"
+                    className="max-w-full max-h-full h-auto w-auto object-contain rounded-t-lg"
                 />
               ) : null}
+              </div>
               {selectedMedia?.location && (
                 <div className='p-4 border-t'>
                     <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
@@ -349,5 +351,3 @@ export default function DocumentsPage() {
     </div>
   );
 }
-
-    
