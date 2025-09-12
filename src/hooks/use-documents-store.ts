@@ -20,6 +20,21 @@ export type Document = {
     fullPath: string;
 };
 
+// Helper function to convert dataURL to Blob
+async function dataURLtoBlob(dataurl: string) {
+    const arr = dataurl.split(',');
+    if (arr.length < 2) {
+        throw new Error('Invalid data URL');
+    }
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    if (!mimeMatch) {
+        throw new Error('Could not find MIME type in data URL');
+    }
+    const res = await fetch(dataurl);
+    return await res.blob();
+}
+
+
 export function useDocuments() {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [photos, setPhotos] = useState<Document[]>([]);
@@ -70,40 +85,28 @@ export function useDocuments() {
     }, [fetchFiles]);
 
 
-    const addFile = async (file: File | Blob | string, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
+    const addFile = async (file: File | Blob, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
         
-        const uploadFile = async (fileToUpload: File | Blob) => {
-            const storageRef = ref(storage, `${path}/${filename}`);
-            try {
-                const snapshot = await uploadBytes(storageRef, fileToUpload, {
-                    customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
-                });
-                console.log('Uploaded a blob or file!', snapshot);
-                toast({
-                    title: "Upload Successful",
-                    description: `${filename} has been uploaded to the cloud.`,
-                });
-                // Refresh the list
-                await fetchFiles(path);
+        const storageRef = ref(storage, `${path}/${filename}`);
+        try {
+            const snapshot = await uploadBytes(storageRef, file, {
+                customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
+            });
+            console.log('Uploaded a blob or file!', snapshot);
+            toast({
+                title: "Upload Successful",
+                description: `${filename} has been uploaded to the cloud.`,
+            });
+            // Refresh the list
+            await fetchFiles(path);
 
-            } catch (error) {
-                console.error("Upload error:", error);
-                toast({
-                    variant: "destructive",
-                    title: "Upload Failed",
-                    description: "Could not upload your file. Please try again.",
-                });
-            }
-        };
-
-        if (typeof file === 'string') {
-            // It's a data URL, convert to blob
-            const response = await fetch(file);
-            const blob = await response.blob();
-            await uploadFile(blob);
-        } else {
-            // It's already a File or Blob
-            await uploadFile(file);
+        } catch (error) {
+            console.error("Upload error:", error);
+            toast({
+                variant: "destructive",
+                title: "Upload Failed",
+                description: "Could not upload your file. Please try again.",
+            });
         }
     };
 
@@ -135,3 +138,5 @@ export function useDocuments() {
     
     return { documents, photos, loading, addFile, deleteDocument, deletePhoto };
 }
+
+    

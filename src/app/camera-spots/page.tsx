@@ -14,14 +14,30 @@ import { Badge } from '@/components/ui/badge';
 
 const MAX_RECORDING_SECONDS = 15;
 
+// Helper function to convert dataURL to Blob
+async function dataURLtoBlob(dataurl: string) {
+    const arr = dataurl.split(',');
+    if (arr.length < 2) {
+        throw new Error('Invalid data URL');
+    }
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    if (!mimeMatch) {
+        throw new Error('Could not find MIME type in data URL');
+    }
+    const mime = mimeMatch[1];
+    const res = await fetch(dataurl);
+    return await res.blob();
+}
+
+
 export default function CameraSpotsPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{latitude: number, longitude: number} | null>(null);
 
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [capturedImage, setCapturedImage] = useState<{ url: string; blob: Blob } | null>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
+  const [recordedVideo, setRecordedVideo] = useState<{ url: string; blob: Blob } | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -107,43 +123,46 @@ export default function CameraSpotsPage() {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const dataUrl = canvas.toDataURL('image/jpeg');
-            setCapturedImage(dataUrl);
-            setRecordedVideoUrl(null);
-            toast({
-                title: 'Photo Captured!',
-                description: 'Your image has been captured successfully.',
-            });
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const url = URL.createObjectURL(blob);
+                setCapturedImage({ url, blob });
+                setRecordedVideo(null);
+                toast({
+                    title: 'Photo Captured!',
+                    description: 'Your image has been captured successfully.',
+                });
+              }
+            }, 'image/jpeg');
         }
     }
   };
 
   const handleClearCapture = () => {
-    setCapturedImage(null);
-    if (recordedVideoUrl) {
-      URL.revokeObjectURL(recordedVideoUrl);
-      setRecordedVideoUrl(null);
+    if (capturedImage) {
+      URL.revokeObjectURL(capturedImage.url);
+      setCapturedImage(null);
+    }
+    if (recordedVideo) {
+      URL.revokeObjectURL(recordedVideo.url);
+      setRecordedVideo(null);
     }
   };
   
   const handleSaveCapture = async () => {
     const location = currentLocation ?? undefined;
     
-    if (capturedImage) {
-        const response = await fetch(capturedImage);
-        const blob = await response.blob();
+    if (capturedImage?.blob) {
         await addFile(
-            blob,
+            capturedImage.blob,
             'photos',
             `Photo-${new Date().toISOString()}.jpg`,
             { location }
         );
         handleClearCapture();
-    } else if (recordedVideoUrl) {
-       const response = await fetch(recordedVideoUrl);
-       const file = await response.blob();
+    } else if (recordedVideo?.blob) {
        await addFile(
-            file,
+            recordedVideo.blob,
             'photos',
             `Video-${new Date().toISOString()}.webm`,
             { location }
@@ -167,7 +186,7 @@ export default function CameraSpotsPage() {
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
-        setRecordedVideoUrl(url);
+        setRecordedVideo({ url, blob });
         setCapturedImage(null);
       };
 
@@ -196,7 +215,7 @@ export default function CameraSpotsPage() {
     }
   };
 
-  const isAnythingCaptured = capturedImage || recordedVideoUrl;
+  const isAnythingCaptured = capturedImage || recordedVideo;
 
 
   return (
@@ -238,10 +257,10 @@ export default function CameraSpotsPage() {
                       </div>
                     )}
                     {capturedImage && (
-                        <Image src={capturedImage} alt="Captured photo" width={1920} height={1080} className="w-full h-full object-contain rounded-md" />
+                        <Image src={capturedImage.url} alt="Captured photo" width={1920} height={1080} className="w-full h-full object-contain rounded-md" />
                     )}
-                    {recordedVideoUrl && (
-                        <video src={recordedVideoUrl} controls autoPlay className="w-full h-full rounded-md" />
+                    {recordedVideo && (
+                        <video src={recordedVideo.url} controls autoPlay className="w-full h-full rounded-md" />
                     )}
                     {hasCameraPermission === false && !isAnythingCaptured && (
                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 rounded-md">
@@ -303,3 +322,5 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
+
+    
