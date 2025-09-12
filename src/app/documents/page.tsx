@@ -314,48 +314,48 @@ export default function DocumentsPage() {
 
       {selectedMedia && (
         <div 
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
             onClick={() => setSelectedMedia(null)}
         >
           <Button 
             variant="ghost" 
             size="icon" 
-            className="absolute top-4 right-4 text-white h-10 w-10"
+            className="absolute top-4 right-4 text-white h-10 w-10 z-10"
             onClick={() => setSelectedMedia(null)}
           >
             <X className="h-8 w-8" />
           </Button>
-          <div className="relative w-full h-full p-8" onClick={(e) => e.stopPropagation()}>
-            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
-                {selectedMedia.type === 'video' ? (
-                  <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-[calc(100vh-150px)] rounded-lg" />
-                ) : (
-                  <Image 
-                      src={selectedMedia.dataUrl} 
-                      alt={selectedMedia.name || "Selected media"}
-                      width={1920}
-                      height={1080}
-                      className="max-w-full max-h-[calc(100vh-150px)] h-auto w-auto object-contain"
-                  />
-                )}
-                {selectedMedia.location && (
-                    <div className='mt-4 p-4 rounded-lg bg-background/80 max-w-md w-full'>
-                        <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
-                            <div className="flex items-center gap-2"><MapPin/> Location</div>
-                             <Button variant="outline" size="sm" asChild>
-                                <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`} target="_blank" rel="noopener noreferrer">
-                                    View on Google Maps
-                                    <ExternalLink className="ml-2 h-4 w-4" />
-                                </Link>
-                            </Button>
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                            Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
-                        </p>
-                    </div>
-                )}
-            </div>
+
+          <div className="relative w-full h-full flex items-center justify-center p-8" onClick={(e) => e.stopPropagation()}>
+            {selectedMedia.type === 'video' ? (
+                <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-full rounded-lg" />
+            ) : (
+                <Image 
+                    src={selectedMedia.dataUrl} 
+                    alt={selectedMedia.name || "Selected media"}
+                    width={1920}
+                    height={1080}
+                    className="max-w-full max-h-full h-auto w-auto object-contain"
+                />
+            )}
           </div>
+          
+          {selectedMedia.location && (
+            <div className='absolute bottom-4 left-4 right-4 p-4 rounded-lg bg-background/80 max-w-md mx-auto w-full' onClick={(e) => e.stopPropagation()}>
+                <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2"><MapPin/> Location</div>
+                     <Button variant="outline" size="sm" asChild>
+                        <Link href={`https://www.google.com/maps?q=${selectedMedia.location.latitude},${selectedMedia.location.longitude}`} target="_blank" rel="noopener noreferrer">
+                            View on Google Maps
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                    Lat: {selectedMedia.location.latitude.toFixed(6)}, Lng: {selectedMedia.location.longitude.toFixed(6)}
+                </p>
+            </div>
+          )}
         </div>
       )}
     </div>
