@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Wallet, Wand2, Loader2, Lightbulb, PieChart, Tag } from "lucide-react";
+import { Wallet, Wand2, Loader2, Lightbulb, PieChart, Tag, ArrowLeft } from "lucide-react";
 import {
   generateBudgetPlan,
   GenerateBudgetPlanOutput,
@@ -34,6 +34,7 @@ import {
   Tooltip
 } from "recharts";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088fe", "#00c49f"];
 
@@ -86,6 +87,12 @@ export default function BudgetPage() {
 
   return (
     <div className="space-y-8">
+       <Button variant="outline" asChild>
+          <Link href="/dashboard">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="font-headline flex items-center gap-2 text-xl md:text-2xl">

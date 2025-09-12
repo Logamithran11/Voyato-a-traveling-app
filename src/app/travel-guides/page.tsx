@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
-import {FileText, Globe, Search} from 'lucide-react';
+import {FileText, Globe, Search, ArrowLeft} from 'lucide-react';
 import {Input} from '@/components/ui/input';
 import {PlaceHolderImages} from '@/lib/placeholder-images';
 import { slugify } from '@/lib/utils';
@@ -82,6 +82,14 @@ export default function TravelGuidesPage() {
   
   return (
     <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

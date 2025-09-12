@@ -4,13 +4,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Camera, VideoOff, X, Save, Video, Locate } from "lucide-react";
+import { Camera, VideoOff, X, Save, Video, Locate, ArrowLeft } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useMediaStore } from '@/hooks/use-media-store';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 
 const MAX_RECORDING_SECONDS = 15;
 
@@ -204,6 +205,14 @@ export default function CameraSpotsPage() {
   
   return (
     <div className="space-y-8">
+        <div className="flex items-center justify-between">
+            <Button variant="outline" asChild>
+                <Link href="/dashboard">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Dashboard
+                </Link>
+            </Button>
+        </div>
         <canvas ref={canvasRef} className="hidden"></canvas>
         <Card>
             <CardHeader>

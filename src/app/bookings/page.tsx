@@ -12,9 +12,10 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Star, MapPin, Search } from 'lucide-react';
+import { BookOpen, Star, MapPin, Search, ArrowLeft } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 const hotelImages = PlaceHolderImages.filter(img =>
   img.id.startsWith('dest-')
@@ -83,6 +84,14 @@ export default function BookingsPage() {
 
   return (
     <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

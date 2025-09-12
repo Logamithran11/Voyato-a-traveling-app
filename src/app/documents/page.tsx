@@ -24,6 +24,7 @@ import {
   Search,
   ExternalLink,
   X,
+  ArrowLeft,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -201,6 +202,14 @@ export default function DocumentsPage() {
 
   return (
     <div className="space-y-8">
+       <div className="flex items-center justify-between">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
+      </div>
       <input 
         type="file" 
         ref={fileInputRef}
