@@ -34,7 +34,7 @@ import {
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/itinerary", label: "Itinerary Planner", icon: Map },
+  { href: "/everyday-planner", label: "Everyday Planner", icon: Map },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
   { href: "/budget", label: "Budget", icon: Wallet },
   { href: "/tickets", label: "Tickets", icon: Ticket },

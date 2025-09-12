@@ -1,6 +1,6 @@
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { Recommendations } from "@/components/dashboard/recommendations";
-import { ItineraryPlanner } from "@/components/dashboard/itinerary-planner";
+import { EverydayPlanner } from "@/components/dashboard/everyday-planner";
 import { WeatherWidget } from "@/components/dashboard/weather-widget";
 import { QuickAccess } from "@/components/dashboard/quick-access";
 import { BudgetOverview } from "@/components/dashboard/budget-overview";
@@ -15,7 +15,7 @@ export default function DashboardPage() {
         </div>
         <div className="space-y-8">
           <BudgetOverview />
-          <ItineraryPlanner />
+          <EverydayPlanner />
           <WeatherWidget />
           <QuickAccess />
         </div>
