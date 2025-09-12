@@ -3,6 +3,7 @@
 
 import { useLocalStorage } from "./use-local-storage";
 import { useToast } from "./use-toast";
+import { useState, useEffect } from "react";
 
 export type StoredMedia = {
     name: string;
@@ -19,6 +20,13 @@ export type StoredMedia = {
 export function useMediaStore() {
     const [media, setMedia] = useLocalStorage<StoredMedia[]>("media", []);
     const { toast } = useToast();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Since useLocalStorage is now synchronous on the client, 
+        // we can set loading to false in a useEffect to ensure it only runs on the client.
+        setLoading(false);
+    }, []);
 
     const addMedia = async (
         blob: Blob,
@@ -96,5 +104,5 @@ export function useMediaStore() {
     const photos = media.filter(m => m.type === 'photo' || m.type === 'video');
     const documents = media.filter(m => m.type === 'document');
 
-    return { photos, documents, addMedia, addDocument, deleteMedia, loading: false };
+    return { photos, documents, addMedia, addDocument, deleteMedia, loading };
 }

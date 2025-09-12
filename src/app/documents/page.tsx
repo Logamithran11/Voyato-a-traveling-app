@@ -255,7 +255,7 @@ export default function DocumentsPage() {
                       {photos.length > 0 && searchTerm ? (
                           <p>No results found for &quot;{searchTerm}&quot;.</p>
                       ) : (
-                          <p>You have no saved photos or videos. Upload some or use the Camera Spots page!</p>
+                          <p>You have no saved photos or videos. Use the Camera Spots page to capture some!</p>
                       )}
                     </CardContent>
                 </Card>
@@ -289,7 +289,7 @@ export default function DocumentsPage() {
                       {documents.length > 0 && searchTerm ? (
                           <p>No results found for &quot;{searchTerm}&quot;.</p>
                       ) : (
-                         <p>You have no documents uploaded. Click 'Upload File' to get started.</p>
+                         <p>You have no documents uploaded. Click 'Upload Document' to get started.</p>
                       )}
                     </CardContent>
                 </Card>
