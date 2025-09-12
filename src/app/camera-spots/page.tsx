@@ -8,7 +8,7 @@ import { Camera, VideoOff, X, Save, Video, Locate } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useDocuments } from '@/hooks/use-documents-store';
+import { useMediaStore } from '@/hooks/use-media-store';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
@@ -37,7 +37,7 @@ export default function CameraSpotsPage() {
   const recordedChunksRef = useRef<Blob[]>([]);
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { addFile } = useDocuments();
+  const { addMedia } = useMediaStore();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -150,15 +150,8 @@ export default function CameraSpotsPage() {
 
     const { blob, type } = capturedMedia;
     const location = currentLocation ?? undefined;
-    const timestamp = new Date().toISOString();
     
-    if (type === 'photo') {
-        const filename = `Photo-${timestamp}.jpg`;
-        await addFile(blob, 'photos', filename, { location }, 'image/jpeg');
-    } else {
-        const filename = `Video-${timestamp}.webm`;
-        await addFile(blob, 'photos', filename, { location }, 'video/webm');
-    }
+    await addMedia(blob, type, location);
     
     handleClearCapture();
   };

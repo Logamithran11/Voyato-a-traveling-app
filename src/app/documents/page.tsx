@@ -30,9 +30,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useDocuments, type Document } from '@/hooks/use-documents-store';
+import { useMediaStore, type StoredMedia } from '@/hooks/use-media-store';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
@@ -42,10 +42,10 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 
 export default function DocumentsPage() {
-  const { documents, photos, loading, addFile, deleteDocument, deletePhoto } = useDocuments();
+  const { documents, photos, loading, addDocument, deleteMedia } = useMediaStore();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedMedia, setSelectedMedia] = useState<Document | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<StoredMedia | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   
   const filteredPhotos = photos.filter(photo => 
@@ -55,78 +55,60 @@ export default function DocumentsPage() {
     doc.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = (doc: Document, isPhoto: boolean) => {
-    if (isPhoto) {
-        deletePhoto(doc.fullPath);
-    } else {
-        deleteDocument(doc.fullPath);
-    }
+  const handleDelete = (media: StoredMedia) => {
+    deleteMedia(media.dataUrl);
   };
 
-  const handleDownload = (doc: Document) => {
-    if (doc.dataUrl) {
-        // Since these are Firebase storage URLs, we can directly link to them
-        // To force download, we can fetch and create a blob URL or use an anchor with download attribute
+  const handleDownload = (media: StoredMedia) => {
+    if (media.dataUrl) {
         const a = document.createElement('a');
-        a.href = doc.dataUrl;
-        a.target = "_blank"; // Let browser handle PDF/Image view or download
-        a.download = doc.name; // Suggest a filename
+        a.href = media.dataUrl;
+        a.download = media.name;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         toast({
-          title: "Opening File...",
-          description: `${doc.name} will open in a new tab.`,
+          title: "Downloading File...",
+          description: `${media.name} will be downloaded.`,
         });
     } else {
        toast({
           title: "Download failed",
-          description: `Could not find data for ${doc.name}.`,
+          description: `Could not find data for ${media.name}.`,
           variant: "destructive"
         });
     }
   };
 
-  const handleShare = async (doc: Document) => {
-    if (!doc.dataUrl) return;
+  const handleShare = async (media: StoredMedia) => {
+     if (!media.dataUrl) return;
+     try {
+        const response = await fetch(media.dataUrl);
+        const blob = await response.blob();
+        const file = new File([blob], media.name, { type: blob.type });
 
-    const shareData = {
-      title: 'Travel Document',
-      text: `Here is my document: ${doc.name}`,
-      url: doc.dataUrl,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        toast({
-            title: "Item shared successfully!",
-        });
-      } catch (err) {
-        if ((err as Error).name !== 'AbortError') {
-            console.error("Failed to share:", err);
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: media.name,
+                text: `Check out ${media.name}`,
+            });
+            toast({ title: "Shared successfully!" });
+        } else {
+            // Fallback for browsers that don't support sharing files
+            await navigator.clipboard.writeText(window.location.href);
             toast({
-                variant: "destructive",
-                title: "Error",
-                description: "Could not share the item.",
+              title: "Link Copied!",
+              description: "Sharing not supported. A link to this page has been copied to your clipboard.",
             });
         }
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareData.url);
-        toast({
-          title: "Link Copied!",
-          description: "A shareable link has been copied to your clipboard.",
-        });
-      } catch (err) {
-        console.error("Failed to copy link:", err);
+    } catch (err) {
+        console.error("Failed to share:", err);
         toast({
             variant: "destructive",
             title: "Error",
-            description: "Could not copy the link to the clipboard.",
+            description: "Could not share the item.",
         });
-      }
     }
   };
 
@@ -137,25 +119,30 @@ export default function DocumentsPage() {
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const isImage = file.type.startsWith('image/');
-      const isVideo = file.type.startsWith('video/');
-      const path = (isImage || isVideo) ? 'photos' : 'documents';
-      await addFile(file, path);
+      const isDoc = !file.type.startsWith('image/') && !file.type.startsWith('video/');
+      if (isDoc) {
+        addDocument(file);
+      } else {
+         toast({
+            title: "Wrong Upload Area",
+            description: "Please upload photos and videos from the Camera Spots page.",
+            variant: "destructive"
+        });
+      }
     }
-    // Reset file input
     if(fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const renderDocumentCard = (doc: Document, isMedia: boolean) => (
-    <Card key={doc.fullPath} className="shadow-lg group">
-       {(doc.isImage || doc.isVideo) && doc.dataUrl ? (
-         <CardContent className="p-0" onClick={() => setSelectedMedia(doc)}>
+  const renderMediaCard = (media: StoredMedia) => (
+    <Card key={media.dataUrl} className="shadow-lg group">
+       {(media.type === 'photo' || media.type === 'video') && media.dataUrl ? (
+         <CardContent className="p-0" onClick={() => setSelectedMedia(media)}>
             <div className="relative aspect-video cursor-pointer overflow-hidden rounded-t-lg bg-muted flex items-center justify-center">
-              {doc.isImage && doc.dataUrl ? (
-                <Image src={doc.dataUrl} alt={doc.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
-              ) : doc.isVideo && doc.dataUrl ? (
-                 <video src={doc.dataUrl} className="w-full h-full object-cover" muted loop playsInline />
-              ) : doc.isVideo ? (
+              {media.type === 'photo' && media.dataUrl ? (
+                <Image src={media.dataUrl} alt={media.name} layout="fill" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+              ) : media.type === 'video' && media.dataUrl ? (
+                 <video src={media.dataUrl} className="w-full h-full object-cover" muted loop playsInline />
+              ) : media.type === 'video' ? (
                 <Video className="h-16 w-16 text-muted-foreground" />
               ) : null }
             </div>
@@ -163,17 +150,17 @@ export default function DocumentsPage() {
        ) : null}
       <CardContent className="p-4 flex items-start gap-4">
         <div className="bg-primary/10 text-primary p-3 rounded-md mt-1">
-          {doc.isImage ? <ImageIcon className="h-6 w-6" /> : (doc.isVideo ? <Video className="h-6 w-6"/> : <FileText className="h-6 w-6" />)}
+          {media.type === 'photo' ? <ImageIcon className="h-6 w-6" /> : (media.type === 'video' ? <Video className="h-6 w-6"/> : <FileText className="h-6 w-6" />)}
         </div>
         <div className="flex-grow overflow-hidden">
-          <p className="font-semibold truncate">{doc.name}</p>
+          <p className="font-semibold truncate">{media.name}</p>
           <p className="text-sm text-muted-foreground">
-            {doc.size} - {doc.date}
+            {media.size} - {media.date}
           </p>
-           {doc.location && (
+           {media.location && (
               <Badge variant="outline" className="mt-2">
                 <Locate className="mr-1.5 h-3 w-3"/>
-                {doc.location.latitude.toFixed(4)}, {doc.location.longitude.toFixed(4)}
+                {media.location.latitude.toFixed(4)}, {media.location.longitude.toFixed(4)}
               </Badge>
            )}
         </div>
@@ -184,13 +171,13 @@ export default function DocumentsPage() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleDownload(doc)} disabled={!doc.dataUrl}>
+            <DropdownMenuItem onClick={() => handleDownload(media)} disabled={!media.dataUrl}>
               <Download className="mr-2 h-4 w-4" /> Download
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleShare(doc)}>
+            <DropdownMenuItem onClick={() => handleShare(media)}>
               <Share2 className="mr-2 h-4 w-4" /> Share
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(doc, isMedia)}>
+            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(media)}>
               <Trash2 className="mr-2 h-4 w-4" /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -206,21 +193,21 @@ export default function DocumentsPage() {
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
-        accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx,.eml"
+        accept="application/pdf,.doc,.docx,.xls,.xlsx,.eml,text/plain"
       />
       <Card>
         <CardHeader>
           <div className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <FileText /> My Cloud Files
+                <FileText /> My Local Files
               </CardTitle>
               <CardDescription>
-                Keep your important files, photos, and videos secure and accessible from anywhere.
+                Keep your important files, photos, and videos secure in your browser's local storage.
               </CardDescription>
             </div>
             <Button onClick={handleUploadClick}>
-              <FileUp className="mr-2 h-4 w-4" /> Upload File
+              <FileUp className="mr-2 h-4 w-4" /> Upload Document
             </Button>
           </div>
         </CardHeader>
@@ -261,7 +248,7 @@ export default function DocumentsPage() {
                         </Card>
                     ))
                 ) : filteredPhotos.length > 0 ? (
-                filteredPhotos.map(photo => renderDocumentCard(photo, true))
+                filteredPhotos.map(photo => renderMediaCard(photo))
                 ) : (
                 <Card className="md:col-span-2 lg:col-span-3">
                     <CardContent className="p-8 text-center text-muted-foreground">
@@ -295,7 +282,7 @@ export default function DocumentsPage() {
                         </Card>
                     ))
                 ) : filteredDocuments.length > 0 ? (
-                filteredDocuments.map(doc => renderDocumentCard(doc, false))
+                filteredDocuments.map(doc => renderMediaCard(doc))
                 ) : (
                 <Card className="md:col-span-2 lg:col-span-3">
                     <CardContent className="p-8 text-center text-muted-foreground">
@@ -319,7 +306,7 @@ export default function DocumentsPage() {
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
           <div className="max-h-[calc(90vh-150px)] overflow-y-auto">
-              {selectedMedia?.isVideo && selectedMedia.dataUrl ? (
+              {selectedMedia?.type === 'video' && selectedMedia.dataUrl ? (
                 <video src={selectedMedia.dataUrl} controls autoPlay className="w-full rounded-t-lg" />
               ) : selectedMedia?.dataUrl ? (
                 <Image 
