@@ -306,16 +306,16 @@ export default function DocumentsPage() {
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="relative w-full h-auto max-h-[calc(90vh-200px)] flex items-center justify-center">
+            <div className="relative w-full h-auto max-h-[calc(90vh-150px)] flex items-center justify-center bg-black/50">
               {selectedMedia?.type === 'video' && selectedMedia.dataUrl ? (
-                <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-full rounded-t-lg" />
+                <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-[80vh] rounded-lg" />
               ) : selectedMedia?.dataUrl ? (
                 <Image 
                     src={selectedMedia.dataUrl} 
                     alt={selectedMedia.name || "Selected media"}
                     width={1920}
                     height={1080}
-                    className="max-w-full max-h-full h-auto w-auto object-contain rounded-t-lg"
+                    className="max-w-full max-h-[80vh] h-auto w-auto object-contain"
                 />
               ) : null}
               </div>
@@ -351,3 +351,5 @@ export default function DocumentsPage() {
     </div>
   );
 }
+
+    
