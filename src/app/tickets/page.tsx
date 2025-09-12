@@ -59,6 +59,42 @@ const Barcode = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 )
 
+const tickets = [
+    {
+        from: { code: 'NRT', city: 'Tokyo' },
+        to: { code: 'UKY', city: 'Kyoto' },
+        flight: 'VY-821',
+        passenger: 'Alex Doe',
+        date: '28 Oct 2024',
+        departs: '10:30 AM',
+        gate: 'D12',
+        seat: '24A',
+        boardingTime: '09:45 AM',
+    },
+    {
+        from: { code: 'CDG', city: 'Paris' },
+        to: { code: 'JFK', city: 'New York' },
+        flight: 'AF-006',
+        passenger: 'Alex Doe',
+        date: '15 Nov 2024',
+        departs: '08:00 PM',
+        gate: 'A38',
+        seat: '12B',
+        boardingTime: '07:15 PM',
+    },
+    {
+        from: { code: 'LHR', city: 'London' },
+        to: { code: 'DXB', city: 'Dubai' },
+        flight: 'EK-002',
+        passenger: 'Alex Doe',
+        date: '02 Dec 2024',
+        departs: '01:20 PM',
+        gate: 'B45',
+        seat: '33F',
+        boardingTime: '12:35 PM',
+    },
+]
+
 export default function TicketsPage() {
   return (
     <div className="space-y-8">
@@ -81,95 +117,99 @@ export default function TicketsPage() {
         </CardHeader>
       </Card>
       
-      <Card className="bg-white dark:bg-slate-900 shadow-lg relative font-sans">
-        <div className="flex flex-row items-center justify-between p-4 bg-blue-600 text-white rounded-t-lg">
-            <p className="font-bold uppercase tracking-wider">Boarding Pass</p>
-            <Button variant="outline" size="sm" className="bg-transparent text-white border-white hover:bg-white hover:text-blue-600">Download</Button>
-        </div>
-        <div className="flex">
-            <div className="p-6 flex-grow">
-                <div className="flex justify-between items-start mb-4">
-                    <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">From</p>
-                        <p className="text-5xl font-bold text-gray-800 dark:text-gray-200">NRT</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Tokyo</p>
+      {tickets.map((ticket, index) => (
+        <Card key={index} className="bg-white dark:bg-slate-900 shadow-lg relative font-sans">
+            <div className="flex flex-row items-center justify-between p-4 bg-blue-600 text-white rounded-t-lg">
+                <p className="font-bold uppercase tracking-wider">Boarding Pass</p>
+                <Button variant="outline" size="sm" className="bg-transparent text-white border-white hover:bg-white hover:text-blue-600">Download</Button>
+            </div>
+            <div className="flex">
+                <div className="p-6 flex-grow">
+                    <div className="flex justify-between items-start mb-4">
+                        <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">From</p>
+                            <p className="text-5xl font-bold text-gray-800 dark:text-gray-200">{ticket.from.code}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{ticket.from.city}</p>
+                        </div>
+                        <div className="text-center text-gray-400 dark:text-gray-500">
+                            <Plane className="h-8 w-8 mx-auto"/>
+                            <p className="text-xs mt-1">Flight {ticket.flight}</p>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">To</p>
+                            <p className="text-5xl font-bold text-gray-800 dark:text-gray-200">{ticket.to.code}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{ticket.to.city}</p>
+                        </div>
                     </div>
-                    <div className="text-center text-gray-400 dark:text-gray-500">
-                        <Plane className="h-8 w-8 mx-auto"/>
-                        <p className="text-xs mt-1">Flight VY-821</p>
+                    <Separator className="my-4 bg-gray-200 dark:bg-gray-700"/>
+                    <div className="grid grid-cols-3 gap-4 text-center md:text-left text-gray-800 dark:text-gray-200">
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Passenger</p>
+                            <p className="font-medium">{ticket.passenger}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Date</p>
+                            <p className="font-medium">{ticket.date}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Departs</p>
+                            <p className="font-medium">{ticket.departs}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Gate</p>
+                            <p className="font-medium">{ticket.gate}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Seat</p>
+                            <p className="font-medium">{ticket.seat}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Boarding Time</p>
+                            <p className="font-medium">{ticket.boardingTime}</p>
+                        </div>
                     </div>
-                    <div className="text-right">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">To</p>
-                        <p className="text-5xl font-bold text-gray-800 dark:text-gray-200">UKY</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Kyoto</p>
+                    <div className="mt-6">
+                        <Barcode className="w-full max-w-xs mx-auto text-black dark:text-white" />
                     </div>
                 </div>
-                 <Separator className="my-4 bg-gray-200 dark:bg-gray-700"/>
-                <div className="grid grid-cols-3 gap-4 text-center md:text-left text-gray-800 dark:text-gray-200">
-                     <div>
+                
+                <div className="absolute top-16 bottom-0 left-2/3 hidden md:block">
+                    <div className="h-full border-l-2 border-dashed border-gray-300 dark:border-gray-600"></div>
+                    <div className="absolute -top-4 left-[-17px] h-8 w-8 rounded-full bg-background border-dashed border-t-2 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+                    <div className="absolute -bottom-4 left-[-17px] h-8 w-8 rounded-full bg-background border-dashed border-t-2 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+                </div>
+
+                <div className="w-1/3 p-6 flex-col items-center justify-between bg-gray-50 dark:bg-slate-800 rounded-r-lg relative hidden md:flex">
+                    <div className="text-center w-full">
+                        <p className="font-bold text-blue-600">VOYATO</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">FLIGHT {ticket.flight}</p>
+                        <Separator className="my-2 bg-gray-200 dark:bg-gray-700"/>
                         <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Passenger</p>
-                        <p className="font-medium">Alex Doe</p>
+                        <p className="font-medium text-sm text-gray-800 dark:text-gray-200">{ticket.passenger}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mt-2">Seat</p>
+                        <p className="font-bold text-lg text-gray-800 dark:text-gray-200">{ticket.seat}</p>
                     </div>
-                     <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Date</p>
-                        <p className="font-medium">28 Oct 2024</p>
+                    <div className="w-full">
+                        <QrCode className="w-full h-auto max-w-[120px] mx-auto text-black dark:text-white"/>
                     </div>
-                    <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Departs</p>
-                        <p className="font-medium">10:30 AM</p>
-                    </div>
-                     <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Gate</p>
-                        <p className="font-medium">D12</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Seat</p>
-                        <p className="font-medium">24A</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Boarding Time</p>
-                        <p className="font-medium">09:45 AM</p>
+                    <div className="absolute bottom-6 left-0 right-0">
+                        <p className="text-center text-xs text-gray-500 dark:text-gray-400">Scan at gate</p>
                     </div>
                 </div>
-                <div className="mt-6">
-                    <Barcode className="w-full max-w-xs mx-auto text-black dark:text-white" />
-                </div>
             </div>
-            
-            <div className="absolute top-16 bottom-0 left-2/3">
-                <div className="h-full border-l-2 border-dashed border-gray-300 dark:border-gray-600"></div>
-                <div className="absolute -top-4 left-[-17px] h-8 w-8 rounded-full bg-background border-dashed border-t-2 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
-                <div className="absolute -bottom-4 left-[-17px] h-8 w-8 rounded-full bg-background border-dashed border-t-2 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
-            </div>
+        </Card>
+      ))}
 
-            <div className="w-1/3 p-6 flex flex-col items-center justify-between bg-gray-50 dark:bg-slate-800 rounded-r-lg relative">
-                <div className="text-center w-full">
-                    <p className="font-bold text-blue-600">VOYATO</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">FLIGHT VY-821</p>
-                    <Separator className="my-2 bg-gray-200 dark:bg-gray-700"/>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Passenger</p>
-                    <p className="font-medium text-sm text-gray-800 dark:text-gray-200">Alex Doe</p>
-                     <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mt-2">Seat</p>
-                    <p className="font-bold text-lg text-gray-800 dark:text-gray-200">24A</p>
-                </div>
-                <div className="w-full">
-                    <QrCode className="w-full h-auto max-w-[120px] mx-auto text-black dark:text-white"/>
-                </div>
-                 <div className="absolute bottom-6 left-0 right-0">
-                    <p className="text-center text-xs text-gray-500 dark:text-gray-400">Scan at gate</p>
-                </div>
-            </div>
-        </div>
-      </Card>
-
-      <Card className="text-center">
-        <CardHeader>
-          <CardTitle>No more tickets</CardTitle>
-          <CardDescription>
-            You have no other upcoming flights.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      {tickets.length === 0 && (
+        <Card className="text-center">
+            <CardHeader>
+            <CardTitle>No more tickets</CardTitle>
+            <CardDescription>
+                You have no other upcoming flights.
+            </CardDescription>
+            </CardHeader>
+        </Card>
+      )}
     </div>
   );
 }
