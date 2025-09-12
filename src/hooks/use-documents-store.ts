@@ -70,28 +70,40 @@ export function useDocuments() {
     }, [fetchFiles]);
 
 
-    const addFile = async (file: File | Blob, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
-        const storageRef = ref(storage, `${path}/${filename}`);
+    const addFile = async (file: File | Blob | string, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
         
-        try {
-            const snapshot = await uploadBytes(storageRef, file, {
-                customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
-            });
-            console.log('Uploaded a blob or file!', snapshot);
-            toast({
-                title: "Upload Successful",
-                description: `${filename} has been uploaded to the cloud.`,
-            });
-            // Refresh the list
-            await fetchFiles(path);
+        const uploadFile = async (fileToUpload: File | Blob) => {
+            const storageRef = ref(storage, `${path}/${filename}`);
+            try {
+                const snapshot = await uploadBytes(storageRef, fileToUpload, {
+                    customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
+                });
+                console.log('Uploaded a blob or file!', snapshot);
+                toast({
+                    title: "Upload Successful",
+                    description: `${filename} has been uploaded to the cloud.`,
+                });
+                // Refresh the list
+                await fetchFiles(path);
 
-        } catch (error) {
-            console.error("Upload error:", error);
-            toast({
-                variant: "destructive",
-                title: "Upload Failed",
-                description: "Could not upload your file. Please try again.",
-            });
+            } catch (error) {
+                console.error("Upload error:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Upload Failed",
+                    description: "Could not upload your file. Please try again.",
+                });
+            }
+        };
+
+        if (typeof file === 'string') {
+            // It's a data URL, convert to blob
+            const response = await fetch(file);
+            const blob = await response.blob();
+            await uploadFile(blob);
+        } else {
+            // It's already a File or Blob
+            await uploadFile(file);
         }
     };
 
