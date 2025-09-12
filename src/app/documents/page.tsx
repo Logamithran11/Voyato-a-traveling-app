@@ -300,7 +300,7 @@ export default function DocumentsPage() {
       </div>
 
       <Dialog open={!!selectedMedia} onOpenChange={(isOpen) => !isOpen && setSelectedMedia(null)}>
-        <DialogContent className="max-w-3xl p-0">
+        <DialogContent className="max-w-6xl p-0">
           <DialogHeader className="p-4 border-b">
             <DialogTitle>{selectedMedia?.name}</DialogTitle>
             <DialogDescription className="sr-only">A larger view of the selected photo or video.</DialogDescription>
@@ -349,3 +349,5 @@ export default function DocumentsPage() {
     </div>
   );
 }
+
+    
