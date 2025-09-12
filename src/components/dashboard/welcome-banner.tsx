@@ -6,28 +6,15 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useEffect, useState } from "react";
 
 export function WelcomeBanner() {
-  const [userName, setUserName] = useLocalStorage("userName", "Traveler");
+  const [userName] = useLocalStorage("userName", "Traveler");
   const [isClient, setIsClient] = useState(false);
   const [displayName, setDisplayName] = useState("Traveler");
 
   useEffect(() => {
+    // This effect runs only on the client, after the initial render.
     setIsClient(true);
-    // Even if isClient is true, userName might not be immediately available
-    // from useLocalStorage on first render.
-    const storedUserName = localStorage.getItem('userName');
-    if (storedUserName) {
-      setDisplayName(JSON.parse(storedUserName));
-    }
-  }, []);
-
-  useEffect(() => {
-    // This effect ensures that if the userName from the hook updates,
-    // the display name is also updated.
-    if (userName && userName !== "Traveler") {
-        setDisplayName(userName);
-    }
+    setDisplayName(userName);
   }, [userName]);
-
 
   return (
     <Card className="mb-8 border-none bg-gradient-to-r from-card to-background shadow-lg">
