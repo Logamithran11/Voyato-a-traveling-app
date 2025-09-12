@@ -328,14 +328,14 @@ export default function DocumentsPage() {
           <div className="relative w-full h-full p-8" onClick={(e) => e.stopPropagation()}>
             <div className="w-full h-full flex flex-col items-center justify-center gap-4">
                 {selectedMedia.type === 'video' ? (
-                  <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-full rounded-lg" />
+                  <video src={selectedMedia.dataUrl} controls autoPlay className="max-w-full max-h-[calc(100vh-150px)] rounded-lg" />
                 ) : (
                   <Image 
                       src={selectedMedia.dataUrl} 
                       alt={selectedMedia.name || "Selected media"}
                       width={1920}
                       height={1080}
-                      className="max-w-full max-h-full h-auto w-auto object-contain"
+                      className="max-w-full max-h-[calc(100vh-150px)] h-auto w-auto object-contain"
                   />
                 )}
                 {selectedMedia.location && (
@@ -360,5 +360,4 @@ export default function DocumentsPage() {
       )}
     </div>
   );
-
-    
+}
