@@ -113,7 +113,7 @@ export function TravelGuideClientPage({ guideData }: TravelGuideClientPageProps)
         <Button variant="outline" asChild>
           <Link href="/travel-guides">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Guides
+            Back
           </Link>
         </Button>
         <div className="flex items-center gap-2">

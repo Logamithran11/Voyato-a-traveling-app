@@ -206,7 +206,7 @@ export default function DocumentsPage() {
         <Button variant="outline" asChild>
           <Link href="/dashboard">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back
           </Link>
         </Button>
       </div>
@@ -323,17 +323,20 @@ export default function DocumentsPage() {
 
       {selectedMedia && (
         <div 
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
             onClick={() => setSelectedMedia(null)}
         >
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="absolute top-4 right-4 text-white h-10 w-10 z-10"
-            onClick={() => setSelectedMedia(null)}
-          >
-            <X className="h-8 w-8" />
-          </Button>
+            <div className='absolute top-0 left-0 right-0 p-4 flex justify-end'>
+                 <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="text-white h-10 w-10 z-10"
+                    onClick={() => setSelectedMedia(null)}
+                >
+                    <X className="h-8 w-8" />
+                </Button>
+            </div>
+
 
           <div className="relative w-full h-full flex items-center justify-center p-8" onClick={(e) => e.stopPropagation()}>
             {selectedMedia.type === 'video' ? (
@@ -349,7 +352,7 @@ export default function DocumentsPage() {
             )}
           </div>
           
-          {selectedMedia.location && (
+            {selectedMedia.location && (
             <div className='absolute bottom-4 left-4 right-4 p-4 rounded-lg bg-background/80 max-w-md mx-auto w-full' onClick={(e) => e.stopPropagation()}>
                 <h3 className="font-semibold flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2"><MapPin/> Location</div>

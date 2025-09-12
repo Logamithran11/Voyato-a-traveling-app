@@ -56,7 +56,7 @@ export default function SettingsPage() {
             <Button variant="outline" asChild>
                 <Link href="/dashboard">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Dashboard
+                    Back
                 </Link>
             </Button>
         </div>

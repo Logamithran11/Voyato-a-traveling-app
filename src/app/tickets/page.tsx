@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Separator} from '@/components/ui/separator';
-import {ArrowLeft, Clock, Luggage, Plane, Ticket as TicketIcon} from 'lucide-react';
+import {ArrowLeft, ArrowRight, Clock, Luggage, Plane, Ticket as TicketIcon} from 'lucide-react';
 import Link from 'next/link';
 
 export default function TicketsPage() {
@@ -19,7 +19,7 @@ export default function TicketsPage() {
         <Button variant="outline" asChild>
           <Link href="/dashboard">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back
           </Link>
         </Button>
       </div>
