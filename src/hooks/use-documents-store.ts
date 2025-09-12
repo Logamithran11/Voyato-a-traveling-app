@@ -70,7 +70,7 @@ export function useDocuments() {
     }, [fetchFiles]);
 
 
-    const addFile = async (file: File | Blob, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
+    const addFile = async (file: Blob, path: 'documents' | 'photos', filename: string, metadata?: { location?: { latitude: number, longitude: number }}) => {
         
         const storageRef = ref(storage, `${path}/${filename}`);
         try {
@@ -80,7 +80,7 @@ export function useDocuments() {
                 uploadMetadata.customMetadata = { location: JSON.stringify(metadata.location) };
             }
             
-            if (file instanceof Blob && !(file instanceof File) && file.type) {
+            if (file.type) {
                 uploadMetadata.contentType = file.type;
             }
 
