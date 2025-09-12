@@ -151,11 +151,14 @@ export default function CameraSpotsPage() {
     const { blob, type } = capturedMedia;
     const location = currentLocation ?? undefined;
     const timestamp = new Date().toISOString();
-    const filename = type === 'photo' 
-        ? `Photo-${timestamp}.jpg` 
-        : `Video-${timestamp}.webm`;
     
-    await addFile(blob, 'photos', filename, { location });
+    if (type === 'photo') {
+        const filename = `Photo-${timestamp}.jpg`;
+        await addFile(blob, 'photos', filename, { location }, 'image/jpeg');
+    } else {
+        const filename = `Video-${timestamp}.webm`;
+        await addFile(blob, 'photos', filename, { location }, 'video/webm');
+    }
     
     handleClearCapture();
   };
@@ -310,6 +313,3 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
-
-    
-    
