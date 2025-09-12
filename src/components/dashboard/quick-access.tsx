@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ticket, BookOpen, FileText, Image } from "lucide-react";
+import { Ticket, BookOpen, FileText, Image, Camera } from "lucide-react";
 
 const quickAccessItems = [
     { label: "Tickets", icon: Ticket, href: "/tickets" },
     { label: "Bookings", icon: BookOpen, href: "/bookings" },
+    { label: "Camera", icon: Camera, href: "/camera-spots"},
     { label: "Documents", icon: FileText, href: "/documents" },
     { label: "Travel Guides", icon: FileText, href: "/travel-guides" },
     { label: "Saved Media", icon: Image, href: "/documents" }
