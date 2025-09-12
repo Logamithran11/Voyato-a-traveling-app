@@ -20,21 +20,6 @@ export type Document = {
     fullPath: string;
 };
 
-// Helper function to convert dataURL to Blob
-async function dataURLtoBlob(dataurl: string) {
-    const arr = dataurl.split(',');
-    if (arr.length < 2) {
-        throw new Error('Invalid data URL');
-    }
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    if (!mimeMatch) {
-        throw new Error('Could not find MIME type in data URL');
-    }
-    const res = await fetch(dataurl);
-    return await res.blob();
-}
-
-
 export function useDocuments() {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [photos, setPhotos] = useState<Document[]>([]);
@@ -89,9 +74,18 @@ export function useDocuments() {
         
         const storageRef = ref(storage, `${path}/${filename}`);
         try {
-            const snapshot = await uploadBytes(storageRef, file, {
-                customMetadata: metadata?.location ? { location: JSON.stringify(metadata.location) } : undefined,
-            });
+            const uploadMetadata: {contentType?: string, customMetadata?: {[key: string]: string}} = {};
+            
+            if (metadata?.location) {
+                uploadMetadata.customMetadata = { location: JSON.stringify(metadata.location) };
+            }
+            
+            if (file instanceof Blob && !(file instanceof File) && file.type) {
+                uploadMetadata.contentType = file.type;
+            }
+
+            const snapshot = await uploadBytes(storageRef, file, uploadMetadata);
+            
             console.log('Uploaded a blob or file!', snapshot);
             toast({
                 title: "Upload Successful",
