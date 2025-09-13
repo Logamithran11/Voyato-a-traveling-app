@@ -11,8 +11,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 
 const weatherIcons: { [key: string]: React.ReactNode } = {
   "Sunny": <Sun className="h-6 w-6 text-yellow-400" />,
-  "Clear": <Sun className="h-6 w-6 text-yellow-400" />,
-  "ClearNight": <Moon className="h-6 w-6 text-slate-400" />,
+  "Clear": <Moon className="h-6 w-6 text-slate-400" />,
   "Partly Cloudy": <Cloud className="h-6 w-6 text-gray-400" />,
   "Cloudy": <Cloud className="h-6 w-6 text-gray-400" />,
   "Rain": <CloudRain className="h-6 w-6 text-blue-400" />,
@@ -20,10 +19,7 @@ const weatherIcons: { [key: string]: React.ReactNode } = {
   "Showers": <CloudRain className="h-6 w-6 text-blue-400" />,
 };
 
-const getWeatherIcon = (condition: string, isDay: boolean) => {
-    if (condition === "Clear" && !isDay) {
-        return weatherIcons["ClearNight"];
-    }
+const getWeatherIcon = (condition: string) => {
     return weatherIcons[condition] || <Cloud className="h-6 w-6 text-gray-400" />;
 }
 
@@ -104,7 +100,7 @@ export function WeatherWidget() {
                     {weatherData.forecast.slice(0, 4).map(weather => (
                         <div key={weather.time} className="flex flex-col items-center gap-2 text-center">
                             <span className="text-sm text-muted-foreground">{weather.time}</span>
-                            {getWeatherIcon(weather.condition, weather.isDay)}
+                            {getWeatherIcon(weather.condition)}
                             <span className="font-semibold">{weather.temp}</span>
                         </div>
                     ))}

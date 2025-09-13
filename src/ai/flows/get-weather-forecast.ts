@@ -23,8 +23,7 @@ const WeatherForecastSchema = z.object({
     z.object({
       time: z.string().describe("The time for the forecast entry (e.g., 'Now', '3PM', '6PM')."),
       temp: z.string().describe("The temperature in Celsius, including the symbol (e.g., '25°C')."),
-      condition: z.string().describe("The weather condition (e.g., 'Sunny', 'Clear', 'Partly Cloudy', 'Cloudy', 'Rain', 'Showers', 'Snow')."),
-      isDay: z.boolean().describe("Whether it is daytime for this forecast entry. This should be false for night hours (e.g. after 7 PM and before 6 AM)."),
+      condition: z.string().describe("The weather condition. Use 'Sunny' for clear daytime, 'Clear' for clear nighttime, 'Partly Cloudy', 'Cloudy', 'Rain', 'Showers', or 'Snow'."),
     })
   ).describe('An array of 4-6 forecast entries for the next 12 hours.'),
 });
@@ -47,8 +46,9 @@ const prompt = ai.definePrompt({
   Current Time: {{currentTime}}
   
   Generate 4-6 forecast entries, starting from "Now" and then using relative times like "in 2 hours" or specific times like "3PM".
-  The weather conditions should be one of: "Sunny", "Clear", "Partly Cloudy", "Cloudy", "Rain", "Showers", "Snow".
-  For each entry, you must set the 'isDay' boolean field. It should be false for typical night hours (e.g., after 7 PM and before 6 AM) and true otherwise.
+  The weather conditions must be one of: "Sunny", "Clear", "Partly Cloudy", "Cloudy", "Rain", "Showers", "Snow".
+  - Use "Sunny" for clear conditions during typical daylight hours (e.g., 6 AM to 7 PM).
+  - Use "Clear" for clear conditions during typical nighttime hours (e.g., 7 PM to 6 AM).
   Temperatures must be in Celsius and the response string must include the degree symbol and 'C' (e.g., "25°C").
   `,
 });
