@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,14 +23,24 @@ const getWeatherIcon = (condition: string) => {
     return weatherIcons[condition] || <Cloud className="h-6 w-6 text-gray-400" />;
 }
 
+const initialWeatherData: WeatherForecast = {
+    city: "Tokyo, Japan",
+    forecast: [
+        { time: 'Now', temp: '22°C', condition: 'Sunny' },
+        { time: '3PM', temp: '24°C', condition: 'Sunny' },
+        { time: '6PM', temp: '20°C', condition: 'Partly Cloudy' },
+        { time: '9PM', temp: '18°C', condition: 'Clear' }
+    ]
+};
+
 
 export function WeatherWidget() {
   const [searchQuery, setSearchQuery] = useState("Tokyo, Japan");
-  const [weatherData, setWeatherData] = useState<WeatherForecast | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [weatherData, setWeatherData] = useState<WeatherForecast | null>(initialWeatherData);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchWeather = useCallback(async (city: string) => {
+  const fetchWeather = async (city: string) => {
     if(!city) {
         setError("Please enter a city name.");
         return;
@@ -48,11 +58,7 @@ export function WeatherWidget() {
     } finally {
         setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchWeather("Tokyo, Japan");
-  }, [fetchWeather]);
+  };
 
   const handleSearch = () => {
     fetchWeather(searchQuery);
