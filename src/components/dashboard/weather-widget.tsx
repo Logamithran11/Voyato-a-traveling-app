@@ -29,13 +29,13 @@ const getWeatherIcon = (condition: string, isDay: boolean) => {
 
 
 export function WeatherWidget() {
-  const [city, setCity] = useState("Tokyo, Japan");
+  const [searchQuery, setSearchQuery] = useState("Tokyo, Japan");
   const [weatherData, setWeatherData] = useState<WeatherForecast | null>(null);
-  const [loading, setLoading] = useState(true); // Start with loading true
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchWeather = useCallback(async (searchCity: string) => {
-    if(!searchCity) {
+  const fetchWeather = useCallback(async (city: string) => {
+    if(!city) {
         setError("Please enter a city name.");
         return;
     }
@@ -44,7 +44,7 @@ export function WeatherWidget() {
     setWeatherData(null);
 
     try {
-        const result = await getWeatherForecast({ city: searchCity });
+        const result = await getWeatherForecast({ city });
         setWeatherData(result);
     } catch (err) {
         setError("Could not fetch weather data. Please try again.");
@@ -55,11 +55,11 @@ export function WeatherWidget() {
   }, []);
 
   useEffect(() => {
-    fetchWeather(city);
-  }, [fetchWeather, city]);
+    fetchWeather("Tokyo, Japan");
+  }, [fetchWeather]);
 
   const handleSearch = () => {
-    fetchWeather(city);
+    fetchWeather(searchQuery);
   };
 
   return (
@@ -76,8 +76,8 @@ export function WeatherWidget() {
         <div className="flex gap-2 mb-4">
             <Input 
                 placeholder="Enter city..."
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
             <Button onClick={handleSearch} disabled={loading} size="icon">
