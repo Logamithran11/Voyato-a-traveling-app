@@ -1,13 +1,13 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sun, Cloud, CloudRain, CloudSnow, Loader2, Search, Moon } from "lucide-react";
 import { getWeatherForecast, WeatherForecast } from "@/ai/flows/get-weather-forecast";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Alert, AlertDescription } from "../ui/alert";
 
 const weatherIcons: { [key: string]: React.ReactNode } = {
   "Sunny": <Sun className="h-6 w-6 text-yellow-400" />,
@@ -31,11 +31,11 @@ const getWeatherIcon = (condition: string, isDay: boolean) => {
 export function WeatherWidget() {
   const [city, setCity] = useState("Tokyo, Japan");
   const [weatherData, setWeatherData] = useState<WeatherForecast | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState<string | null>(null);
 
-  const fetchWeather = async () => {
-    if(!city) {
+  const fetchWeather = useCallback(async (searchCity: string) => {
+    if(!searchCity) {
         setError("Please enter a city name.");
         return;
     }
@@ -44,7 +44,7 @@ export function WeatherWidget() {
     setWeatherData(null);
 
     try {
-        const result = await getWeatherForecast({ city });
+        const result = await getWeatherForecast({ city: searchCity });
         setWeatherData(result);
     } catch (err) {
         setError("Could not fetch weather data. Please try again.");
@@ -52,7 +52,15 @@ export function WeatherWidget() {
     } finally {
         setLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    fetchWeather(city);
+  }, [fetchWeather, city]);
+
+  const handleSearch = () => {
+    fetchWeather(city);
+  };
 
   return (
     <Card className="shadow-lg">
@@ -70,9 +78,9 @@ export function WeatherWidget() {
                 placeholder="Enter city..."
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && fetchWeather()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
-            <Button onClick={fetchWeather} disabled={loading} size="icon">
+            <Button onClick={handleSearch} disabled={loading} size="icon">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin"/> : <Search className="h-4 w-4"/>}
             </Button>
         </div>
@@ -83,7 +91,13 @@ export function WeatherWidget() {
             </Alert>
         )}
         
-        {weatherData ? (
+        {loading && (
+          <div className="flex justify-center items-center py-4">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        )}
+
+        {weatherData && !loading ? (
             <div>
                  <p className="text-sm text-muted-foreground mb-4">Forecast for {weatherData.city}</p>
                 <div className="flex justify-between items-center">
@@ -96,7 +110,7 @@ export function WeatherWidget() {
                     ))}
                 </div>
             </div>
-        ) : !loading && (
+        ) : !loading && !error && (
             <p className="text-sm text-muted-foreground text-center">Enter a city to see the weather.</p>
         )}
 
