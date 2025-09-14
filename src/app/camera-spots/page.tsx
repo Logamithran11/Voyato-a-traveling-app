@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Camera, VideoOff, X, Save, Video, Locate, ArrowLeft } from "lucide-react";
@@ -40,9 +40,38 @@ export default function CameraSpotsPage() {
 
   const { addMedia } = useMediaStore();
   const { toast } = useToast();
+  
+  const fetchLocation = useCallback(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setHasLocationPermission(true);
+          setCurrentLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setHasLocationPermission(false);
+          setCurrentLocation(null);
+          if (error.code !== error.PERMISSION_DENIED) {
+             toast({
+                  variant: "destructive",
+                  title: "Location Error",
+                  description: "Could not fetch your location.",
+              });
+          }
+        }
+      );
+    } else {
+      setHasLocationPermission(false);
+    }
+  }, [toast]);
 
   useEffect(() => {
-    const getCameraPermission = async () => {
+    const checkPermissions = async () => {
+      // Camera Permission
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -67,35 +96,30 @@ export default function CameraSpotsPage() {
           description: 'Your browser does not support camera access.',
         });
       }
-    };
-    
-    const getLocationPermission = () => {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-              (position) => {
-                  setHasLocationPermission(true);
-                  setCurrentLocation({
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude,
-                  });
-              },
-              (error) => {
-                  console.error('Error getting location:', error);
-                  setHasLocationPermission(false);
-                   toast({
-                        variant: "destructive",
-                        title: "Location Access Denied",
-                        description: "Please enable location services to geotag your captures.",
-                    });
-              }
-          );
-      } else {
-           setHasLocationPermission(false);
-      }
-    }
 
-    getCameraPermission();
-    getLocationPermission();
+      // Location Permission
+      if ('permissions' in navigator) {
+        const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+        if (permissionStatus.state === 'granted') {
+          fetchLocation();
+        } else {
+          setHasLocationPermission(permissionStatus.state === 'granted');
+        }
+        
+        permissionStatus.onchange = () => {
+            if (permissionStatus.state === 'granted') {
+                fetchLocation();
+            } else {
+                setHasLocationPermission(false);
+                setCurrentLocation(null);
+            }
+        };
+      } else {
+         fetchLocation(); // Fallback for browsers without Permissions API
+      }
+    };
+
+    checkPermissions();
 
     return () => {
         if (videoRef.current && videoRef.current.srcObject) {
@@ -103,7 +127,7 @@ export default function CameraSpotsPage() {
             stream.getTracks().forEach(track => track.stop());
         }
     }
-  }, [toast]);
+  }, [toast, fetchLocation]);
 
   // Clean up object URLs when component unmounts or media changes
   useEffect(() => {
@@ -304,6 +328,10 @@ export default function CameraSpotsPage() {
                             <Camera className="mr-2 h-4 w-4"/>
                             Capture Photo
                         </Button>
+                         <Button onClick={fetchLocation} variant="secondary" disabled={hasCameraPermission === null || hasLocationPermission === true}>
+                            <Locate className="mr-2 h-4 w-4"/>
+                             Enable Location
+                        </Button>
                         <Button onClick={handleStartRecording} disabled={!hasCameraPermission}>
                             <Video className="mr-2 h-4 w-4"/>
                             Record Video
@@ -315,3 +343,5 @@ export default function CameraSpotsPage() {
     </div>
   );
 }
+
+    
