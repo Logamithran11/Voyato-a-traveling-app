@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Map, Trash2 } from "lucide-react";
+import { ListChecks, Trash2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
@@ -38,7 +39,7 @@ export function EverydayPlanner() {
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-xl md:text-2xl">
-            <Map className="text-primary"/>
+            <ListChecks className="text-primary"/>
             Everyday Planner
         </CardTitle>
         <CardDescription>

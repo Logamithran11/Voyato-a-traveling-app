@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   Home,
-  Map,
+  CheckSquare,
   Lightbulb,
   FileText,
   Camera,
@@ -34,7 +34,7 @@ import {
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/everyday-planner", label: "Everyday Planner", icon: Map },
+  { href: "/everyday-planner", label: "Everyday Planner", icon: CheckSquare },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
   { href: "/budget", label: "Budget", icon: Wallet },
   { href: "/tickets", label: "Tickets", icon: Ticket },
