@@ -17,6 +17,7 @@ import {
   Ticket,
   BookOpen,
   LogOut,
+  ListChecks,
 } from "lucide-react";
 import {
   Tooltip,
@@ -34,6 +35,7 @@ import {
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
+  { href: "/itinerary", label: "Itinerary", icon: ListChecks },
   { href: "/everyday-planner", label: "Everyday Planner", icon: CheckSquare },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
   { href: "/budget", label: "Budget", icon: Wallet },
