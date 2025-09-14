@@ -51,13 +51,21 @@ export function TravelGuideClientPage({ guideData }: TravelGuideClientPageProps)
         title: "Guide Customized!",
         description: "Your travel guide has been updated with your preferences.",
       })
-    } catch (error) {
+    } catch (error: any) {
+        if (error.message && error.message.includes('503')) {
+            toast({
+                variant: "destructive",
+                title: "Service Unavailable",
+                description: "The AI service is currently overloaded. Please try again in a few moments.",
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Sorry, we couldn't customize the guide. Please try again.",
+            });
+        }
         console.error("Failed to customize guide:", error);
-        toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Sorry, we couldn't customize the guide. Please try again.",
-        });
     } finally {
       setLoading(false);
     }

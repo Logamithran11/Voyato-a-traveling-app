@@ -75,9 +75,13 @@ export default function BudgetPage() {
         currency,
       });
       setBudgetPlan(result);
-    } catch (err) {
-      setError("Sorry, we couldn't generate a budget plan. Please try again.");
-      console.error(err);
+    } catch (err: any) {
+        if (err.message && err.message.includes('503')) {
+            setError("The AI service is currently overloaded. Please try again in a few moments.");
+        } else {
+            setError("Sorry, we couldn't generate a budget plan. Please try again.");
+        }
+        console.error(err);
     } finally {
       setLoading(false);
     }

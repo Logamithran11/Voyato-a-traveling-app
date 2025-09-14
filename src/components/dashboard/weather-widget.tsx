@@ -52,8 +52,12 @@ export function WeatherWidget() {
     try {
         const result = await getWeatherForecast({ city });
         setWeatherData(result);
-    } catch (err) {
-        setError("Could not fetch weather data. Please try again.");
+    } catch (err: any) {
+        if (err.message && err.message.includes('503')) {
+            setError("The AI service is currently overloaded. Please try again in a few moments.");
+        } else {
+            setError("Could not fetch weather data. Please try again.");
+        }
         console.error(err);
     } finally {
         setLoading(false);

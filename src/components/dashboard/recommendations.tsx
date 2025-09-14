@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -40,10 +41,12 @@ export function Recommendations() {
     try {
       const result = await generateDestinationRecommendations({ preferences });
       setRecommendations(result);
-    } catch (err) {
-      setError(
-        "Sorry, we couldn't generate recommendations. Please try again."
-      );
+    } catch (err: any) {
+      if (err.message && err.message.includes('503')) {
+        setError("The AI service is currently overloaded. Please try again in a few moments.");
+      } else {
+        setError("Sorry, we couldn't generate recommendations. Please try again.");
+      }
       console.error(err);
     } finally {
       setLoading(false);
