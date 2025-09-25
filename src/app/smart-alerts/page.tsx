@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, AlertTriangle, Cloud, TrafficCone, Shield } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Cloud, TrafficCone, Shield, ToggleRight, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -72,15 +72,11 @@ export default function SmartAlertsPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Enable Alerts</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/smart-alerts">Enable Alerts</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const ToggleRight = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="1" y="5" width="22" height="14" rx="7" ry="7"/><circle cx="16" cy="12" r="3"/></svg>
-);
-const Smartphone = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-);

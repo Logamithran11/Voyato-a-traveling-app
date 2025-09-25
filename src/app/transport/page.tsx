@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Plane, Train, Bus, Car, Search, Book } from 'lucide-react';
+import { ArrowLeft, Plane, Train, Bus, Car, Search, Book, Clock, DollarSign, Compare } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -78,18 +78,11 @@ export default function TransportPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Find Transport</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/transport">Find Transport</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const DollarSign = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-);
-const Clock = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-);
-const Compare = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 22h5a2 2 0 0 0 2-2V7l-5-5H7a2 2 0 0 0-2 2v5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m3 12.5 3.5-3 3.5 3"/><path d="m3 20.5 3.5-3 3.5 3"/><path d="M6.5 10V20"/></svg>
-);

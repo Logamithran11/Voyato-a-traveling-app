@@ -78,7 +78,9 @@ export default function SOSPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" variant="destructive">Enable SOS</Button>
+            <Button size="lg" className="w-full max-w-xs" variant="destructive" asChild>
+                <Link href="/sos">Enable SOS</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

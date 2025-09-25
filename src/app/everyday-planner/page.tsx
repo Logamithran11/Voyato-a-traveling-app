@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Wand2, MapPin, Clock, Wallet, Share2, Edit } from 'lucide-react';
+import { ArrowLeft, Wand2, MapPin, Clock, Wallet, Share2, Edit, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -78,12 +78,11 @@ export default function ItineraryPlannerPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Plan My Trip</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/everyday-planner">Plan My Trip</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const Lightbulb = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-);

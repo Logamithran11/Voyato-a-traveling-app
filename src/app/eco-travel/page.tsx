@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Bike, Leaf, Footprints, Goal } from 'lucide-react';
+import { ArrowLeft, Bike, Leaf, Footprints, Goal, CarIcon, AwardIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -78,15 +78,11 @@ export default function EcoTravelPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Go Eco Mode</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/eco-travel">Go Eco Mode</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const CarIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M14 16.5V14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v2.5"/><path d="M19 17h2a2 2 0 0 0 2-2v-3.5a3.5 3.5 0 0 0-3.5-3.5H5.5A3.5 3.5 0 0 0 2 11.5V15a2 2 0 0 0 2 2h2"/><circle cx="7" cy="16.5" r="1.5"/><circle cx="17" cy="16.5" r="1.5"/></svg>
-);
-const AwardIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-);

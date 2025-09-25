@@ -78,7 +78,9 @@ export default function EventsCalendarPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">View Events</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/events-calendar">View Events</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

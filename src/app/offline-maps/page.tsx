@@ -87,7 +87,9 @@ export default function OfflineMapsPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Download Map</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/offline-maps">Download Map</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

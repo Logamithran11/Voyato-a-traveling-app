@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Film, Map, Clapperboard, Search } from 'lucide-react';
+import { ArrowLeft, Film, Map, Clapperboard, Search, Info } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -77,12 +77,11 @@ export default function FilmLocationsPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Explore Bollywood Spots</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/film-locations">Explore Bollywood Spots</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const Info = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-);

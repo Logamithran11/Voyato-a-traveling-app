@@ -77,7 +77,9 @@ export default function GuidesCabsPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Find Trusted Guide</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/guides-cabs">Find Trusted Guide</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

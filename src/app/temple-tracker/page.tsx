@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Landmark, Users, Ticket, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Landmark, Users, Ticket, CheckCircle, StarIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -77,12 +77,11 @@ export default function TempleTrackerPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Check Temple Status</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/temple-tracker">Check Temple Status</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
-const StarIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-);

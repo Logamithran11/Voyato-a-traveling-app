@@ -77,7 +77,9 @@ export default function AudioGuidesPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Start Listening</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/audio-guides">Start Listening</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

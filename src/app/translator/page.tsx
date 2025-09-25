@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Languages, Mic, FileText, Download, Play } from 'lucide-react';
+import { ArrowLeft, Languages, Mic, Download, Play } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -77,7 +77,9 @@ export default function TranslatorPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Translate Now</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/translator">Translate Now</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>

@@ -78,7 +78,9 @@ export default function VillageTourismPage() {
 
         </CardContent>
         <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs">Book Homestay</Button>
+            <Button size="lg" className="w-full max-w-xs" asChild>
+                <Link href="/village-tourism">Book Homestay</Link>
+            </Button>
         </CardFooter>
       </Card>
     </div>
