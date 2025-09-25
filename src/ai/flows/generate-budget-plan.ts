@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -15,6 +16,7 @@ const GenerateBudgetPlanInputSchema = z.object({
   destination: z.string().describe('The travel destination.'),
   duration: z.number().describe('The duration of the trip in days.'),
   travelStyle: z.string().describe('The user\'s travel style (e.g., budget, mid-range, luxury).'),
+  vehicle: z.string().describe('The primary mode of transportation (e.g., Car, Bus, Aeroplane, Train, Bike, None).'),
   currency: z.string().describe('The currency for the budget (e.g., USD, EUR, INR).'),
 });
 export type GenerateBudgetPlanInput = z.infer<typeof GenerateBudgetPlanInputSchema>;
@@ -23,7 +25,7 @@ const GenerateBudgetPlanOutputSchema = z.object({
   totalBudget: z.number().describe('The estimated total budget for the trip.'),
   budgetBreakdown: z.array(
     z.object({
-      category: z.string().describe('The budget category (e.g., Accommodation, Food, Activities).'),
+      category: z.string().describe('The budget category (e.g., Accommodation, Food, Activities, Transport).'),
       amount: z.number().describe('The estimated amount for this category.'),
       percentage: z.number().describe('The percentage of the total budget for this category.'),
     })
@@ -48,11 +50,12 @@ const prompt = ai.definePrompt({
   - Destination: {{destination}}
   - Duration: {{duration}} days
   - Travel Style: {{travelStyle}}
+  - Primary Transportation: {{vehicle}}
   - Currency: {{currency}}
 
   Generate a detailed budget plan. The plan should include:
   1. An estimated total budget in the specified currency ({{currency}}).
-  2. A breakdown of the budget into major categories (e.g., Accommodation, Food, Activities, Transport, Shopping, Miscellaneous). For each category, provide the estimated amount and its percentage of the total budget.
+  2. A breakdown of the budget into major categories (e.g., Accommodation, Food, Activities, Transport, Shopping, Miscellaneous). The 'Transport' category should reflect the chosen vehicle: {{vehicle}}.
   3. A list of actionable budget-saving tips relevant to the destination and travel style.
 
   Ensure the output is a valid JSON object matching the provided schema. The sum of all category percentages should be 100.

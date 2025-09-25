@@ -50,6 +50,7 @@ export default function BudgetPage() {
   const [destination, setDestination] = useState("Goa, India");
   const [duration, setDuration] = useState(7);
   const [travelStyle, setTravelStyle] = useState("mid-range");
+  const [vehicle, setVehicle] = useState("Car");
   const [currency, setCurrency] = useState("INR");
 
   const [budgetPlan, setBudgetPlan] = useState<GenerateBudgetPlanOutput | null>(
@@ -72,6 +73,7 @@ export default function BudgetPage() {
         destination,
         duration,
         travelStyle,
+        vehicle,
         currency,
       });
       setBudgetPlan(result);
@@ -108,7 +110,7 @@ export default function BudgetPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="destination">Destination</Label>
               <Input
@@ -141,6 +143,25 @@ export default function BudgetPage() {
                   <SelectItem value="budget">Budget</SelectItem>
                   <SelectItem value="mid-range">Mid-range</SelectItem>
                   <SelectItem value="luxury">Luxury</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="vehicle">Vehicle</Label>
+              <Select
+                value={vehicle}
+                onValueChange={setVehicle}
+              >
+                <SelectTrigger id="vehicle">
+                  <SelectValue placeholder="Select vehicle" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Aeroplane">Aeroplane</SelectItem>
+                  <SelectItem value="Train">Train</SelectItem>
+                  <SelectItem value="Bus">Bus</SelectItem>
+                  <SelectItem value="Car">Car</SelectItem>
+                  <SelectItem value="Bike">Bike</SelectItem>
+                  <SelectItem value="None">None / Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
