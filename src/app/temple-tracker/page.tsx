@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Temple } from 'lucide-react';
+import { ArrowLeft, Landmark } from 'lucide-react';
 import Link from 'next/link';
 
 export default function TempleTrackerPage() {
@@ -18,7 +18,7 @@ export default function TempleTrackerPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Temple /> Temple Queue & Darshan Tracker
+            <Landmark /> Temple Queue & Darshan Tracker
           </CardTitle>
           <CardDescription>
             This feature is under construction.
