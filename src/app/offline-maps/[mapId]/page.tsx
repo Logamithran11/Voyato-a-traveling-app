@@ -29,7 +29,7 @@ export default function OfflineMapDisplayPage({ params }: { params: { mapId: str
         </CardHeader>
         <CardContent>
           <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-            <p className="text-muted-foreground">Offline map for {mapName} would be displayed here.</p>
+            <p className="text-muted-foreground capitalize">Offline map for {mapName} would be displayed here.</p>
           </div>
         </CardContent>
       </Card>
