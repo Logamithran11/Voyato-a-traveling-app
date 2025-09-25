@@ -43,6 +43,11 @@ export default function EcoTravelPage() {
             “Travel Green, Travel Smart.”
             </CardDescription>
         </CardHeader>
+        <CardFooter className="justify-center">
+            <Button asChild>
+                <Link href="/eco-travel">Go Eco Mode</Link>
+            </Button>
+        </CardFooter>
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -81,7 +86,9 @@ export default function EcoTravelPage() {
                                  <p className="font-bold mt-2">{rental.price}</p>
                              </CardContent>
                              <CardFooter>
-                                 <Button variant="secondary" className="w-full">Book Now</Button>
+                                 <Button variant="secondary" className="w-full" asChild>
+                                    <Link href="/eco-travel">Book Now</Link>
+                                 </Button>
                              </CardFooter>
                          </Card>
                     ))}
@@ -115,7 +122,9 @@ export default function EcoTravelPage() {
                         <Badge variant="outline">10% off at GreenLeaf Cafe</Badge>
                         <Badge variant="outline">Free 1-hour e-bike rental</Badge>
                     </div>
-                    <Button className="w-full">Redeem Points</Button>
+                    <Button className="w-full" asChild>
+                      <Link href="/eco-travel">Redeem Points</Link>
+                    </Button>
                 </CardContent>
             </Card>
         </div>

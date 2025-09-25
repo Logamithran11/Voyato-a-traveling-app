@@ -90,9 +90,37 @@ export default function ItineraryPlannerPage() {
         </Button>
         <div className="flex gap-2">
             <Button variant="outline"><Share2 className="mr-2 h-4 w-4" /> Share</Button>
-            <Button><Wand2 className="mr-2 h-4 w-4" /> Regenerate with AI</Button>
+            <Button asChild>
+                <Link href="/everyday-planner"><Wand2 className="mr-2 h-4 w-4" /> Regenerate with AI</Link>
+            </Button>
         </div>
       </div>
+      
+      <Card>
+        <CardHeader>
+            <CardTitle className="font-headline text-3xl">Smart Itinerary Planner</CardTitle>
+            <CardDescription>Your AI Travel Buddy.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-3 gap-4">
+            <div className="grid gap-2">
+                <Label htmlFor="destination">Destination</Label>
+                <Input id="destination" placeholder="e.g. Goa, India" />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="duration">Duration (days)</Label>
+                <Input id="duration" type="number" placeholder="e.g. 5" />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="budget">Budget</Label>
+                <Input id="budget" placeholder="e.g. Mid-range" />
+            </div>
+        </CardContent>
+        <CardFooter>
+            <Button asChild>
+                <Link href="/everyday-planner">Plan My Trip</Link>
+            </Button>
+        </CardFooter>
+      </Card>
 
       <Card className="shadow-lg">
         <CardHeader>

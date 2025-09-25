@@ -69,20 +69,35 @@ export default function SOSPage() {
             </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center py-10">
-            <button
-                onMouseDown={handlePress}
-                className={`relative flex items-center justify-center h-48 w-48 rounded-full transition-all duration-300 focus:outline-none 
-                ${isPressed ? 'bg-red-700 scale-110' : 'bg-red-600 hover:bg-red-700'} 
-                text-white font-bold text-3xl shadow-lg active:scale-105`}
-            >
-                {isPressed && (
-                    <div className="absolute inset-0 rounded-full border-4 border-white animate-ping"></div>
-                )}
-                {isPressed ? timer : "SOS"}
-            </button>
+             <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <button
+                        className={`relative flex items-center justify-center h-48 w-48 rounded-full transition-all duration-300 focus:outline-none 
+                        bg-red-600 hover:bg-red-700 
+                        text-white font-bold text-3xl shadow-lg active:scale-105`}
+                    >
+                        SOS
+                    </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Enable SOS Feature?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action will set up the SOS feature, allowing you to alert emergency contacts and authorities.
+                        Please configure your emergency contacts in the settings after enabling.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                        <Link href="/sos">Enable SOS</Link>
+                    </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </CardContent>
         <CardFooter className="text-center flex-col gap-2">
-            <p className="font-semibold">Press and Hold for 5 Seconds to Activate</p>
+            <p className="font-semibold">Press and Hold for 5 Seconds to Activate (Once Enabled)</p>
             <p className="text-sm text-muted-foreground">This will alert your emergency contacts and nearby authorities.</p>
         </CardFooter>
       </Card>

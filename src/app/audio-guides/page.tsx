@@ -106,9 +106,11 @@ export default function AudioGuidesPage() {
                   <CardDescription>{series.author} - {series.episodes} episodes</CardDescription>
               </CardHeader>
               <CardFooter>
-                  <Button className="w-full">
-                      <Play className="mr-2 h-4 w-4" />
-                      Listen Now
+                  <Button className="w-full" asChild>
+                      <Link href="/audio-guides">
+                        <Play className="mr-2 h-4 w-4" />
+                        Listen Now
+                      </Link>
                   </Button>
               </CardFooter>
           </Card>

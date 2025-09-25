@@ -73,8 +73,10 @@ export default function VirtualShoppingPage() {
                         <SelectItem value="handicrafts">Handicrafts</SelectItem>
                     </SelectContent>
                 </Select>
-                 <Button>
-                    <Filter className="mr-2 h-4 w-4" /> Filter
+                 <Button asChild>
+                    <Link href="/virtual-shopping">
+                        <Filter className="mr-2 h-4 w-4" /> Filter
+                    </Link>
                 </Button>
             </div>
         </CardContent>

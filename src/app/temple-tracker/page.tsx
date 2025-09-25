@@ -63,6 +63,9 @@ export default function TempleTrackerPage() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
+                <Button asChild>
+                    <Link href="/temple-tracker">Check Temple Status</Link>
+                </Button>
             </div>
         </CardContent>
       </Card>
@@ -97,8 +100,10 @@ export default function TempleTrackerPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="mt-auto">
-                    <Button className="w-full">
-                        <Ticket className="mr-2 h-4 w-4" /> Book E-Darshan
+                    <Button className="w-full" asChild>
+                        <Link href="/temple-tracker">
+                            <Ticket className="mr-2 h-4 w-4" /> Book E-Darshan
+                        </Link>
                     </Button>
                 </CardFooter>
             </Card>

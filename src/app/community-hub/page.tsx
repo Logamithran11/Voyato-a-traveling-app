@@ -74,7 +74,9 @@ export default function CommunityHubPage() {
                         className="pl-10"
                     />
                 </div>
-                <Button>Search</Button>
+                <Button asChild>
+                  <Link href="/community-hub">Search</Link>
+                </Button>
             </div>
         </CardContent>
       </Card>
@@ -89,7 +91,9 @@ export default function CommunityHubPage() {
                 <CardContent>
                     <div className="grid w-full gap-2">
                         <Textarea placeholder="Share your travel story or ask a question..." value={newPost} onChange={(e) => setNewPost(e.target.value)} />
-                        <Button disabled={!newPost}>Post</Button>
+                        <Button disabled={!newPost} asChild>
+                          <Link href="/community-hub">Post</Link>
+                        </Button>
                     </div>
                 </CardContent>
             </Card>
@@ -165,7 +169,9 @@ export default function CommunityHubPage() {
                              <p className="text-xs text-muted-foreground">Trekking in Nepal</p>
                         </div>
                     </div>
-                    <Button variant="outline" className="w-full">View more</Button>
+                    <Button variant="outline" className="w-full" asChild>
+                      <Link href="/community-hub">View more</Link>
+                    </Button>
                 </CardContent>
             </Card>
         </div>

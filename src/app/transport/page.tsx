@@ -37,7 +37,9 @@ const FlightResult = () => (
             </div>
             <div className="col-span-1 text-right">
                 <p className="font-bold text-xl">₹4,500</p>
-                <Button size="sm" className="mt-1">Book</Button>
+                <Button size="sm" className="mt-1" asChild>
+                    <Link href="/transport">Book</Link>
+                </Button>
             </div>
         </CardContent>
     </Card>
@@ -101,7 +103,9 @@ export default function TransportPage() {
                     </PopoverContent>
                 </Popover>
             </div>
-            <Button size="lg" className="h-10"><Search className="mr-2 h-4 w-4"/> Search</Button>
+            <Button size="lg" className="h-10" asChild>
+                <Link href="/transport"><Search className="mr-2 h-4 w-4"/> Find Transport</Link>
+            </Button>
         </CardContent>
       </Card>
 

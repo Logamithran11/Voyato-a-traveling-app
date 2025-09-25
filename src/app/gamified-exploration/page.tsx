@@ -31,6 +31,9 @@ export default function GamifiedExplorationPage() {
             Back to Dashboard
           </Link>
         </Button>
+        <Button asChild>
+            <Link href="/gamified-exploration">Start Exploring & Earn</Link>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

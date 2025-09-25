@@ -81,6 +81,11 @@ export default function EventsCalendarPage() {
             “Celebrate with Locals.”
             </CardDescription>
         </CardHeader>
+        <CardFooter className="justify-center">
+            <Button asChild>
+                <Link href="/events-calendar">View Events</Link>
+            </Button>
+        </CardFooter>
       </Card>
 
       <Card>
@@ -117,7 +122,9 @@ export default function EventsCalendarPage() {
                     <SelectItem value="december">December</SelectItem>
                 </SelectContent>
             </Select>
-             <Button className="w-full sm:w-auto">Apply Filters</Button>
+             <Button className="w-full sm:w-auto" asChild>
+                <Link href="/events-calendar">Apply Filters</Link>
+             </Button>
         </CardContent>
       </Card>
 
@@ -147,7 +154,7 @@ export default function EventsCalendarPage() {
             </CardHeader>
             <CardFooter className="mt-auto">
                 <Button className="w-full" asChild>
-                    <Link href="#">
+                    <Link href="/events-calendar">
                         <Ticket className="mr-2 h-4 w-4" /> Book Tickets / View Details
                     </Link>
                 </Button>

@@ -81,6 +81,9 @@ export default function FilmLocationsPage() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
+                <Button asChild>
+                    <Link href="/film-locations">Explore Bollywood Spots</Link>
+                </Button>
             </div>
         </CardContent>
       </Card>
@@ -105,8 +108,10 @@ export default function FilmLocationsPage() {
                      </p>
                 </CardContent>
                 <CardFooter>
-                    <Button variant="secondary" className="w-full">
-                        <Map className="mr-2 h-4 w-4" /> View on Map & Book Tour
+                    <Button variant="secondary" className="w-full" asChild>
+                        <Link href="/film-locations">
+                            <Map className="mr-2 h-4 w-4" /> View on Map & Book Tour
+                        </Link>
                     </Button>
                 </CardFooter>
             </Card>

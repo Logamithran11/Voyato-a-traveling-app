@@ -120,8 +120,10 @@ export default function TranslatorPage() {
             </div>
         </CardContent>
         <CardFooter className="justify-center gap-4">
-             <Button size="lg" disabled={isRecording}>
-                <Languages className="mr-2 h-4 w-4" /> Translate
+             <Button size="lg" disabled={isRecording} asChild>
+                <Link href="/translator">
+                    <Languages className="mr-2 h-4 w-4" /> Translate Now
+                </Link>
             </Button>
             <Button size="lg" variant="secondary" onClick={() => setIsRecording(!isRecording)}>
                 <Mic className={`mr-2 h-4 w-4 ${isRecording ? 'text-red-500 animate-pulse' : ''}`} />

@@ -75,6 +75,9 @@ export default function HeritageARPage() {
             Back to Dashboard
           </Link>
         </Button>
+        <Button asChild>
+            <Link href="/heritage-ar">Start AR Tour</Link>
+        </Button>
       </div>
       
       <Card className="shadow-lg">
@@ -135,8 +138,10 @@ export default function HeritageARPage() {
                 <p className="text-muted-foreground">Built in 1632 by Emperor Shah Jahan, the Taj Mahal is a white marble mausoleum on the south bank of the Yamuna river in the Indian city of Agra. It was commissioned to house the tomb of his favorite wife, Mumtaz Mahal.</p>
             </CardContent>
             <CardFooter>
-                <Button variant="secondary" className="w-full">
+                <Button variant="secondary" className="w-full" asChild>
+                  <Link href="/heritage-ar">
                     <History className="mr-2 h-4 w-4" /> View Full History
+                  </Link>
                 </Button>
             </CardFooter>
         </Card>

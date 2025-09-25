@@ -54,6 +54,11 @@ export default function SmartAlertsPage() {
             “Stay Ahead, Stay Safe.”
             </CardDescription>
         </CardHeader>
+        <CardFooter className="justify-center">
+            <Button asChild>
+                <Link href="/smart-alerts">Enable Alerts</Link>
+            </Button>
+        </CardFooter>
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

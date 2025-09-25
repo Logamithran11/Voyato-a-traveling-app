@@ -39,6 +39,11 @@ export default function TravelWalletPage() {
             “Pay Anywhere, Anytime.”
             </CardDescription>
         </CardHeader>
+        <CardFooter className="justify-center">
+            <Button asChild>
+                <Link href="/travel-wallet">Activate Wallet</Link>
+            </Button>
+        </CardFooter>
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -54,8 +59,12 @@ export default function TravelWalletPage() {
                     </p>
                 </CardContent>
                 <CardFooter className="grid grid-cols-2 gap-2">
-                    <Button><PlusCircle className="mr-2 h-4 w-4"/> Add Money</Button>
-                    <Button variant="secondary"><Send className="mr-2 h-4 w-4"/> Send</Button>
+                    <Button asChild>
+                        <Link href="/travel-wallet"><PlusCircle className="mr-2 h-4 w-4"/> Add Money</Link>
+                    </Button>
+                    <Button variant="secondary" asChild>
+                        <Link href="/travel-wallet"><Send className="mr-2 h-4 w-4"/> Send</Link>
+                    </Button>
                 </CardFooter>
             </Card>
             <Card>

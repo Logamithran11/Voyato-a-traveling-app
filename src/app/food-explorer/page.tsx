@@ -57,7 +57,9 @@ export default function FoodExplorerPage() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <Button>Explore</Button>
+                <Button asChild>
+                  <Link href="/food-explorer">Explore Food</Link>
+                </Button>
             </div>
             <div className="flex justify-center gap-2 mt-4">
                 <Button variant="ghost"><Gem className="mr-2 h-4 w-4"/>Hidden Gems</Button>
@@ -86,7 +88,9 @@ export default function FoodExplorerPage() {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button variant="outline" className="w-full">View Details & Reviews</Button>
+                    <Button variant="outline" className="w-full" asChild>
+                      <Link href="/food-explorer">View Details & Reviews</Link>
+                    </Button>
                 </CardFooter>
             </Card>
         ))}

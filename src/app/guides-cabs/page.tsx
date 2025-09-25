@@ -43,7 +43,9 @@ const renderProfileCard = (profile: any) => (
             </div>
         </CardContent>
         <CardFooter>
-            <Button className="w-full">View Profile & Book</Button>
+            <Button className="w-full" asChild>
+                <Link href="/guides-cabs">View Profile & Book</Link>
+            </Button>
         </CardFooter>
     </Card>
 );
@@ -84,7 +86,9 @@ export default function GuidesCabsPage() {
                         onChange={(e) => setLocation(e.target.value)}
                     />
                 </div>
-                <Button>Search</Button>
+                <Button asChild>
+                  <Link href="/guides-cabs">Find Trusted Guide</Link>
+                </Button>
             </div>
         </CardContent>
       </Card>

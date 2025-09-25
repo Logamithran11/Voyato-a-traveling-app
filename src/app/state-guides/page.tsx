@@ -86,7 +86,7 @@ export default function StateGuidesPage() {
             </div>
             <CardFooter className="p-4 mt-auto bg-muted/50">
               <Button className="w-full" asChild>
-                <Link href="#">View Guide</Link>
+                <Link href="/state-guides">View State Guide</Link>
               </Button>
             </CardFooter>
           </Card>

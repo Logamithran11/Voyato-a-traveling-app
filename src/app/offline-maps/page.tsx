@@ -58,7 +58,7 @@ export default function OfflineMapsPage() {
       const download = downloads[mapId];
       switch(download.status) {
           case 'not_downloaded':
-              return <Button onClick={() => handleDownload(mapId)}><Download className="mr-2 h-4 w-4" /> Download</Button>;
+              return <Button onClick={() => handleDownload(mapId)}><Download className="mr-2 h-4 w-4" /> Download Map</Button>;
           case 'downloading':
               return <Button variant="outline" disabled><Navigation className="mr-2 h-4 w-4 animate-spin" /> Downloading...</Button>;
           case 'downloaded':
