@@ -127,7 +127,7 @@ export default function ExploreMapsPage() {
 
         {/* Selected Location Details */}
         {selectedLocation && (
-          <div className="absolute bottom-4 left-4 right-4 md:bottom-auto md:top-4 md:left-auto md:w-96 p-1">
+          <div className="absolute bottom-4 left-4 right-4 md:bottom-auto md:top-4 md:left-auto md:right-4 md:w-96 p-1">
              <Card className="bg-background/90 backdrop-blur-sm animate-in fade-in-50">
                 <CardHeader>
                     <div className="flex justify-between items-start">
@@ -135,7 +135,7 @@ export default function ExploreMapsPage() {
                              <CardTitle className="font-headline">{selectedLocation.name}</CardTitle>
                              <CardDescription>{selectedLocation.type}</CardDescription>
                         </div>
-                        <Button variant="ghost" size="icon" className="h-7 w-7 -mr-2 -mt-2" onClick={() => setSelectedLocation(null)}>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 -mr-2 -mt-2 flex-shrink-0" onClick={() => setSelectedLocation(null)}>
                             <X className="h-4 w-4" />
                         </Button>
                     </div>
