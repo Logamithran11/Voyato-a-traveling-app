@@ -40,20 +40,30 @@ export default function OfflineMapsPage() {
   const { toast } = useToast();
 
   const handleDownload = (map: MapItem) => {
+    // 1. Immediately set the status to 'downloading'
     setDownloading(prev => ({ ...prev, [map.id]: { status: 'downloading', progress: 0 } }));
 
+    // 2. Simulate the download progress
     const interval = setInterval(() => {
       setDownloading(prev => {
-        const newProgress = (prev[map.id]?.progress ?? 0) + 10;
+        const currentProgress = prev[map.id]?.progress ?? 0;
+        const newProgress = currentProgress + 10;
+
         if (newProgress >= 100) {
           clearInterval(interval);
-          setDownloadedMaps(prevDownloaded => [...prevDownloaded, map.id]);
-          toast({
-            title: "Download Complete!",
-            description: `Offline map for ${map.name} has been saved.`,
-          });
-          return { ...prev, [map.id]: { status: 'downloaded', progress: 100 } };
+          // 3. Update the final state and trigger the toast *after* a brief delay
+          // This ensures the render cycle is complete before the toast is shown.
+          setTimeout(() => {
+            setDownloadedMaps(prevDownloaded => [...prevDownloaded, map.id]);
+            setDownloading(prev => ({ ...prev, [map.id]: { status: 'downloaded', progress: 100 } }));
+            toast({
+              title: "Download Complete!",
+              description: `Offline map for ${map.name} has been saved.`,
+            });
+          }, 100);
+          return { ...prev, [map.id]: { status: 'downloading', progress: 100 }};
         }
+        
         return { ...prev, [map.id]: { status: 'downloading', progress: newProgress } };
       });
     }, 300);
@@ -61,7 +71,7 @@ export default function OfflineMapsPage() {
   
   const getStatus = (mapId: string): DownloadStatus => {
       if (downloading[mapId]?.status === 'downloading') return 'downloading';
-      if (downloadedMaps.includes(mapId)) return 'downloaded';
+      if (downloadedMaps.includes(mapId) || downloading[mapId]?.status === 'downloaded') return 'downloaded';
       return 'not_downloaded';
   }
 
