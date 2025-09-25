@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Home, Leaf, CheckCircle, Utensils, Map, Users } from 'lucide-react';
+import { ArrowLeft, Home, Leaf, CheckCircle, Utensils, MapPin, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -9,8 +9,8 @@ export default function VillageTourismPage() {
   const highlights = [
     { text: 'Authentic homestays', icon: Home },
     { text: 'Farm visits & workshops', icon: Leaf },
-    { text: 'Traditional food experiences', icon: Utensils },
-    { text: 'Verified local hosts', icon: CheckCircle },
+    { text: 'Traditional food', icon: Utensils },
+    { text: 'Verified hosts', icon: CheckCircle },
   ];
 
   return (
@@ -37,7 +37,7 @@ export default function VillageTourismPage() {
           
           <div className="text-center">
             <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">This feature promotes sustainable rural tourism, supports local economies, and offers you a chance for deep cultural immersion through eco-stays.</p>
+            <p className="text-muted-foreground">Promotes rural tourism & eco-stays.</p>
           </div>
 
           <Separator />
@@ -60,18 +60,18 @@ export default function VillageTourismPage() {
             <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
             <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
                 <div className="flex flex-col items-center text-center">
-                    <Map className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Pick a Village</span>
+                    <MapPin className="h-8 w-8 mb-2"/>
+                    <span className="font-semibold">1. Pick a village</span>
                 </div>
                  <div className="flex-1 border-t-2 border-dashed mx-2"></div>
                 <div className="flex flex-col items-center text-center">
                     <Home className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. Explore Stays</span>
+                    <span className="font-semibold">2. Explore stays</span>
                 </div>
                  <div className="flex-1 border-t-2 border-dashed mx-2"></div>
                 <div className="flex flex-col items-center text-center">
                     <Users className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Book with Locals</span>
+                    <span className="font-semibold">3. Book with locals</span>
                 </div>
             </div>
           </div>

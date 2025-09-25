@@ -23,7 +23,12 @@ import {
     Mic,
     ShoppingBag,
     Users,
-    Trophy
+    Trophy,
+    Train,
+    Wand2,
+    Lightbulb,
+    Download,
+    Globe
 } from "lucide-react";
 
 const quickAccessItems = [
@@ -33,6 +38,9 @@ const quickAccessItems = [
     { label: "Documents", icon: FileText, href: "/documents" },
     { label: "Travel Guides", icon: FileText, href: "/travel-guides" },
     { label: "State Guides", icon: Map, href: "/state-guides" },
+    { label: "Itinerary Planner", icon: Wand2, href: "/everyday-planner" },
+    { label: "Transport", icon: Train, href: "/transport" },
+    { label: "Offline Maps", icon: Download, href: "/offline-maps" },
     { label: "Village Tourism", icon: Home, href: "/village-tourism" },
     { label: "Events Calendar", icon: Calendar, href: "/events-calendar" },
     { label: "Food Explorer", icon: UtensilsCrossed, href: "/food-explorer" },

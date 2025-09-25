@@ -1,84 +1,31 @@
 
 "use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Map, ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Book, Calendar, MapPin, Utensils, Download, Search } from 'lucide-react';
+import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
-import { slugify } from '@/lib/utils';
-import { useState } from 'react';
-
-const allStates = [
-  {
-    name: 'Goa',
-    description: 'Famous for its beaches, vibrant nightlife, and Portuguese-influenced architecture.',
-    imageUrl: 'https://picsum.photos/seed/goa-beach/600/400',
-    imageHint: 'beach sunset'
-  },
-  {
-    name: 'Rajasthan',
-    description: 'The land of kings, known for its majestic forts, palaces, and rich cultural heritage.',
-    imageUrl: 'https://picsum.photos/seed/rajasthan-fort/600/400',
-    imageHint: 'desert fort'
-  },
-  {
-    name: 'Kerala',
-    description: 'God\'s Own Country, with its serene backwaters, lush greenery, and tranquil beaches.',
-    imageUrl: 'https://picsum.photos/seed/kerala-backwaters/600/400',
-    imageHint: 'houseboat backwaters'
-  },
-  {
-    name: 'Himachal Pradesh',
-    description: 'Home to scenic mountain towns, snow-capped peaks, and thrilling trekking routes.',
-    imageUrl: 'https://picsum.photos/seed/himachal-mountains/600/400',
-    imageHint: 'himalayan mountains'
-  },
-  {
-    name: 'Karnataka',
-    description: 'A blend of ancient heritage, modern cities, and stunning natural landscapes.',
-    imageUrl: 'https://picsum.photos/seed/karnataka-temple/600/400',
-    imageHint: 'ancient temple'
-  },
-  {
-    name: 'Maharashtra',
-    description: 'Known for the bustling city of Mumbai, historic caves, and picturesque hill stations.',
-    imageUrl: 'https://picsum.photos/seed/mumbai-skyline/600/400',
-    imageHint: 'city skyline'
-  },
-  {
-    name: 'Tamil Nadu',
-    description: 'Land of temples, classical dance, and delicious Chettinad cuisine.',
-    imageUrl: 'https://picsum.photos/seed/tamil-nadu-temple/600/400',
-    imageHint: 'temple architecture'
-  },
-  {
-    name: 'West Bengal',
-    description: 'The cultural heart of India, famous for Kolkata, the Sundarbans, and Darjeeling tea.',
-    imageUrl: 'https://picsum.photos/seed/kolkata-tram/600/400',
-    imageHint: 'tram city'
-  },
-  {
-    name: 'Gujarat',
-    description: 'Rich in history with ancient sites, vibrant festivals like Navratri, and unique wildlife.',
-    imageUrl: 'https://picsum.photos/seed/gujarat-textiles/600/400',
-    imageHint: 'colorful textiles'
-  }
-];
 
 export default function StateGuidesPage() {
-  const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredStates = allStates.filter(state =>
-    state.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    const highlights = [
+        { text: 'Local culture & traditions', icon: Users },
+        { text: 'Festival calendar', icon: Calendar },
+        { text: 'Regional foods & must-try dishes', icon: Utensils },
+        { text: 'Hidden spots beyond tourist maps', icon: MapPin },
+        { text: 'Downloadable PDFs', icon: Download },
+    ];
 
   return (
     <div className="space-y-8">
@@ -86,65 +33,71 @@ export default function StateGuidesPage() {
         <Button variant="outline" asChild>
           <Link href="/dashboard">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
+            Back to Dashboard
           </Link>
         </Button>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Map /> State-wise Travel Guides
-          </CardTitle>
-          <CardDescription>
-            Curated travel guides for each state, covering culture, festivals, food, and hidden spots.
-          </CardDescription>
+      <Card className="shadow-lg">
+        <CardHeader className="text-center">
+            <div className="mx-auto bg-primary/10 text-primary p-3 rounded-full w-fit">
+                <Book className="h-8 w-8" />
+            </div>
+            <CardTitle className="font-headline text-3xl pt-4">State-wise Travel Guides</CardTitle>
+            <CardDescription className="text-lg text-muted-foreground pt-2">
+            “Explore Every State Like a Local.”
+            </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex w-full max-w-lg items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search for a state..."
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+        <CardContent className="space-y-8 pt-6">
+          
+          <div className="text-center">
+            <h3 className="font-semibold text-lg">Why It Matters</h3>
+            <p className="text-muted-foreground">Tailored guides with culture, food, festivals & hidden gems.</p>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-center">
+              {highlights.map((item) => (
+                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
+                  <item.icon className="h-6 w-6 text-primary" />
+                  <p className="font-medium text-sm">{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredStates.map(state => (
-          <Card key={state.name} className="overflow-hidden shadow-lg flex flex-col">
-            <div className="relative h-48 w-full">
-              <Image
-                src={state.imageUrl}
-                alt={state.name}
-                data-ai-hint={state.imageHint}
-                fill
-                className="object-cover"
-              />
+
+          <Separator />
+          
+          <div>
+            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
+            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
+                <div className="flex flex-col items-center text-center">
+                    <Search className="h-8 w-8 mb-2"/>
+                    <span className="font-semibold">1. Choose State</span>
+                </div>
+                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
+                <div className="flex flex-col items-center text-center">
+                    <Book className="h-8 w-8 mb-2"/>
+                    <span className="font-semibold">2. Explore Guide</span>
+                </div>
+                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
+                <div className="flex flex-col items-center text-center">
+                    <Download className="h-8 w-8 mb-2"/>
+                    <span className="font-semibold">3. Save Offline</span>
+                </div>
             </div>
-            <CardHeader className="flex-grow">
-              <CardTitle className="font-headline">{state.name}</CardTitle>
-              <CardDescription className="pt-2">{state.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" asChild>
-                <Link href={`/travel-guides/${slugify(state.name)}`}>Explore Guide</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-         {filteredStates.length === 0 && (
-          <Card className="md:col-span-2 lg:col-span-3">
-            <CardContent className="p-8 text-center text-muted-foreground">
-              <p>No state guides found for &quot;{searchTerm}&quot;.</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+          </div>
+
+        </CardContent>
+        <CardFooter className="justify-center pt-6">
+            <Button size="lg" className="w-full max-w-xs">View State Guide</Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
+const Users = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+);

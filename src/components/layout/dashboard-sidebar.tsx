@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import Link from "next/link";
@@ -7,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   Home,
-  CheckSquare,
   Lightbulb,
   FileText,
   Camera,
@@ -33,7 +31,8 @@ import {
   ShoppingBag,
   Users,
   Trophy,
-  Calendar
+  Calendar,
+  Train,
 } from "lucide-react";
 import {
   Tooltip,
@@ -48,12 +47,14 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Wand2 } from "lucide-react";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/everyday-planner", label: "Everyday Planner", icon: CheckSquare },
+  { href: "/everyday-planner", label: "Itinerary Planner", icon: Wand2 },
   { href: "/recommendations", label: "AI Recommendations", icon: Lightbulb },
   { href: "/budget", label: "Budget", icon: Wallet },
+  { href: "/transport", label: "Transport", icon: Train },
   { href: "/tickets", label: "Tickets", icon: Ticket },
   { href: "/bookings", label: "Bookings", icon: BookOpen },
   { href: "/documents", label: "Documents", icon: FileText },
