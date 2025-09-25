@@ -53,7 +53,7 @@ const allStates = [
     imageUrl: 'https://picsum.photos/seed/maharashtra/600/400',
     imageHint: 'city skyline'
   },
-    {
+  {
     name: 'Tamil Nadu',
     description: 'Land of temples, classical dance, and delicious Chettinad cuisine.',
     imageUrl: 'https://picsum.photos/seed/tamilnadu/600/400',
