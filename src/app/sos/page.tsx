@@ -1,14 +1,14 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Shield, Bell, Gps, Hospital, Phone, User } from 'lucide-react';
+import { ArrowLeft, Shield, Bell, Navigation, Hospital, Phone, User } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
 export default function SOSPage() {
     const highlights = [
         { text: 'SOS button', icon: Bell },
-        { text: 'GPS live tracking', icon: Gps },
+        { text: 'GPS live tracking', icon: Navigation },
         { text: 'Nearest police & hospital integration', icon: Hospital },
         { text: 'Emergency contacts auto-alert', icon: Phone },
     ];

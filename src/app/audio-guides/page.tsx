@@ -1,13 +1,13 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mic, Book, Play, Gps, Save } from 'lucide-react';
+import { ArrowLeft, Mic, Book, Play, Navigation, Save } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
 export default function AudioGuidesPage() {
     const highlights = [
-        { text: 'Location-based podcasts', icon: Gps },
+        { text: 'Location-based podcasts', icon: Navigation },
         { text: 'Myths & folklore', icon: Book },
         { text: 'Auto-play on arrival', icon: Play },
     ];
@@ -59,7 +59,7 @@ export default function AudioGuidesPage() {
             <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
             <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
                 <div className="flex flex-col items-center text-center">
-                    <Gps className="h-8 w-8 mb-2"/>
+                    <Navigation className="h-8 w-8 mb-2"/>
                     <span className="font-semibold">1. Enable GPS</span>
                 </div>
                  <div className="flex-1 border-t-2 border-dashed mx-2"></div>

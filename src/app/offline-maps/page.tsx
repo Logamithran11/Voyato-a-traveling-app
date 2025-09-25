@@ -1,25 +1,23 @@
 
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
   CardFooter,
+  CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Map as MapIcon, Download, Gps, Mountain, Hospital } from 'lucide-react';
+import { ArrowLeft, Map as MapIcon, Download, Navigation, Mountain, Hospital } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
 export default function OfflineMapsPage() {
     const highlights = [
         { text: 'Download city/state maps', icon: Download },
-        { text: 'GPS navigation without data', icon: Gps },
+        { text: 'GPS navigation without data', icon: Navigation },
         { text: 'POIs marked (hotels, hospitals, attractions)', icon: Hospital },
         { text: 'Trekking & nature trails included', icon: Mountain },
     ];
@@ -81,7 +79,7 @@ export default function OfflineMapsPage() {
                 </div>
                  <div className="flex-1 border-t-2 border-dashed mx-2"></div>
                 <div className="flex flex-col items-center text-center">
-                    <Gps className="h-8 w-8 mb-2"/>
+                    <Navigation className="h-8 w-8 mb-2"/>
                     <span className="font-semibold">3. Use GPS Freely</span>
                 </div>
             </div>
