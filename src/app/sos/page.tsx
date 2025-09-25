@@ -1,17 +1,51 @@
 
+'use client';
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Shield, Bell, Navigation, Hospital, Phone, User } from 'lucide-react';
+import { ArrowLeft, Shield, Bell, Navigation, Hospital, Phone, User, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 export default function SOSPage() {
-    const highlights = [
-        { text: 'SOS button', icon: Bell },
-        { text: 'GPS live tracking', icon: Navigation },
-        { text: 'Nearest police & hospital integration', icon: Hospital },
-        { text: 'Emergency contacts auto-alert', icon: Phone },
-    ];
+    const { toast } = useToast();
+    const [isPressed, setIsPressed] = useState(false);
+    const [timer, setTimer] = useState(5);
+
+    const handlePress = () => {
+        setIsPressed(true);
+        let countdown = 5;
+        const interval = setInterval(() => {
+            countdown -= 1;
+            setTimer(countdown);
+            if (countdown <= 0) {
+                clearInterval(interval);
+                triggerAlert();
+                setIsPressed(false);
+                setTimer(5);
+            }
+        }, 1000);
+
+        // Allow cancellation
+        const handleMouseUp = () => {
+            clearInterval(interval);
+            setIsPressed(false);
+            setTimer(5);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+        document.addEventListener('mouseup', handleMouseUp);
+    };
+
+    const triggerAlert = () => {
+        toast({
+            variant: "destructive",
+            title: "SOS Activated!",
+            description: "Emergency contacts and authorities have been alerted with your live location.",
+            duration: 10000,
+        });
+    };
 
   return (
     <div className="space-y-8">
@@ -23,6 +57,7 @@ export default function SOSPage() {
           </Link>
         </Button>
       </div>
+
       <Card className="shadow-lg">
         <CardHeader className="text-center">
             <div className="mx-auto bg-destructive/10 text-destructive p-3 rounded-full w-fit">
@@ -33,56 +68,72 @@ export default function SOSPage() {
             “Safety First.”
             </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8 pt-6">
-          
-          <div className="text-center">
-            <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">Quick help in emergencies.</p>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-              {highlights.map((item) => (
-                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
-                  <item.icon className="h-6 w-6 text-destructive" />
-                  <p className="font-medium text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
-            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
-                <div className="flex flex-col items-center text-center">
-                    <Bell className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Press SOS</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <User className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. Notify Contacts</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Hospital className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Authorities Alerted</span>
-                </div>
-            </div>
-          </div>
-
+        <CardContent className="flex justify-center py-10">
+            <button
+                onMouseDown={handlePress}
+                className={`relative flex items-center justify-center h-48 w-48 rounded-full transition-all duration-300 focus:outline-none 
+                ${isPressed ? 'bg-red-700 scale-110' : 'bg-red-600 hover:bg-red-700'} 
+                text-white font-bold text-3xl shadow-lg active:scale-105`}
+            >
+                {isPressed && (
+                    <div className="absolute inset-0 rounded-full border-4 border-white animate-ping"></div>
+                )}
+                {isPressed ? timer : "SOS"}
+            </button>
         </CardContent>
-        <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" variant="destructive" asChild>
-                <Link href="/sos">Enable SOS</Link>
-            </Button>
+        <CardFooter className="text-center flex-col gap-2">
+            <p className="font-semibold">Press and Hold for 5 Seconds to Activate</p>
+            <p className="text-sm text-muted-foreground">This will alert your emergency contacts and nearby authorities.</p>
         </CardFooter>
       </Card>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                    <span>Emergency Contacts</span>
+                    <Button variant="ghost" size="icon"><PlusCircle className="h-5 w-5" /></Button>
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="flex items-center gap-3">
+                    <User className="h-6 w-6 text-primary" />
+                    <div>
+                        <p className="font-medium">Mom</p>
+                        <p className="text-sm text-muted-foreground">+91 98765 43210</p>
+                    </div>
+                </div>
+                 <div className="flex items-center gap-3">
+                    <User className="h-6 w-6 text-primary" />
+                    <div>
+                        <p className="font-medium">Dad</p>
+                        <p className="text-sm text-muted-foreground">+91 98765 43211</p>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader>
+                <CardTitle>Nearest Help Centers</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                 <div className="flex items-center gap-3">
+                    <Hospital className="h-6 w-6 text-destructive" />
+                    <div>
+                        <p className="font-medium">City Hospital</p>
+                        <p className="text-sm text-muted-foreground">2.5 km away</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Shield className="h-6 w-6 text-blue-600" />
+                    <div>
+                        <p className="font-medium">Central Police Station</p>
+                        <p className="text-sm text-muted-foreground">3.1 km away</p>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

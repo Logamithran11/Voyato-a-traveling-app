@@ -1,16 +1,29 @@
 
+"use client";
+
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ShoppingBag, Hand, MessageCircle, Truck, Users, CreditCard } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Search, Filter, Star, Heart } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const products = [
+  { name: "Pashmina Shawl", artisan: "Kashmir Weavers", price: 8000, image: "https://picsum.photos/seed/pashmina/600/400", category: "Textiles" },
+  { name: "Blue Pottery Vase", artisan: "Jaipur Blue Pottery", price: 2500, image: "https://picsum.photos/seed/bluepottery/600/400", category: "Pottery" },
+  { name: "Madhubani Painting", artisan: "Mithila Artists", price: 5000, image: "https://picsum.photos/seed/madhubani/600/400", category: "Art" },
+  { name: "Wooden Elephant Statue", artisan: "Kerala Handicrafts", price: 3000, image: "https://picsum.photos/seed/woodenelephant/600/400", category: "Handicrafts" },
+];
 
 export default function VirtualShoppingPage() {
-    const highlights = [
-        { text: 'Local handicrafts', icon: Hand },
-        { text: 'Direct artisan connect', icon: MessageCircle },
-        { text: 'Buy online, ship home', icon: Truck },
-    ];
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredProducts = products.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div className="space-y-8">
@@ -22,7 +35,8 @@ export default function VirtualShoppingPage() {
           </Link>
         </Button>
       </div>
-      <Card className="shadow-lg">
+
+       <Card className="shadow-lg">
         <CardHeader className="text-center">
             <div className="mx-auto bg-primary/10 text-primary p-3 rounded-full w-fit">
                 <ShoppingBag className="h-8 w-8" />
@@ -32,56 +46,64 @@ export default function VirtualShoppingPage() {
             “Bring Home Local Treasures.”
             </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8 pt-6">
-          
-          <div className="text-center">
-            <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">Supports artisans, gets authentic souvenirs.</p>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-center">
-              {highlights.map((item) => (
-                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
-                  <item.icon className="h-6 w-6 text-primary" />
-                  <p className="font-medium text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
-            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
-                <div className="flex flex-col items-center text-center">
-                    <Users className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Browse Artisans</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <ShoppingBag className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. Shop</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <CreditCard className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Checkout</span>
-                </div>
-            </div>
-          </div>
-
-        </CardContent>
-        <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" asChild>
-                <Link href="/virtual-shopping">Shop Handicrafts</Link>
-            </Button>
-        </CardFooter>
       </Card>
+      
+      <Card>
+        <CardContent className="p-4 flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                    type="text"
+                    placeholder="Search for handicrafts, textiles, art..."
+                    className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <div className="flex gap-4">
+                <Select>
+                    <SelectTrigger className="w-full sm:w-[180px]">
+                        <SelectValue placeholder="Filter by Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="textiles">Textiles</SelectItem>
+                        <SelectItem value="pottery">Pottery</SelectItem>
+                        <SelectItem value="art">Art</SelectItem>
+                        <SelectItem value="handicrafts">Handicrafts</SelectItem>
+                    </SelectContent>
+                </Select>
+                 <Button>
+                    <Filter className="mr-2 h-4 w-4" /> Filter
+                </Button>
+            </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {filteredProducts.map((product) => (
+            <Card key={product.name} className="overflow-hidden shadow-lg group">
+                <div className="relative h-56 w-full">
+                    <Image src={product.image} alt={product.name} data-ai-hint="handicraft product" fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-background/50 hover:bg-background text-foreground rounded-full h-8 w-8">
+                        <Heart className="h-4 w-4" />
+                    </Button>
+                </div>
+                <CardHeader>
+                    <CardTitle className="font-headline text-lg truncate">{product.name}</CardTitle>
+                    <CardDescription>by {product.artisan}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="font-bold text-xl">₹{product.price.toLocaleString()}</p>
+                </CardContent>
+                <CardFooter>
+                    <Button className="w-full" asChild>
+                        <Link href="/virtual-shopping">Shop Handicrafts</Link>
+                    </Button>
+                </CardFooter>
+            </Card>
+        ))}
+      </div>
     </div>
   );
 }

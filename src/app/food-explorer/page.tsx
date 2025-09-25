@@ -1,17 +1,28 @@
 
+"use client";
+
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, UtensilsCrossed, Gem, Search, Star, MapIcon, View } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+
+const foodItems = [
+  { name: "Pani Puri at Elco", type: "Street Food", rating: 4.5, image: "https://picsum.photos/seed/panipuri/600/400", imageHint: "street food" },
+  { name: "Vada Pav at Ashok Vada Pav", type: "Street Food", rating: 4.8, image: "https://picsum.photos/seed/vadapav/600/400", imageHint: "indian slider" },
+  { name: "Fish Thali at Gajalee", type: "Restaurant", rating: 4.6, image: "https://picsum.photos/seed/fishthali/600/400", imageHint: "seafood platter" },
+  { name: "Biryani at Paradise", type: "Restaurant", rating: 4.4, image: "https://picsum.photos/seed/biryani/600/400", imageHint: "rice dish" },
+];
 
 export default function FoodExplorerPage() {
-    const highlights = [
-        { text: 'Street food & hidden gems', icon: Gem },
-        { text: 'Food trails', icon: MapIcon },
-        { text: 'AR-based menus', icon: View },
-        { text: 'Ratings & reviews', icon: Star },
-    ];
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredFood = foodItems.filter(item =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div className="space-y-8">
@@ -23,6 +34,7 @@ export default function FoodExplorerPage() {
           </Link>
         </Button>
       </div>
+
       <Card className="shadow-lg">
         <CardHeader className="text-center">
             <div className="mx-auto bg-primary/10 text-primary p-3 rounded-full w-fit">
@@ -33,56 +45,52 @@ export default function FoodExplorerPage() {
             “Taste the Journey.”
             </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8 pt-6">
-          
-          <div className="text-center">
-            <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">Local food is half the travel experience.</p>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-              {highlights.map((item) => (
-                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
-                  <item.icon className="h-6 w-6 text-primary" />
-                  <p className="font-medium text-sm">{item.text}</p>
+        <CardContent>
+            <div className="flex w-full max-w-lg mx-auto items-center space-x-2">
+                <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        type="text"
+                        placeholder="Search for dishes, cuisines, or restaurants..."
+                        className="pl-10"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
-              ))}
+                <Button>Explore</Button>
             </div>
-          </div>
-
-          <Separator />
-          
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
-            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
-                <div className="flex flex-col items-center text-center">
-                    <UtensilsCrossed className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Pick Cuisine</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Search className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. See Nearby</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Star className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Eat & Review</span>
-                </div>
+            <div className="flex justify-center gap-2 mt-4">
+                <Button variant="ghost"><Gem className="mr-2 h-4 w-4"/>Hidden Gems</Button>
+                <Button variant="ghost"><MapIcon className="mr-2 h-4 w-4"/>Food Trails</Button>
+                <Button variant="ghost"><View className="mr-2 h-4 w-4"/>AR View</Button>
             </div>
-          </div>
-
         </CardContent>
-        <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" asChild>
-                <Link href="/food-explorer">Explore Food</Link>
-            </Button>
-        </CardFooter>
       </Card>
+      
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredFood.map(item => (
+            <Card key={item.name} className="overflow-hidden shadow-lg group">
+                <div className="relative h-48 w-full">
+                    <Image src={item.image} alt={item.name} data-ai-hint={item.imageHint} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <Badge variant={item.type === 'Street Food' ? 'secondary' : 'default'} className="absolute top-2 right-2">{item.type}</Badge>
+                </div>
+                <CardHeader>
+                    <CardTitle className="font-headline">{item.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center gap-1">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className={`h-5 w-5 ${i < Math.floor(item.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`}/>
+                        ))}
+                        <span className="text-sm ml-2 text-muted-foreground">({item.rating})</span>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <Button variant="outline" className="w-full">View Details & Reviews</Button>
+                </CardFooter>
+            </Card>
+        ))}
+      </div>
     </div>
   );
 }

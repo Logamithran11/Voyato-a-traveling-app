@@ -1,17 +1,29 @@
 
+"use client";
+
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Home, Leaf, CheckCircle, Utensils, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Home, Search, Star } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+
+const homestays = [
+  { name: "Riverside Bliss Homestay", village: "Majuli, Assam", rating: 4.8, price: "₹2,500/night", image: "https://picsum.photos/seed/majuli/600/400", imageHint: "bamboo hut river" },
+  { name: "Himalayan Orchard Stay", village: "Sethan, Himachal Pradesh", rating: 4.9, price: "₹4,000/night", image: "https://picsum.photos/seed/sethan/600/400", imageHint: "mountain cabin snow" },
+  { name: "Backwater Serenity", village: "Kumarakom, Kerala", rating: 4.7, price: "₹3,500/night", image: "https://picsum.photos/seed/kumarakom/600/400", imageHint: "houseboat backwaters" },
+  { name: "Desert Rose Homestay", village: "Khuri, Rajasthan", rating: 4.6, price: "₹2,000/night", image: "https://picsum.photos/seed/khuri/600/400", imageHint: "mud hut desert" },
+];
 
 export default function VillageTourismPage() {
-  const highlights = [
-    { text: 'Authentic homestays', icon: Home },
-    { text: 'Farm visits & workshops', icon: Leaf },
-    { text: 'Traditional food', icon: Utensils },
-    { text: 'Verified hosts', icon: CheckCircle },
-  ];
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredHomestays = homestays.filter(stay =>
+        stay.village.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        stay.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div className="space-y-8">
@@ -33,56 +45,51 @@ export default function VillageTourismPage() {
             “Live the Village Life.”
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8 pt-6">
-          
-          <div className="text-center">
-            <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">Promotes rural tourism & eco-stays.</p>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-              {highlights.map((item) => (
-                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
-                  <item.icon className="h-6 w-6 text-primary" />
-                  <p className="font-medium text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
-            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
-                <div className="flex flex-col items-center text-center">
-                    <MapPin className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Pick a village</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Home className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. Explore stays</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Users className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Book with locals</span>
+         <CardContent>
+            <div className="flex w-full max-w-lg mx-auto items-center space-x-2">
+                <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        type="text"
+                        placeholder="Search for villages or homestays..."
+                        className="pl-10"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
             </div>
-          </div>
-
         </CardContent>
-        <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" asChild>
-                <Link href="/village-tourism">Book Homestay</Link>
-            </Button>
-        </CardFooter>
       </Card>
+      
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredHomestays.map(stay => (
+            <Card key={stay.name} className="overflow-hidden shadow-lg group">
+                <div className="relative h-56 w-full">
+                    <Image src={stay.image} alt={stay.name} data-ai-hint={stay.imageHint} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <div className="absolute top-2 left-2">
+                        <Badge>{stay.village}</Badge>
+                    </div>
+                </div>
+                <CardHeader>
+                    <CardTitle className="font-headline">{stay.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex justify-between items-center">
+                         <div className="flex items-center gap-1">
+                            <Star className="h-5 w-5 text-yellow-400 fill-yellow-400"/>
+                            <span className="text-sm font-semibold">{stay.rating}</span>
+                        </div>
+                        <p className="font-bold text-lg">{stay.price}</p>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <Button variant="secondary" className="w-full" asChild>
+                        <Link href="/village-tourism">Book Homestay</Link>
+                    </Button>
+                </CardFooter>
+            </Card>
+        ))}
+      </div>
     </div>
   );
 }

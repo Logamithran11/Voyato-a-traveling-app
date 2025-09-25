@@ -1,16 +1,50 @@
 
+'use client';
+
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Languages, Mic, Download, Play } from 'lucide-react';
+import { ArrowLeft, Languages, Mic, Volume2, Copy, Repeat, Star } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+
+const languages = [
+  { value: "en", label: "English" },
+  { value: "hi", label: "Hindi" },
+  { value: "ta", label: "Tamil" },
+  { value: "bn", label: "Bengali" },
+  { value: "te", label: "Telugu" },
+  { value: "mr", label: "Marathi" },
+  { value: "gu", label: "Gujarati" },
+];
 
 export default function TranslatorPage() {
-    const highlights = [
-        { text: 'Text & voice translation', icon: Mic },
-        { text: 'Hindi, Tamil, Bengali & more', icon: Languages },
-        { text: 'Offline packs', icon: Download },
-    ];
+    const [fromLang, setFromLang] = useState("en");
+    const [toLang, setToLang] = useState("hi");
+    const [inputText, setInputText] = useState("Where is the nearest hospital?");
+    const [outputText, setOutputText] = useState("नजदीकी अस्पताल कहाँ है?");
+    const [isRecording, setIsRecording] = useState(false);
+    const { toast } = useToast();
+
+    const handleSwitchLanguages = () => {
+        setFromLang(toLang);
+        setToLang(fromLang);
+        setInputText(outputText);
+        setOutputText(inputText);
+    }
+    
+    const handleCopyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text);
+        toast({ title: "Copied to clipboard!" });
+    }
+
+    const handleTextToSpeech = (text: string, lang: string) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        speechSynthesis.speak(utterance);
+    }
 
   return (
     <div className="space-y-8">
@@ -22,6 +56,7 @@ export default function TranslatorPage() {
           </Link>
         </Button>
       </div>
+
       <Card className="shadow-lg">
         <CardHeader className="text-center">
             <div className="mx-auto bg-primary/10 text-primary p-3 rounded-full w-fit">
@@ -32,56 +67,69 @@ export default function TranslatorPage() {
             “Break the Language Barrier.”
             </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8 pt-6">
-          
-          <div className="text-center">
-            <h3 className="font-semibold text-lg">Why It Matters</h3>
-            <p className="text-muted-foreground">Easier communication in any state.</p>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">Highlights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-center">
-              {highlights.map((item) => (
-                <div key={item.text} className="p-4 bg-muted/50 rounded-lg flex flex-col items-center gap-2">
-                  <item.icon className="h-6 w-6 text-primary" />
-                  <p className="font-medium text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div>
-            <h3 className="font-semibold text-lg text-center mb-4">How It Works</h3>
-            <div className="flex items-center justify-center space-x-2 md:space-x-4 text-muted-foreground">
-                <div className="flex flex-col items-center text-center">
-                    <Mic className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">1. Speak/Type</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Languages className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">2. Instant Translation</span>
-                </div>
-                 <div className="flex-1 border-t-2 border-dashed mx-2"></div>
-                <div className="flex flex-col items-center text-center">
-                    <Play className="h-8 w-8 mb-2"/>
-                    <span className="font-semibold">3. Listen Back</span>
+      </Card>
+      
+      <Card>
+        <CardContent className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Input Side */}
+            <div className="flex flex-col gap-2">
+                <Select value={fromLang} onValueChange={setFromLang}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                        {languages.map(l => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                    </SelectContent>
+                </Select>
+                <div className="relative flex-grow">
+                    <Textarea 
+                        placeholder="Enter text" 
+                        className="h-full min-h-[150px] resize-none" 
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                    />
+                    <div className="absolute bottom-2 right-2 flex gap-1">
+                        <Button variant="ghost" size="icon"><Volume2 className="h-4 w-4" onClick={() => handleTextToSpeech(inputText, fromLang)}/></Button>
+                        <Button variant="ghost" size="icon"><Copy className="h-4 w-4" onClick={() => handleCopyToClipboard(inputText)}/></Button>
+                    </div>
                 </div>
             </div>
-          </div>
-
+            {/* Output Side */}
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                    <Select value={toLang} onValueChange={setToLang}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            {languages.map(l => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
+                    <Button variant="ghost" size="icon" onClick={handleSwitchLanguages}>
+                        <Repeat className="h-5 w-5"/>
+                    </Button>
+                </div>
+                 <div className="relative flex-grow">
+                    <Textarea 
+                        readOnly
+                        className="h-full min-h-[150px] resize-none bg-muted" 
+                        value={outputText}
+                    />
+                    <div className="absolute bottom-2 right-2 flex gap-1">
+                        <Button variant="ghost" size="icon"><Volume2 className="h-4 w-4" onClick={() => handleTextToSpeech(outputText, toLang)}/></Button>
+                        <Button variant="ghost" size="icon"><Copy className="h-4 w-4" onClick={() => handleCopyToClipboard(outputText)}/></Button>
+                        <Button variant="ghost" size="icon"><Star className="h-4 w-4"/></Button>
+                    </div>
+                </div>
+            </div>
         </CardContent>
-        <CardFooter className="justify-center pt-6">
-            <Button size="lg" className="w-full max-w-xs" asChild>
-                <Link href="/translator">Translate Now</Link>
+        <CardFooter className="justify-center gap-4">
+             <Button size="lg" disabled={isRecording}>
+                <Languages className="mr-2 h-4 w-4" /> Translate
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => setIsRecording(!isRecording)}>
+                <Mic className={`mr-2 h-4 w-4 ${isRecording ? 'text-red-500 animate-pulse' : ''}`} />
+                {isRecording ? 'Stop Listening' : 'Start Voice Input'}
             </Button>
         </CardFooter>
       </Card>
+      
     </div>
   );
 }
