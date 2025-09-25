@@ -8,7 +8,7 @@ import Image from 'next/image';
 export default function OfflineMapDisplayPage({ params }: { params: { mapId: string } }) {
 
   const mapName = decodeURIComponent(params.mapId).replace(/-/g, ' ');
-  const imageUrl = `https://picsum.photos/seed/${params.mapId}/1280/720`;
+  const imageUrl = `https://placehold.co/1280x720/2d3250/ffffff/png?text=${encodeURIComponent(mapName)}%0A(Offline%20Map)&font=lato`;
 
   return (
     <div className="space-y-8">
@@ -35,8 +35,8 @@ export default function OfflineMapDisplayPage({ params }: { params: { mapId: str
                 src={imageUrl}
                 alt={`Map of ${mapName}`}
                 fill
-                className="object-cover"
-                data-ai-hint="map satellite"
+                className="object-contain"
+                data-ai-hint="map placeholder"
             />
           </div>
         </CardContent>
