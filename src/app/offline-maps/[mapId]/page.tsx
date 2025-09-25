@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Map, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function OfflineMapDisplayPage({ params }: { params: { mapId: string } }) {
 
   const mapName = decodeURIComponent(params.mapId).replace(/-/g, ' ');
+  const imageUrl = `https://picsum.photos/seed/${params.mapId}/1280/720`;
 
   return (
     <div className="space-y-8">
@@ -28,8 +30,14 @@ export default function OfflineMapDisplayPage({ params }: { params: { mapId: str
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-            <p className="text-muted-foreground capitalize">Offline map for {mapName} would be displayed here.</p>
+          <div className="relative aspect-video bg-muted rounded-lg flex items-center justify-center overflow-hidden">
+            <Image
+                src={imageUrl}
+                alt={`Map of ${mapName}`}
+                fill
+                className="object-cover"
+                data-ai-hint="map satellite"
+            />
           </div>
         </CardContent>
       </Card>
