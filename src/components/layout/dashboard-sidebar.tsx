@@ -18,6 +18,7 @@ import {
   BookOpen,
   LogOut,
   ListChecks,
+  Map,
 } from "lucide-react";
 import {
   Tooltip,
@@ -44,6 +45,7 @@ const menuItems = [
   { href: "/documents", label: "Documents", icon: FileText },
   { href: "/camera-spots", label: "Camera Spots", icon: Camera },
   { href: "/travel-guides", label: "Travel Guides", icon: FileText },
+  { href: "/state-guides", label: "State Guides", icon: Map },
 ];
 
 export function DashboardSidebar() {
