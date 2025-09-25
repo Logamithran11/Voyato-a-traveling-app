@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, UtensilsCrossed, Gem, Search, Star, MapIcon, AugmentRealityIcon } from 'lucide-react';
+import { ArrowLeft, UtensilsCrossed, Gem, Search, Star, MapIcon, View } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
@@ -9,7 +9,7 @@ export default function FoodExplorerPage() {
     const highlights = [
         { text: 'Street food & hidden gems', icon: Gem },
         { text: 'Food trails', icon: MapIcon },
-        { text: 'AR-based menus', icon: AugmentRealityIcon },
+        { text: 'AR-based menus', icon: View },
         { text: 'Ratings & reviews', icon: Star },
     ];
 
