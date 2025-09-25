@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle, Download, Loader2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Download, Loader2, Trash2, Map as MapIcon } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
@@ -75,6 +75,24 @@ export default function OfflineMapsPage() {
       return 'not_downloaded';
   }
 
+  const handleDelete = (mapId: string) => {
+    setDownloadedMaps(prev => prev.filter(id => id !== mapId));
+    const newDownloading = { ...downloading };
+    delete newDownloading[mapId];
+    setDownloading(newDownloading);
+    toast({
+        title: "Map Deleted",
+        description: `The offline map has been removed.`,
+    })
+  }
+
+  const handleOpenMap = (mapName: string) => {
+      toast({
+          title: "Opening Map",
+          description: `This would open the offline map for ${mapName}.`,
+      });
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -101,12 +119,15 @@ export default function OfflineMapsPage() {
         {availableMaps.map(map => {
             const status = getStatus(map.id);
             return (
-                <Card key={map.id} className="shadow-lg">
+                <Card key={map.id} className="shadow-lg flex flex-col">
                     <CardHeader>
-                        <CardTitle>{map.name}</CardTitle>
+                        <CardTitle className="flex items-center justify-between">
+                            {map.name}
+                            {status === 'downloaded' && <CheckCircle className="h-5 w-5 text-green-500"/>}
+                        </CardTitle>
                         <CardDescription>{map.description}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 flex-grow">
                         <div className="flex justify-between items-center text-sm text-muted-foreground">
                             <span>Map Size</span>
                             <span>{map.size}</span>
@@ -119,15 +140,32 @@ export default function OfflineMapsPage() {
                         )}
                     </CardContent>
                     <CardContent>
-                         <Button 
-                            className="w-full" 
-                            onClick={() => handleDownload(map)}
-                            disabled={status !== 'not_downloaded'}
-                        >
-                            {status === 'not_downloaded' && <><Download className="mr-2 h-4 w-4"/>Download</>}
-                            {status === 'downloading' && <><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Downloading</>}
-                            {status === 'downloaded' && <><CheckCircle className="mr-2 h-4 w-4"/>Downloaded</>}
-                        </Button>
+                         {status === 'not_downloaded' && (
+                             <Button 
+                                className="w-full" 
+                                onClick={() => handleDownload(map)}
+                            >
+                                <Download className="mr-2 h-4 w-4"/>Download
+                            </Button>
+                         )}
+                         {status === 'downloading' && (
+                              <Button 
+                                className="w-full" 
+                                disabled
+                            >
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Downloading
+                            </Button>
+                         )}
+                         {status === 'downloaded' && (
+                            <div className="flex gap-2">
+                                <Button className="w-full" onClick={() => handleOpenMap(map.name)}>
+                                    <MapIcon className="mr-2 h-4 w-4"/>Open
+                                </Button>
+                                <Button variant="outline" onClick={() => handleDelete(map.id)}>
+                                    <Trash2 className="mr-2 h-4 w-4"/>Delete
+                                </Button>
+                            </div>
+                         )}
                     </CardContent>
                 </Card>
             )
