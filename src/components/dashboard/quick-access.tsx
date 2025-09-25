@@ -2,7 +2,29 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ticket, BookOpen, FileText, Image, Camera, Map } from "lucide-react";
+import { 
+    Ticket, 
+    BookOpen, 
+    FileText, 
+    Camera, 
+    Map,
+    Home,
+    Calendar,
+    UtensilsCrossed,
+    View,
+    Languages,
+    Film,
+    Shield,
+    Car,
+    AlertTriangle,
+    Wallet,
+    Temple,
+    Bike,
+    Mic,
+    ShoppingBag,
+    Users,
+    Trophy
+} from "lucide-react";
 
 const quickAccessItems = [
     { label: "Tickets", icon: Ticket, href: "/tickets" },
@@ -10,7 +32,23 @@ const quickAccessItems = [
     { label: "Camera", icon: Camera, href: "/camera-spots"},
     { label: "Documents", icon: FileText, href: "/documents" },
     { label: "Travel Guides", icon: FileText, href: "/travel-guides" },
-    { label: "State Guides", icon: Map, href: "/state-guides" }
+    { label: "State Guides", icon: Map, href: "/state-guides" },
+    { label: "Village Tourism", icon: Home, href: "/village-tourism" },
+    { label: "Events Calendar", icon: Calendar, href: "/events-calendar" },
+    { label: "Food Explorer", icon: UtensilsCrossed, href: "/food-explorer" },
+    { label: "Heritage AR", icon: View, href: "/heritage-ar" },
+    { label: "Translator", icon: Languages, href: "/translator" },
+    { label: "Film Locations", icon: Film, href: "/film-locations" },
+    { label: "SOS", icon: Shield, href: "/sos" },
+    { label: "Guides & Cabs", icon: Car, href: "/guides-cabs" },
+    { label: "Smart Alerts", icon: AlertTriangle, href: "/smart-alerts" },
+    { label: "Travel Wallet", icon: Wallet, href: "/travel-wallet" },
+    { label: "Temple Tracker", icon: Temple, href: "/temple-tracker" },
+    { label: "Eco Travel", icon: Bike, href: "/eco-travel" },
+    { label: "Audio Guides", icon: Mic, href: "/audio-guides" },
+    { label: "Virtual Shopping", icon: ShoppingBag, href: "/virtual-shopping" },
+    { label: "Community Hub", icon: Users, href: "/community-hub" },
+    { label: "Gamified Exploration", icon: Trophy, href: "/gamified-exploration" },
 ];
 
 export function QuickAccess() {
@@ -24,12 +62,12 @@ export function QuickAccess() {
             Your essential travel info at a glance.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <CardContent className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
         {quickAccessItems.map(item => (
-            <Button key={item.label} variant="outline" className="flex flex-col h-20 md:h-24 gap-2" asChild>
+            <Button key={item.label} variant="outline" className="flex flex-col h-20 md:h-24 gap-2 text-center" asChild>
                 <Link href={item.href}>
-                    <item.icon className="h-6 w-6 text-primary"/>
-                    <span className="text-xs md:text-sm text-center">{item.label}</span>
+                    <item.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary"/>
+                    <span className="text-xs sm:text-sm">{item.label}</span>
                 </Link>
             </Button>
         ))}

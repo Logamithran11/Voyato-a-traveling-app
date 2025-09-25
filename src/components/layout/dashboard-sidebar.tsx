@@ -20,6 +20,20 @@ import {
   Map,
   Download,
   Globe,
+  UtensilsCrossed,
+  View,
+  Languages,
+  Film,
+  Shield,
+  Car,
+  AlertTriangle,
+  Temple,
+  Bike,
+  Mic,
+  ShoppingBag,
+  Users,
+  Trophy,
+  Calendar
 } from "lucide-react";
 import {
   Tooltip,
@@ -48,6 +62,22 @@ const menuItems = [
   { href: "/state-guides", label: "State Guides", icon: Map },
   { href: "/offline-maps", label: "Offline Maps", icon: Download },
   { href: "/explore-maps", label: "Explore Maps", icon: Globe },
+  { href: "/village-tourism", label: "Village Tourism", icon: Home },
+  { href: "/events-calendar", label: "Events Calendar", icon: Calendar },
+  { href: "/food-explorer", label: "Food Explorer", icon: UtensilsCrossed },
+  { href: "/heritage-ar", label: "Heritage AR", icon: View },
+  { href: "/translator", label: "Translator", icon: Languages },
+  { href: "/film-locations", label: "Film Locations", icon: Film },
+  { href: "/sos", label: "SOS", icon: Shield },
+  { href: "/guides-cabs", label: "Guides & Cabs", icon: Car },
+  { href: "/smart-alerts", label: "Smart Alerts", icon: AlertTriangle },
+  { href: "/travel-wallet", label: "Travel Wallet", icon: Wallet },
+  { href: "/temple-tracker", label: "Temple Tracker", icon: Temple },
+  { href: "/eco-travel", label: "Eco Travel", icon: Bike },
+  { href: "/audio-guides", label: "Audio Guides", icon: Mic },
+  { href: "/virtual-shopping", label: "Virtual Shopping", icon: ShoppingBag },
+  { href: "/community-hub", label: "Community Hub", icon: Users },
+  { href: "/gamified-exploration", label: "Gamified Exploration", icon: Trophy },
 ];
 
 export function DashboardSidebar() {
