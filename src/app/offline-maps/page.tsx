@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { DownloadIcon } from '@/components/icons';
 import { ArrowLeft, CheckCircle, Download, Loader2 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
