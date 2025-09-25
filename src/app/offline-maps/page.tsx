@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -15,6 +16,7 @@ import { ArrowLeft, CheckCircle, Download, Loader2, Trash2, Map as MapIcon } fro
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
+import { slugify } from '@/lib/utils';
 
 type DownloadStatus = 'not_downloaded' | 'downloading' | 'downloaded';
 
@@ -38,6 +40,7 @@ export default function OfflineMapsPage() {
   const [downloadedMaps, setDownloadedMaps] = useLocalStorage<string[]>('offlineMaps', []);
   const [downloading, setDownloading] = useState<Record<string, { status: DownloadStatus; progress: number }>>({});
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleDownload = (map: MapItem) => {
     // 1. Immediately set the status to 'downloading'
@@ -86,11 +89,8 @@ export default function OfflineMapsPage() {
     })
   }
 
-  const handleOpenMap = (mapName: string) => {
-      toast({
-          title: "Opening Map",
-          description: `This would open the offline map for ${mapName}.`,
-      });
+  const handleOpenMap = (map: MapItem) => {
+      router.push(`/offline-maps/${slugify(map.name)}`);
   }
 
   return (
@@ -158,10 +158,10 @@ export default function OfflineMapsPage() {
                          )}
                          {status === 'downloaded' && (
                             <div className="flex gap-2">
-                                <Button className="w-full" onClick={() => handleOpenMap(map.name)}>
+                                <Button className="w-full" onClick={() => handleOpenMap(map)}>
                                     <MapIcon className="mr-2 h-4 w-4"/>Open
                                 </Button>
-                                <Button variant="outline" onClick={() => handleDelete(map.id)}>
+                                <Button variant="destructive" className="bg-red-700 text-white" onClick={() => handleDelete(map.id)}>
                                     <Trash2 className="mr-2 h-4 w-4"/>Delete
                                 </Button>
                             </div>
