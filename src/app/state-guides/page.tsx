@@ -20,55 +20,55 @@ const allStates = [
   {
     name: 'Goa',
     description: 'Famous for its beaches, vibrant nightlife, and Portuguese-influenced architecture.',
-    imageUrl: 'https://picsum.photos/seed/goa/600/400',
+    imageUrl: 'https://picsum.photos/seed/goa-beach/600/400',
     imageHint: 'beach sunset'
   },
   {
     name: 'Rajasthan',
     description: 'The land of kings, known for its majestic forts, palaces, and rich cultural heritage.',
-    imageUrl: 'https://picsum.photos/seed/rajasthan/600/400',
+    imageUrl: 'https://picsum.photos/seed/rajasthan-fort/600/400',
     imageHint: 'desert fort'
   },
   {
     name: 'Kerala',
     description: 'God\'s Own Country, with its serene backwaters, lush greenery, and tranquil beaches.',
-    imageUrl: 'https://picsum.photos/seed/kerala/600/400',
+    imageUrl: 'https://picsum.photos/seed/kerala-backwaters/600/400',
     imageHint: 'houseboat backwaters'
   },
   {
     name: 'Himachal Pradesh',
     description: 'Home to scenic mountain towns, snow-capped peaks, and thrilling trekking routes.',
-    imageUrl: 'https://picsum.photos/seed/himachal/600/400',
+    imageUrl: 'https://picsum.photos/seed/himachal-mountains/600/400',
     imageHint: 'himalayan mountains'
   },
   {
     name: 'Karnataka',
     description: 'A blend of ancient heritage, modern cities, and stunning natural landscapes.',
-    imageUrl: 'https://picsum.photos/seed/karnataka/600/400',
+    imageUrl: 'https://picsum.photos/seed/karnataka-temple/600/400',
     imageHint: 'ancient temple'
   },
   {
     name: 'Maharashtra',
     description: 'Known for the bustling city of Mumbai, historic caves, and picturesque hill stations.',
-    imageUrl: 'https://picsum.photos/seed/maharashtra/600/400',
+    imageUrl: 'https://picsum.photos/seed/mumbai-skyline/600/400',
     imageHint: 'city skyline'
   },
   {
     name: 'Tamil Nadu',
     description: 'Land of temples, classical dance, and delicious Chettinad cuisine.',
-    imageUrl: 'https://picsum.photos/seed/tamilnadu/600/400',
+    imageUrl: 'https://picsum.photos/seed/tamil-nadu-temple/600/400',
     imageHint: 'temple architecture'
   },
   {
     name: 'West Bengal',
     description: 'The cultural heart of India, famous for Kolkata, the Sundarbans, and Darjeeling tea.',
-    imageUrl: 'https://picsum.photos/seed/westbengal/600/400',
+    imageUrl: 'https://picsum.photos/seed/kolkata-tram/600/400',
     imageHint: 'tram city'
   },
   {
     name: 'Gujarat',
     description: 'Rich in history with ancient sites, vibrant festivals like Navratri, and unique wildlife.',
-    imageUrl: 'https://picsum.photos/seed/gujarat/600/400',
+    imageUrl: 'https://picsum.photos/seed/gujarat-textiles/600/400',
     imageHint: 'colorful textiles'
   }
 ];
