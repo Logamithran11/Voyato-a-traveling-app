@@ -19,6 +19,7 @@ import {
   LogOut,
   Map,
   Download,
+  Globe,
 } from "lucide-react";
 import {
   Tooltip,
@@ -46,6 +47,7 @@ const menuItems = [
   { href: "/travel-guides", label: "Travel Guides", icon: FileText },
   { href: "/state-guides", label: "State Guides", icon: Map },
   { href: "/offline-maps", label: "Offline Maps", icon: Download },
+  { href: "/explore-maps", label: "Explore Maps", icon: Globe },
 ];
 
 export function DashboardSidebar() {
