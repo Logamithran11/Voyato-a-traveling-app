@@ -17,7 +17,7 @@ const allEvents = [
         id: 1,
         name: "Pushkar Camel Fair",
         location: "Pushkar, Rajasthan",
-        dates: [new Date(2024, 10, 1), new Date(2024, 10, 2), new Date(2024, 10, 3), new Date(2024, 10, 4), new Date(2024, 10, 5), new Date(2024, 10, 6), new Date(2024, 10, 7), new Date(2024, 10, 8), new Date(2024, 10, 9)],
+        dates: Array.from({ length: 9 }, (_, i) => new Date(2024, 10, i + 1)), // Nov 1-9
         category: "Fair",
         image: { imageUrl: "https://picsum.photos/seed/pushkar/600/400", imageHint: "camels desert" }
     },
@@ -25,7 +25,7 @@ const allEvents = [
         id: 2,
         name: "Hornbill Festival",
         location: "Kohima, Nagaland",
-        dates: Array.from({ length: 10 }, (_, i) => new Date(2024, 11, i + 1)),
+        dates: Array.from({ length: 10 }, (_, i) => new Date(2024, 11, i + 1)), // Dec 1-10
         category: "Cultural",
         image: { imageUrl: "https://picsum.photos/seed/hornbill/600/400", imageHint: "tribal festival" }
     },
@@ -33,15 +33,15 @@ const allEvents = [
         id: 3,
         name: "Rath Yatra",
         location: "Puri, Odisha",
-        dates: [new Date(2024, 6, 7)],
+        dates: [new Date(2024, 6, 7)], // July 7
         category: "Religious",
         image: { imageUrl: "https://picsum.photos/seed/rath-yatra/600/400", imageHint: "chariot festival" }
     },
     {
         id: 4,
-        name: "Diwali - Festival of Lights",
+        name: "Diwali",
         location: "Varanasi, Uttar Pradesh",
-        dates: [new Date(2024, 10, 1)],
+        dates: [new Date(2024, 10, 1)], // Nov 1
         category: "Religious",
         image: { imageUrl: "https://picsum.photos/seed/diwali/600/400", imageHint: "lamps river" }
     },
@@ -49,7 +49,7 @@ const allEvents = [
         id: 5,
         name: "Ganesh Chaturthi",
         location: "Mumbai, Maharashtra",
-        dates: [new Date(2024, 8, 7)],
+        dates: [new Date(2024, 8, 7)], // Sep 7
         category: "Religious",
         image: { imageUrl: "https://picsum.photos/seed/ganesh/600/400", imageHint: "ganesha statue" }
     },
@@ -57,9 +57,49 @@ const allEvents = [
         id: 6,
         name: "Onam",
         location: "Kerala",
-        dates: Array.from({ length: 10 }, (_, i) => new Date(2024, 8, i + 5)),
+        dates: Array.from({ length: 10 }, (_, i) => new Date(2024, 8, i + 5)), // Sep 5-14
         category: "Harvest",
         image: { imageUrl: "https://picsum.photos/seed/onam/600/400", imageHint: "flower carpet" }
+    },
+    {
+        id: 7,
+        name: "Holi",
+        location: "Mathura, Uttar Pradesh",
+        dates: [new Date(2025, 2, 14)], // Mar 14, 2025
+        category: "Cultural",
+        image: { imageUrl: "https://picsum.photos/seed/holi/600/400", imageHint: "color festival" }
+    },
+    {
+        id: 8,
+        name: "Durga Puja",
+        location: "Kolkata, West Bengal",
+        dates: Array.from({ length: 5 }, (_, i) => new Date(2024, 9, i + 9)), // Oct 9-13
+        category: "Religious",
+        image: { imageUrl: "https://picsum.photos/seed/durgapuja/600/400", imageHint: "goddess statue" }
+    },
+    {
+        id: 9,
+        name: "Kumbh Mela",
+        location: "Prayagraj, Uttar Pradesh",
+        dates: Array.from({ length: 45 }, (_, i) => new Date(2025, 0, i + 14)), // Jan 14 - Feb 26, 2025
+        category: "Religious",
+        image: { imageUrl: "https://picsum.photos/seed/kumbh/600/400", imageHint: "pilgrims river" }
+    },
+    {
+        id: 10,
+        name: "Bihu",
+        location: "Assam",
+        dates: [new Date(2025, 0, 15), new Date(2025, 3, 14), new Date(2025, 9, 15)], // Multiple dates
+        category: "Harvest",
+        image: { imageUrl: "https://picsum.photos/seed/bihu/600/400", imageHint: "folk dance" }
+    },
+     {
+        id: 11,
+        name: "Goa Carnival",
+        location: "Panjim, Goa",
+        dates: Array.from({ length: 4 }, (_, i) => new Date(2025, 1, i + 22)), // Feb 22-25, 2025
+        category: "Cultural",
+        image: { imageUrl: "https://picsum.photos/seed/goa-carnival/600/400", imageHint: "carnival float parade" }
     },
 ];
 
