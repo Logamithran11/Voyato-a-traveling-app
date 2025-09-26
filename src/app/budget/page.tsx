@@ -49,6 +49,7 @@ const CURRENCY_SYMBOLS: { [key: string]: string } = {
 export default function BudgetPage() {
   const [destination, setDestination] = useState("Goa, India");
   const [duration, setDuration] = useState(7);
+  const [numberOfMembers, setNumberOfMembers] = useState(2);
   const [travelStyle, setTravelStyle] = useState("mid-range");
   const [vehicle, setVehicle] = useState("Car");
   const [currency, setCurrency] = useState("INR");
@@ -60,7 +61,7 @@ export default function BudgetPage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerateBudget = async () => {
-    if (!destination || !duration) {
+    if (!destination || !duration || !numberOfMembers) {
       setError("Please fill in all the fields.");
       return;
     }
@@ -72,6 +73,7 @@ export default function BudgetPage() {
       const result = await generateBudgetPlan({
         destination,
         duration,
+        numberOfMembers,
         travelStyle,
         vehicle,
         currency,
@@ -110,8 +112,8 @@ export default function BudgetPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="grid gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid gap-2 lg:col-span-2">
               <Label htmlFor="destination">Destination</Label>
               <Input
                 id="destination"
@@ -128,6 +130,16 @@ export default function BudgetPage() {
                 placeholder="e.g., 7"
                 value={duration}
                 onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
+              />
+            </div>
+             <div className="grid gap-2">
+              <Label htmlFor="numberOfMembers">Members</Label>
+              <Input
+                id="numberOfMembers"
+                type="number"
+                placeholder="e.g., 2"
+                value={numberOfMembers}
+                onChange={(e) => setNumberOfMembers(parseInt(e.target.value) || 1)}
               />
             </div>
             <div className="grid gap-2">
@@ -211,7 +223,7 @@ export default function BudgetPage() {
             <CardHeader>
                 <CardTitle className="font-headline text-xl md:text-2xl">Your Budget Plan</CardTitle>
                 <CardDescription>
-                    Estimated total for a {duration}-day trip to {destination} ({travelStyle}):
+                    Estimated total for a {duration}-day trip for {numberOfMembers} {numberOfMembers > 1 ? 'people' : 'person'} to {destination} ({travelStyle}):
                     <span className="font-bold text-primary text-lg"> {currencySymbol}{budgetPlan.totalBudget.toLocaleString()}</span>
                 </CardDescription>
             </CardHeader>

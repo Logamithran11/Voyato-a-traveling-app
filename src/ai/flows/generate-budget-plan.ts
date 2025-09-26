@@ -15,6 +15,7 @@ import {z} from 'genkit';
 const GenerateBudgetPlanInputSchema = z.object({
   destination: z.string().describe('The travel destination.'),
   duration: z.number().describe('The duration of the trip in days.'),
+  numberOfMembers: z.number().describe('The number of people traveling.'),
   travelStyle: z.string().describe('The user\'s travel style (e.g., budget, mid-range, luxury).'),
   vehicle: z.string().describe('The primary mode of transportation (e.g., Car, Bus, Aeroplane, Train, Bike, None).'),
   currency: z.string().describe('The currency for the budget (e.g., USD, EUR, INR).'),
@@ -49,11 +50,12 @@ const prompt = ai.definePrompt({
   Given the following trip details:
   - Destination: {{destination}}
   - Duration: {{duration}} days
+  - Number of Members: {{numberOfMembers}}
   - Travel Style: {{travelStyle}}
   - Primary Transportation: {{vehicle}}
   - Currency: {{currency}}
 
-  Generate a detailed budget plan. The plan should include:
+  Generate a detailed budget plan. The plan should be calculated for the total number of members ({{numberOfMembers}}). The plan should include:
   1. An estimated total budget in the specified currency ({{currency}}).
   2. A breakdown of the budget into major categories (e.g., Accommodation, Food, Activities, Transport, Shopping, Miscellaneous). The 'Transport' category should reflect the chosen vehicle: {{vehicle}}.
   3. A list of actionable budget-saving tips relevant to the destination and travel style.
