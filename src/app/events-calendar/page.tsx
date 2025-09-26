@@ -78,7 +78,7 @@ export default function EventsCalendarPage() {
         (filterMonth === 'All Months' || event.dates.some(d => d.toLocaleString('default', { month: 'long' }) === filterMonth))
     );
     
-    const eventDays = filteredEvents.flatMap(event => event.dates);
+    const allEventDays = allEvents.flatMap(event => event.dates);
     
     const eventsOnSelectedDate = selectedDate ? allEvents.filter(event => 
       event.dates.some(d => d.toDateString() === selectedDate.toDateString())
@@ -104,7 +104,9 @@ export default function EventsCalendarPage() {
                             </CardTitle>
                             <CardDescription className="pt-2 text-lg">“Celebrate with Locals.”</CardDescription>
                         </div>
-                         <Link href="/events-calendar"><Button>View Events</Button></Link>
+                         <Button asChild>
+                           <Link href="/events-calendar">View Events</Link>
+                         </Button>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -160,7 +162,7 @@ export default function EventsCalendarPage() {
                                 month={selectedDate}
                                 onMonthChange={(month) => setSelectedDate(month)}
                                 className="rounded-md border"
-                                modifiers={{ event: eventDays }}
+                                modifiers={{ event: allEventDays }}
                                 modifiersStyles={{
                                     event: {
                                         border: "2px solid hsl(var(--primary))",
@@ -217,3 +219,5 @@ export default function EventsCalendarPage() {
         </div>
     );
 }
+
+    
