@@ -11,14 +11,14 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 const foodItems = [
-  { name: "Pani Puri at Elco", type: "Street Food", rating: 4.5, image: "https://picsum.photos/seed/panipuri/600/400", imageHint: "indian street food" },
-  { name: "Vada Pav at Ashok Vada Pav", type: "Street Food", rating: 4.8, image: "https://picsum.photos/seed/vadapav/600/400", imageHint: "indian slider" },
-  { name: "Fish Thali at Gajalee", type: "Restaurant", rating: 4.6, image: "https://picsum.photos/seed/fishthali/600/400", imageHint: "seafood platter" },
-  { name: "Biryani at Paradise", type: "Restaurant", rating: 4.4, image: "https://picsum.photos/seed/biryani/600/400", imageHint: "rice meat" },
-  { name: "Masala Dosa at MTR", type: "Restaurant", rating: 4.7, image: "https://picsum.photos/seed/masaladosa/600/400", imageHint: "indian crepe" },
-  { name: "Chole Bhature at Sita Ram", type: "Street Food", rating: 4.6, image: "https://picsum.photos/seed/cholebhature/600/400", imageHint: "puffed bread curry" },
-  { name: "Tunday Kababi's Galouti Kebab", type: "Restaurant", rating: 4.9, image: "https://picsum.photos/seed/kebab/600/400", imageHint: "grilled meat" },
-  { name: "Jalebi with Rabri", type: "Dessert", rating: 4.8, image: "https://picsum.photos/seed/jalebi/600/400", imageHint: "sweet dessert" },
+  { name: "Pani Puri at Elco", type: "Street Food", rating: 4.5, image: "https://picsum.photos/seed/crispy-snack/600/400", imageHint: "street food" },
+  { name: "Vada Pav at Ashok Vada Pav", type: "Street Food", rating: 4.8, image: "https://picsum.photos/seed/potato-bun/600/400", imageHint: "indian burger" },
+  { name: "Fish Thali at Gajalee", type: "Restaurant", rating: 4.6, image: "https://picsum.photos/seed/seafood-meal/600/400", imageHint: "seafood platter" },
+  { name: "Biryani at Paradise", type: "Restaurant", rating: 4.4, image: "https://picsum.photos/seed/rice-dish/600/400", imageHint: "meat rice" },
+  { name: "Masala Dosa at MTR", type: "Restaurant", rating: 4.7, image: "https://picsum.photos/seed/indian-pancake/600/400", imageHint: "indian crepe" },
+  { name: "Chole Bhature at Sita Ram", type: "Street Food", rating: 4.6, image: "https://picsum.photos/seed/puffy-bread/600/400", imageHint: "puffed bread" },
+  { name: "Tunday Kababi's Galouti Kebab", type: "Restaurant", rating: 4.9, image: "https://picsum.photos/seed/minced-kebab/600/400", imageHint: "meat kebab" },
+  { name: "Jalebi with Rabri", type: "Dessert", rating: 4.8, image: "https://picsum.photos/seed/sweet-swirl/600/400", imageHint: "sweet dessert" },
 ];
 
 export default function FoodExplorerPage() {
