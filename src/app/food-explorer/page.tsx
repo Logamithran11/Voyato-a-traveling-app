@@ -11,17 +11,22 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 const foodItems = [
-  { name: "Pani Puri at Elco", type: "Street Food", rating: 4.5, image: "https://picsum.photos/seed/panipuri/600/400", imageHint: "street food" },
+  { name: "Pani Puri at Elco", type: "Street Food", rating: 4.5, image: "https://picsum.photos/seed/panipuri/600/400", imageHint: "indian street food" },
   { name: "Vada Pav at Ashok Vada Pav", type: "Street Food", rating: 4.8, image: "https://picsum.photos/seed/vadapav/600/400", imageHint: "indian slider" },
   { name: "Fish Thali at Gajalee", type: "Restaurant", rating: 4.6, image: "https://picsum.photos/seed/fishthali/600/400", imageHint: "seafood platter" },
-  { name: "Biryani at Paradise", type: "Restaurant", rating: 4.4, image: "https://picsum.photos/seed/biryani/600/400", imageHint: "rice dish" },
+  { name: "Biryani at Paradise", type: "Restaurant", rating: 4.4, image: "https://picsum.photos/seed/biryani/600/400", imageHint: "rice meat" },
+  { name: "Masala Dosa at MTR", type: "Restaurant", rating: 4.7, image: "https://picsum.photos/seed/masaladosa/600/400", imageHint: "indian crepe" },
+  { name: "Chole Bhature at Sita Ram", type: "Street Food", rating: 4.6, image: "https://picsum.photos/seed/cholebhature/600/400", imageHint: "puffed bread curry" },
+  { name: "Tunday Kababi's Galouti Kebab", type: "Restaurant", rating: 4.9, image: "https://picsum.photos/seed/kebab/600/400", imageHint: "grilled meat" },
+  { name: "Jalebi with Rabri", type: "Dessert", rating: 4.8, image: "https://picsum.photos/seed/jalebi/600/400", imageHint: "sweet dessert" },
 ];
 
 export default function FoodExplorerPage() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredFood = foodItems.filter(item =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   return (
@@ -69,12 +74,12 @@ export default function FoodExplorerPage() {
         </CardContent>
       </Card>
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {filteredFood.map(item => (
             <Card key={item.name} className="overflow-hidden shadow-lg group">
                 <div className="relative h-48 w-full">
                     <Image src={item.image} alt={item.name} data-ai-hint={item.imageHint} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <Badge variant={item.type === 'Street Food' ? 'secondary' : 'default'} className="absolute top-2 right-2">{item.type}</Badge>
+                    <Badge variant={item.type === 'Street Food' ? 'secondary' : (item.type === 'Dessert' ? 'destructive' : 'default')} className="absolute top-2 right-2">{item.type}</Badge>
                 </div>
                 <CardHeader>
                     <CardTitle className="font-headline">{item.name}</CardTitle>
@@ -94,6 +99,13 @@ export default function FoodExplorerPage() {
                 </CardFooter>
             </Card>
         ))}
+         {filteredFood.length === 0 && (
+          <Card className="md:col-span-2 lg:col-span-4">
+            <CardContent className="p-8 text-center text-muted-foreground">
+              <p>No results for &quot;{searchTerm}&quot;.</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
