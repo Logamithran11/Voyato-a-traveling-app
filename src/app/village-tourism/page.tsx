@@ -15,6 +15,10 @@ const homestays = [
   { name: "Himalayan Orchard Stay", village: "Sethan, Himachal Pradesh", rating: 4.9, price: "₹4,000/night", image: "https://picsum.photos/seed/sethan/600/400", imageHint: "mountain cabin snow" },
   { name: "Backwater Serenity", village: "Kumarakom, Kerala", rating: 4.7, price: "₹3,500/night", image: "https://picsum.photos/seed/kumarakom/600/400", imageHint: "houseboat backwaters" },
   { name: "Desert Rose Homestay", village: "Khuri, Rajasthan", rating: 4.6, price: "₹2,000/night", image: "https://picsum.photos/seed/khuri/600/400", imageHint: "mud hut desert" },
+  { name: "Zanskar Valley Homestay", village: "Padum, Ladakh", rating: 4.8, price: "₹3,000/night", image: "https://picsum.photos/seed/zanskar/600/400", imageHint: "remote valley village" },
+  { name: "Living Root Bridge View", village: "Nongriat, Meghalaya", rating: 4.9, price: "₹1,800/night", image: "https://picsum.photos/seed/nongriat/600/400", imageHint: "root bridge jungle" },
+  { name: "Chettinad Mansion", village: "Kanadukathan, Tamil Nadu", rating: 4.7, price: "₹5,500/night", image: "https://picsum.photos/seed/chettinad/600/400", imageHint: "heritage mansion" },
+  { name: "Kumaoni Village Stay", village: "Peora, Uttarakhand", rating: 4.8, price: "₹3,200/night", image: "https://picsum.photos/seed/peora/600/400", imageHint: "stone house mountains" },
 ];
 
 export default function VillageTourismPage() {
@@ -61,7 +65,7 @@ export default function VillageTourismPage() {
         </CardContent>
       </Card>
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {filteredHomestays.map(stay => (
             <Card key={stay.name} className="overflow-hidden shadow-lg group">
                 <div className="relative h-56 w-full">
@@ -71,7 +75,7 @@ export default function VillageTourismPage() {
                     </div>
                 </div>
                 <CardHeader>
-                    <CardTitle className="font-headline">{stay.name}</CardTitle>
+                    <CardTitle className="font-headline text-lg">{stay.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex justify-between items-center">
@@ -89,6 +93,13 @@ export default function VillageTourismPage() {
                 </CardFooter>
             </Card>
         ))}
+         {filteredHomestays.length === 0 && (
+          <Card className="md:col-span-2 lg:col-span-4">
+            <CardContent className="p-8 text-center text-muted-foreground">
+              <p>No homestays found for &quot;{searchTerm}&quot;.</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
