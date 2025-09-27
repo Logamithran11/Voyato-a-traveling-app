@@ -39,49 +39,49 @@
     {
       "id": "food-1",
       "description": "Pani Puri",
-      "imageUrl": "https://images.unsplash.com/photo-1631783623348-105554583193",
+      "imageUrl": "https://images.unsplash.com/photo-1593879973954-245318659178?w=600&q=80",
       "imageHint": "pani puri"
     },
     {
       "id": "food-2",
       "description": "Vada Pav",
-      "imageUrl": "https://images.unsplash.com/photo-1609951379471-249c362d2966",
+      "imageUrl": "https://images.unsplash.com/photo-1609951379471-249c362d2966?w=600&q=80",
       "imageHint": "vada pav"
     },
     {
       "id": "food-3",
       "description": "Fish Thali",
-      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f",
+      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f?w=600&q=80",
       "imageHint": "fish thali"
     },
     {
       "id": "food-4",
       "description": "Chicken Biryani",
-      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0",
+      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&q=80",
       "imageHint": "chicken biryani"
     },
     {
       "id": "food-5",
       "description": "Masala Dosa",
-      "imageUrl": "https://images.unsplash.com/photo-1668665782358-0816c5894a73",
+      "imageUrl": "https://images.unsplash.com/photo-1626509406520-21d15585a0c7?w=600&q=80",
       "imageHint": "masala dosa"
     },
     {
       "id": "food-6",
       "description": "Chole Bhature",
-      "imageUrl": "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26",
+      "imageUrl": "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&q=80",
       "imageHint": "chole bhature"
     },
     {
       "id": "food-7",
       "description": "Galouti Kebab",
-      "imageUrl": "https://images.unsplash.com/photo-1643941217351-bc293885bade",
+      "imageUrl": "https://images.unsplash.com/photo-1643941217351-bc293885bade?w=600&q=80",
       "imageHint": "galouti kebab"
     },
     {
       "id": "food-8",
       "description": "Jalebi with Rabri",
-      "imageUrl": "https://images.unsplash.com/photo-1603524028045-9a4c0a524c65",
+      "imageUrl": "https://images.unsplash.com/photo-1603524028045-9a4c0a524c65?w=600&q=80",
       "imageHint": "jalebi sweet"
     }
   ]

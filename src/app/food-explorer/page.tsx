@@ -68,12 +68,10 @@ export default function FoodExplorerPage() {
         {filteredFood.map(item => (
             <Card key={item.name} className="overflow-hidden shadow-lg group">
                 <div className="relative h-48 w-full">
-                    <Image 
+                    <img 
                         src={item.image.imageUrl} 
                         alt={item.name} 
                         data-ai-hint={item.image.imageHint} 
-                        width={600}
-                        height={400}
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" 
                     />
                     <Badge variant={item.type === 'Street Food' ? 'secondary' : (item.type === 'Dessert' ? 'destructive' : 'default')} className="absolute top-2 right-2">{item.type}</Badge>
