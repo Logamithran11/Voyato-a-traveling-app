@@ -3,38 +3,86 @@
     {
       "id": "login-bg",
       "description": "Scenic travel background for login page",
-      "imageUrl": "https://picsum.photos/seed/voyage/1920/1080",
+      "imageUrl": "https://images.unsplash.com/photo-1645705250941-0af036402d56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx0cmF2ZWwlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzU4ODg4MzgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "travel landscape"
     },
     {
       "id": "dest-1",
       "description": "Recommended destination 1",
-      "imageUrl": "https://picsum.photos/seed/dest1/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1529619768328-e37af76c6fe5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaXR5JTIwbmlnaHR8ZW58MHx8fHwxNzU4OTE1NjE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "city night"
     },
     {
       "id": "dest-2",
       "description": "Recommended destination 2",
-      "imageUrl": "https://picsum.photos/seed/dest2/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1613075019881-f475574c236a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb3VudGFpbiUyMGxhbmRzY2FwZXxlbnwwfHx8fDE3NTg5MTAzNDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mountain landscape"
     },
     {
       "id": "dest-3",
       "description": "Recommended destination 3",
-      "imageUrl": "https://picsum.photos/seed/dest3/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1586500036065-bdaeac7a4feb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc1ODk1NjUxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "tropical beach"
     },
     {
       "id": "dest-4",
       "description": "Recommended destination 4",
-      "imageUrl": "https://picsum.photos/seed/dest4/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1580102488613-fa55ab5de62a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhbmNpZW50JTIwcnVpbnN8ZW58MHx8fHwxNzU4ODgyMDI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "ancient ruins"
     },
     {
       "id": "dest-5",
       "description": "Recommended destination 5",
-      "imageUrl": "https://picsum.photos/seed/dest5/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1717494810944-d268ef8ee9f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2l0eXNjYXBlJTIwc3Vuc2V0fGVufDB8fHx8MTc1ODk2MTgyOHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cityscape sunset"
+    },
+    {
+      "id": "food-1",
+      "description": "Pani Puri",
+      "imageUrl": "https://images.unsplash.com/photo-1713480957156-97327846f1c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGFuaSUyMHB1cml8ZW58MHx8fHwxNzU4OTc1NjE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pani puri"
+    },
+    {
+      "id": "food-2",
+      "description": "Vada Pav",
+      "imageUrl": "https://images.unsplash.com/photo-1606491956689-2ea866880c84?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx2YWRhJTIwcGF2fGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "vada pav"
+    },
+    {
+      "id": "food-3",
+      "description": "Fish Thali",
+      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmaXNoJTIwdGhhbGl8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fish thali"
+    },
+    {
+      "id": "food-4",
+      "description": "Chicken Biryani",
+      "imageUrl": "https://images.unsplash.com/photo-1719239885399-f87d992e0f18?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaGlja2VuJTIwYmlyeWFuaXxlbnwwfHx8fDE3NTg5MzUzOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "chicken biryani"
+    },
+    {
+      "id": "food-5",
+      "description": "Masala Dosa",
+      "imageUrl": "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYXNhbGElMjBkb3NhfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "masala dosa"
+    },
+    {
+      "id": "food-6",
+      "description": "Chole Bhature",
+      "imageUrl": "https://images.unsplash.com/photo-1558437873-b8867755d869?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2hvbGUlMjBiaGF0dXJlfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "chole bhature"
+    },
+    {
+      "id": "food-7",
+      "description": "Galouti Kebab",
+      "imageUrl": "https://images.unsplash.com/photo-1583060095186-852adde6b819?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxnYWxvdXRpJTIwa2ViYWJ8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "galouti kebab"
+    },
+    {
+      "id": "food-8",
+      "description": "Jalebi with Rabri",
+      "imageUrl": "https://images.unsplash.com/photo-1648683622470-d52bfe2d3830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8amFsZWJpJTIwc3dlZXR8ZW58MHx8fHwxNzU4OTc1NjE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "jalebi sweet"
     }
   ]
 }
