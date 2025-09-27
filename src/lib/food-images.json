@@ -1,13 +1,13 @@
 
 {
   "foodItems": [
-    { "name": "Pani Puri", "type": "Street Food", "rating": 4.5, "image": "https://picsum.photos/seed/panipuri/600/400", "imageHint": "street food" },
-    { "name": "Vada Pav", "type": "Street Food", "rating": 4.8, "image": "https://picsum.photos/seed/vadapav/600/400", "imageHint": "indian burger" },
-    { "name": "Fish Thali", "type": "Restaurant", "rating": 4.6, "image": "https://picsum.photos/seed/fishthali/600/400", "imageHint": "fish meal" },
-    { "name": "Chicken Biryani", "type": "Restaurant", "rating": 4.4, "image": "https://picsum.photos/seed/biryani/600/400", "imageHint": "rice dish" },
-    { "name": "Masala Dosa", "type": "Restaurant", "rating": 4.7, "image": "https://picsum.photos/seed/masaladosa/600/400", "imageHint": "indian pancake" },
-    { "name": "Chole Bhature", "type": "Street Food", "rating": 4.6, "image": "https://picsum.photos/seed/cholebhature/600/400", "imageHint": "fried bread" },
-    { "name": "Galouti Kebab", "type": "Restaurant", "rating": 4.9, "image": "https://picsum.photos/seed/kebab/600/400", "imageHint": "meat kebab" },
-    { "name": "Jalebi with Rabri", "type": "Dessert", "rating": 4.8, "image": "https://picsum.photos/seed/jalebi/600/400", "imageHint": "sweet dessert" }
+    { "name": "Pani Puri", "type": "Street Food", "rating": 4.5, "image": "https://picsum.photos/id/101/600/400", "imageHint": "street food" },
+    { "name": "Vada Pav", "type": "Street Food", "rating": 4.8, "image": "https://picsum.photos/id/145/600/400", "imageHint": "indian burger" },
+    { "name": "Fish Thali", "type": "Restaurant", "rating": 4.6, "image": "https://picsum.photos/id/1023/600/400", "imageHint": "fish meal" },
+    { "name": "Chicken Biryani", "type": "Restaurant", "rating": 4.4, "image": "https://picsum.photos/id/1060/600/400", "imageHint": "rice dish" },
+    { "name": "Masala Dosa", "type": "Restaurant", "rating": 4.7, "image": "https://picsum.photos/id/211/600/400", "imageHint": "indian pancake" },
+    { "name": "Chole Bhature", "type": "Street Food", "rating": 4.6, "image": "https://picsum.photos/id/219/600/400", "imageHint": "fried bread" },
+    { "name": "Galouti Kebab", "type": "Restaurant", "rating": 4.9, "image": "https://picsum.photos/id/305/600/400", "imageHint": "meat kebab" },
+    { "name": "Jalebi with Rabri", "type": "Dessert", "rating": 4.8, "image": "https://picsum.photos/id/379/600/400", "imageHint": "sweet dessert" }
   ]
 }
