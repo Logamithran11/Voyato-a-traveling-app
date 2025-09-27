@@ -15,73 +15,73 @@
     {
       "id": "dest-2",
       "description": "Recommended destination 2",
-      "imageUrl": "https://images.unsplash.com/photo-1613075019881-f475574c236a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb3VudGFpbiUyMGxhbmRzY2FwZXxlbnwwfHx8fDE3NTg5MTAzNDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1610552050890-fe99536c2615?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtb3VudGFpbiUyMGxhbmRzY2FwZXxlbnwwfHx8fDE3NTg5MTAzNDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mountain landscape"
     },
     {
       "id": "dest-3",
       "description": "Recommended destination 3",
-      "imageUrl": "https://images.unsplash.com/photo-1586500036065-bdaeac7a4feb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc1ODk1NjUxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1672841828271-54340a6fbcd3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc1ODk1NjUxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "tropical beach"
     },
     {
       "id": "dest-4",
       "description": "Recommended destination 4",
-      "imageUrl": "https://images.unsplash.com/photo-1580102488613-fa55ab5de62a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhbmNpZW50JTIwcnVpbnN8ZW58MHx8fHwxNzU4ODgyMDI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1573540374799-d527e9ee392b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhbmNpZW50JTIwcnVpbnN8ZW58MHx8fHwxNzU4ODgyMDI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "ancient ruins"
     },
     {
       "id": "dest-5",
       "description": "Recommended destination 5",
-      "imageUrl": "https://images.unsplash.com/photo-1717494810944-d268ef8ee9f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2l0eXNjYXBlJTIwc3Vuc2V0fGVufDB8fHx8MTc1ODk2MTgyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667518157104-1bc9774467bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaXR5c2NhcGUlMjBzdW5zZXR8ZW58MHx8fHwxNzU4OTYxODI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cityscape sunset"
     },
     {
       "id": "food-1",
       "description": "Pani Puri",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fpani-puri.jpg?alt=media&token=e9f4a56c-a690-4820-a616-a19363a0279a",
+      "imageUrl": "https://images.unsplash.com/photo-1518626981033-f00082ce6f8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYW5pJTIwcHVyaXxlbnwwfHx8fDE3NTg5NzU2MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "pani puri"
     },
     {
       "id": "food-2",
       "description": "Vada Pav",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fvada-pav.jpg?alt=media&token=db2b7573-0498-46c5-a131-419b489a690f",
+      "imageUrl": "https://images.unsplash.com/photo-1606491956391-70868b5d0f47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx2YWRhJTIwcGF2fGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "vada pav"
     },
     {
       "id": "food-3",
       "description": "Fish Thali",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Ffish-thali.jpg?alt=media&token=6a12b6f3-4217-45e0-81f1-b9560f86b72d",
+      "imageUrl": "https://images.unsplash.com/photo-1637273446235-97a96c8ae6e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZmlzaCUyMHRoYWxpfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fish thali"
     },
     {
       "id": "food-4",
       "description": "Chicken Biryani",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fchicken-biryani.jpg?alt=media&token=963503f0-466d-4952-871d-55113b56cf28",
+      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjaGlja2VuJTIwYmlyeWFuaXxlbnwwfHx8fDE3NTg5MzUzOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "chicken biryani"
     },
     {
       "id": "food-5",
       "description": "Masala Dosa",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fmasala-dosa.jpg?alt=media&token=c1902047-97d3-4632-9366-07b5a8c9b20b",
+      "imageUrl": "https://images.unsplash.com/photo-1527063844103-f800e88499ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtYXNhbGElMjBkb3NhfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "masala dosa"
     },
     {
       "id": "food-6",
       "description": "Chole Bhature",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fchole-bhature.jpg?alt=media&token=5c8b74c0-671e-4505-881c-d7f9502a9041",
+      "imageUrl": "https://images.unsplash.com/photo-1558437873-b8867755d869?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2hvbGUlMjBiaGF0dXJlfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "chole bhature"
     },
     {
       "id": "food-7",
       "description": "Galouti Kebab",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fgalouti-kebab.jpg?alt=media&token=9843c080-60f4-4a25-837c-e3500a1122a2",
+      "imageUrl": "https://images.unsplash.com/photo-1599662662614-e1c56e0ba303?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnYWxvdXRpJTIwa2ViYWJ8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "galouti kebab"
     },
     {
       "id": "food-8",
       "description": "Jalebi with Rabri",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fjalebi.jpg?alt=media&token=1d74d8de-15a0-410a-8671-55038c1157c9",
+      "imageUrl": "https://images.unsplash.com/photo-1643425959011-079b5dbde117?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxqYWxlYmklMjBzd2VldHxlbnwwfHx8fDE3NTg5NzU2MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "jalebi sweet"
     }
   ]
