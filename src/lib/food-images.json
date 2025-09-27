@@ -1,13 +1,13 @@
 
 {
   "foodItems": [
-    { "name": "Pani Puri", "type": "Street Food", "rating": 4.5, "image": "https://images.unsplash.com/photo-1626782390322-6b940e7a2334", "imageHint": "street food" },
-    { "name": "Vada Pav", "type": "Street Food", "rating": 4.8, "image": "https://images.unsplash.com/photo-1630389921493-c397c8a6668a", "imageHint": "indian burger" },
-    { "name": "Fish Thali", "type": "Restaurant", "rating": 4.6, "image": "https://images.unsplash.com/photo-1625398407942-4b2b235ert9c", "imageHint": "fish meal" },
-    { "name": "Chicken Biryani", "type": "Restaurant", "rating": 4.4, "image": "https://images.unsplash.com/photo-1589302168068-964664d93dc0", "imageHint": "rice dish" },
-    { "name": "Masala Dosa", "type": "Restaurant", "rating": 4.7, "image": "https://images.unsplash.com/photo-16686657ução-4d6d0a7a97b0", "imageHint": "indian pancake" },
-    { "name": "Chole Bhature", "type": "Street Food", "rating": 4.6, "image": "https://images.unsplash.com/photo-1606495145325-3574c41a27e3", "imageHint": "fried bread" },
-    { "name": "Galouti Kebab", "type": "Restaurant", "rating": 4.9, "image": "https://images.unsplash.com/photo-1625944026337-415b3a4a25c7", "imageHint": "meat kebab" },
-    { "name": "Jalebi with Rabri", "type": "Dessert", "rating": 4.8, "image": "https://images.unsplash.com/photo-1626081499994-629a83a48c66", "imageHint": "sweet dessert" }
+    { "name": "Pani Puri", "type": "Street Food", "rating": 4.5, "image": "https://picsum.photos/seed/panipuri/600/400", "imageHint": "street food" },
+    { "name": "Vada Pav", "type": "Street Food", "rating": 4.8, "image": "https://picsum.photos/seed/vadapav/600/400", "imageHint": "indian burger" },
+    { "name": "Fish Thali", "type": "Restaurant", "rating": 4.6, "image": "https://picsum.photos/seed/fishthali/600/400", "imageHint": "fish meal" },
+    { "name": "Chicken Biryani", "type": "Restaurant", "rating": 4.4, "image": "https://picsum.photos/seed/biryani/600/400", "imageHint": "rice dish" },
+    { "name": "Masala Dosa", "type": "Restaurant", "rating": 4.7, "image": "https://picsum.photos/seed/masaladosa/600/400", "imageHint": "indian pancake" },
+    { "name": "Chole Bhature", "type": "Street Food", "rating": 4.6, "image": "https://picsum.photos/seed/cholebhature/600/400", "imageHint": "fried bread" },
+    { "name": "Galouti Kebab", "type": "Restaurant", "rating": 4.9, "image": "https://picsum.photos/seed/kebab/600/400", "imageHint": "meat kebab" },
+    { "name": "Jalebi with Rabri", "type": "Dessert", "rating": 4.8, "image": "https://picsum.photos/seed/jalebi/600/400", "imageHint": "sweet dessert" }
   ]
 }
