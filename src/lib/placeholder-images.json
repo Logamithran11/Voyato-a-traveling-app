@@ -39,49 +39,49 @@
     {
       "id": "food-1",
       "description": "Pani Puri",
-      "imageUrl": "https://images.unsplash.com/photo-1669699739247-54f20092f9d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwYW5pJTIwcHVyaXxlbnwwfHx8fDE3NTg5NzU2MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fpani-puri.jpg?alt=media&token=e9f4a56c-a690-4820-a616-a19363a0279a",
       "imageHint": "pani puri"
     },
     {
       "id": "food-2",
       "description": "Vada Pav",
-      "imageUrl": "https://images.unsplash.com/photo-1631788012420-a0d6a3cfcdfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx2YWRhJTIwcGF2fGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fvada-pav.jpg?alt=media&token=db2b7573-0498-46c5-a131-419b489a690f",
       "imageHint": "vada pav"
     },
     {
       "id": "food-3",
       "description": "Fish Thali",
-      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmaXNoJTIwdGhhbGl8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Ffish-thali.jpg?alt=media&token=6a12b6f3-4217-45e0-81f1-b9560f86b72d",
       "imageHint": "fish thali"
     },
     {
       "id": "food-4",
       "description": "Chicken Biryani",
-      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjaGlja2VuJTIwYmlyeWFuaXxlbnwwfHx8fDE3NTg5MzUzOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fchicken-biryani.jpg?alt=media&token=963503f0-466d-4952-871d-55113b56cf28",
       "imageHint": "chicken biryani"
     },
     {
       "id": "food-5",
       "description": "Masala Dosa",
-      "imageUrl": "https://images.unsplash.com/photo-1694849789325-914b71ab4075?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtYXNhbGElMjBkb3NhfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fmasala-dosa.jpg?alt=media&token=c1902047-97d3-4632-9366-07b5a8c9b20b",
       "imageHint": "masala dosa"
     },
     {
       "id": "food-6",
       "description": "Chole Bhature",
-      "imageUrl": "https://images.unsplash.com/photo-1638802180096-edcbe17c0903?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjaG9sZSUyMGJoYXR1cmV8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fchole-bhature.jpg?alt=media&token=5c8b74c0-671e-4505-881c-d7f9502a9041",
       "imageHint": "chole bhature"
     },
     {
       "id": "food-7",
       "description": "Galouti Kebab",
-      "imageUrl": "https://images.unsplash.com/photo-1549541412-71e57c4b9857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnYWxvdXRpJTIwa2ViYWJ8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fgalouti-kebab.jpg?alt=media&token=9843c080-60f4-4a25-837c-e3500a1122a2",
       "imageHint": "galouti kebab"
     },
     {
       "id": "food-8",
       "description": "Jalebi with Rabri",
-      "imageUrl": "https://images.unsplash.com/photo-1648683622470-d52bfe2d3830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8amFsZWJpJTIwc3dlZXR8ZW58MHx8fHwxNzU4OTc1NjE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/genkit-llm-tools.appspot.com/o/images%2Fjalebi.jpg?alt=media&token=1d74d8de-15a0-410a-8671-55038c1157c9",
       "imageHint": "jalebi sweet"
     }
   ]
