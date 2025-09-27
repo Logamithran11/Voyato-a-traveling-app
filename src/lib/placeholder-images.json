@@ -45,13 +45,13 @@
     {
       "id": "food-2",
       "description": "Vada Pav",
-      "imageUrl": "https://images.unsplash.com/photo-1554978991-33ef7f31d658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2YWRhJTIwcGF2fGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1609951379471-249c362d2966",
       "imageHint": "vada pav"
     },
     {
       "id": "food-3",
       "description": "Fish Thali",
-      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmaXNoJTIwdGhhbGl8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1668335539106-c47ce29f6b8f",
       "imageHint": "fish thali"
     },
     {
@@ -75,13 +75,13 @@
     {
       "id": "food-7",
       "description": "Galouti Kebab",
-      "imageUrl": "https://images.unsplash.com/photo-1643941217351-bc293885bade?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnYWxvdXRpJTIwa2ViYWJ8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1643941217351-bc293885bade",
       "imageHint": "galouti kebab"
     },
     {
       "id": "food-8",
       "description": "Jalebi with Rabri",
-      "imageUrl": "https://images.unsplash.com/photo-1648683622470-d52bfe2d3830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8amFsZWJpJTIwc3dlZXR8ZW58MHx8fHwxNzU4OTc1NjE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1603524028045-9a4c0a524c65",
       "imageHint": "jalebi sweet"
     }
   ]
