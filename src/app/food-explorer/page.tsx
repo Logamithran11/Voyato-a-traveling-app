@@ -68,9 +68,11 @@ export default function FoodExplorerPage() {
         {filteredFood.map(item => (
             <Card key={item.name} className="overflow-hidden shadow-lg group">
                 <div className="relative h-48 w-full">
-                    <img 
+                    <Image 
                         src={item.image.imageUrl} 
                         alt={item.name} 
+                        width={600}
+                        height={400}
                         data-ai-hint={item.image.imageHint} 
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" 
                     />
