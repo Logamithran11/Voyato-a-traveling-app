@@ -39,49 +39,49 @@
     {
       "id": "food-1",
       "description": "Pani Puri",
-      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwYW5pcHVyaXxlbnwwfHx8fDE3NTg5NzU2MTR8MA&ixlib=rb-4.1.0",
+      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0",
       "imageHint": "pani puri"
     },
     {
       "id": "food-2",
       "description": "Vada Pav",
-      "imageUrl": "https://images.unsplash.com/photo-1606491956689-2ea866880c84?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx2YWRhJTIwcGF2fGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1606491956689-2ea866880c84",
       "imageHint": "vada pav"
     },
     {
       "id": "food-3",
       "description": "Fish Thali",
-      "imageUrl": "https://images.unsplash.com/photo-1642741580389-87dd75d913f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmaXNoJTIwdGhhbGl8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1642741580389-87dd75d913f4",
       "imageHint": "fish thali"
     },
     {
       "id": "food-4",
       "description": "Chicken Biryani",
-      "imageUrl": "https://images.unsplash.com/photo-1705174299330-939dd03cc864?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjaGlja2VuJTIwYmlyeWFuaXxlbnwwfHx8fDE3NTg5MzUzOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0",
       "imageHint": "chicken biryani"
     },
     {
       "id": "food-5",
       "description": "Masala Dosa",
-      "imageUrl": "https://images.unsplash.com/photo-1629606046986-2203dc763b59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtYXNhbGElMjBkb3NhfGVufDB8fHx8MTc1ODk3NTYxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1668665782358-0816c5894a73",
       "imageHint": "masala dosa"
     },
     {
       "id": "food-6",
       "description": "Chole Bhature",
-      "imageUrl": "https://images.unsplash.com/photo-1672561924208-7762120e7077?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjaG9sZSUyMGJoYXR1cmV8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1606491956689-2ea866880c84",
       "imageHint": "chole bhature"
     },
     {
       "id": "food-7",
       "description": "Galouti Kebab",
-      "imageUrl": "https://images.unsplash.com/photo-1600595876826-01b2d387b119?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYWxvdXRpJTIwa2ViYWJ8ZW58MHx8fHwxNzU4OTc1NjE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1642741580389-87dd75d913f4",
       "imageHint": "galouti kebab"
     },
     {
       "id": "food-8",
       "description": "Jalebi with Rabri",
-      "imageUrl": "https://images.unsplash.com/photo-1699865580838-8347da7f218c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxqYWxlYmklMjBzd2VldHxlbnwwfHx8fDE3NTg5NzU2MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0",
       "imageHint": "jalebi sweet"
     }
   ]
