@@ -120,7 +120,12 @@ export default function EventsCalendarPage() {
         (filterMonth === 'All Months' || event.dates.some(d => d.toLocaleString('default', { month: 'long' }) === filterMonth))
     );
     
-    const allEventDays = allEvents.flatMap(event => event.dates);
+    // Correctly prepare dates for the calendar modifier by removing the time part.
+    const allEventDays = allEvents.flatMap(event => event.dates).map(d => {
+        const date = new Date(d);
+        date.setHours(0, 0, 0, 0);
+        return date;
+    });
     
     const eventsOnSelectedDate = selectedDate ? allEvents.filter(event => 
       event.dates.some(d => d.toDateString() === selectedDate.toDateString())
