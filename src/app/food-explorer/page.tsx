@@ -11,14 +11,14 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 const foodItems = [
-  { name: "Pani Puri", type: "Street Food", rating: 4.5, image: "https://images.unsplash.com/photo-1626779307983-52382645b244?q=80&w=600&auto=format&fit=crop", imageHint: "pani puri" },
-  { name: "Vada Pav", type: "Street Food", rating: 4.8, image: "https://images.unsplash.com/photo-1607330264227-4655e09e11a9?q=80&w=600&auto=format&fit=crop", imageHint: "vada pav" },
-  { name: "Fish Thali", type: "Restaurant", rating: 4.6, image: "https://images.unsplash.com/photo-1626781414995-1f95a55097b5?q=80&w=600&auto=format&fit=crop", imageHint: "fish thali" },
-  { name: "Chicken Biryani", type: "Restaurant", rating: 4.4, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=600&auto=format&fit=crop", imageHint: "chicken biryani" },
-  { name: "Masala Dosa", type: "Restaurant", rating: 4.7, image: "https://images.unsplash.com/photo-1668665782397-39695679a943?q=80&w=600&auto=format&fit=crop", imageHint: "masala dosa" },
-  { name: "Chole Bhature", type: "Street Food", rating: 4.6, image: "https://images.unsplash.com/photo-1606495147816-a3c332924424?q=80&w=600&auto=format&fit=crop", imageHint: "chole bhature" },
-  { name: "Galouti Kebab", type: "Restaurant", rating: 4.9, image: "https://images.unsplash.com/photo-1625944022799-4917627bb34c?q=80&w=600&auto=format&fit=crop", imageHint: "galouti kebab" },
-  { name: "Jalebi with Rabri", type: "Dessert", rating: 4.8, image: "https://images.unsplash.com/photo-1610970878459-a2ea8883e35c?q=80&w=600&auto=format&fit=crop", imageHint: "jalebi dessert" },
+  { name: "Pani Puri", type: "Street Food", rating: 4.5, image: "https://images.unsplash.com/photo-1626779307983-52382645b244", imageHint: "pani puri" },
+  { name: "Vada Pav", type: "Street Food", rating: 4.8, image: "https://images.unsplash.com/photo-1607330264227-4655e09e11a9", imageHint: "vada pav" },
+  { name: "Fish Thali", type: "Restaurant", rating: 4.6, image: "https://images.unsplash.com/photo-1626781414995-1f95a55097b5", imageHint: "fish thali" },
+  { name: "Chicken Biryani", type: "Restaurant", rating: 4.4, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0", imageHint: "chicken biryani" },
+  { name: "Masala Dosa", type: "Restaurant", rating: 4.7, image: "https://images.unsplash.com/photo-1668665782397-39695679a943", imageHint: "masala dosa" },
+  { name: "Chole Bhature", type: "Street Food", rating: 4.6, image: "https://images.unsplash.com/photo-1606495147816-a3c332924424", imageHint: "chole bhature" },
+  { name: "Galouti Kebab", type: "Restaurant", rating: 4.9, image: "https://images.unsplash.com/photo-1625944022799-4917627bb34c", imageHint: "galouti kebab" },
+  { name: "Jalebi with Rabri", type: "Dessert", rating: 4.8, image: "https://images.unsplash.com/photo-1610970878459-a2ea8883e35c", imageHint: "jalebi dessert" },
 ];
 
 export default function FoodExplorerPage() {
